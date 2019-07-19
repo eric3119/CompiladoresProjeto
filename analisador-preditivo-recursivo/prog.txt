@@ -1,0 +1,7 @@
+se verd
+    então
+        a = b
+fim ;
+
+a = 10 ;
+.
