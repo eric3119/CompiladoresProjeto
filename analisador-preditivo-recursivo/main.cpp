@@ -68,7 +68,6 @@ class Token{
         void get_next_token(){
             coluna+=strlen(this->lexema);
             fscanf(file, "%s", this->lexema);
-            cout << this->lexema << endl;
         }
 
     public:
@@ -112,8 +111,7 @@ void fPgm(){
         if(tk->categ == Eof){
             return;
         }else printf("EOF esperado lin:%d col:%d\n",tk->linha, tk->coluna);
-    }else printf("'.' esperado lin:%d col:%d\n", tk->linha, tk->coluna);
-    cout <<
+    }else printf("'.' esperado lin:%d col:%d\n", tk->linha, tk->coluna);    
 }
 
 void fLSent(){
@@ -258,10 +256,11 @@ int main(int argc, char *argv[]) {
 
         tk = new Token();
         fPgm();
+        cout << "fim" << endl;
 
         fclose (file);
     }else{
-        cout << "use: \n prog.exe file.txt";
+        cout << "./main prog.txt";
     }
 
     return 0;
