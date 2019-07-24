@@ -1,8 +1,16 @@
 #include "Tokenizer.h"
 
+Tokenizer::Tokenizer(FILE *c_source) : tk() {
+    source = c_source;
+    tk = {};
+}
+
 Token Tokenizer::nextToken(){
-    //scan token
     return tk;
+}
+
+void Tokenizer::readLine(){
+
 }
 
 // uma linha de cada vez
