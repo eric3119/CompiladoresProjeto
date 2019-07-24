@@ -1,4 +1,4 @@
-#include "category.h"
+#include "Category.hpp"
 
 #define MAX_STRING 100
 
