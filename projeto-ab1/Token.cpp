@@ -1,7 +1,9 @@
+#include "category.h"
+
 #define MAX_STRING 100
 
 struct Token {
-    Categoria categ;
-    char lexema[MAX_STRING];
-    int linha, coluna;    
+    Category categ;
+    char lex[MAX_STRING];
+    int line, col;
 };
