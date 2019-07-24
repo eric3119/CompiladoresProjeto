@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "CategoryEnum.hpp"
+#include <regex>
 
 const int MAX_STRING = 100;
 
@@ -18,8 +19,9 @@ class Tokenizer {
 private:
     Token tk;
     FILE *source;
+    char buffer[MAX_STRING];
 
-    void readLine();
+    char* readLine();
 
 public:
     explicit Tokenizer(FILE *c_source);

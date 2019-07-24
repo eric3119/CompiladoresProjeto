@@ -6,13 +6,20 @@ Tokenizer::Tokenizer(FILE *c_source) : tk() {
 }
 
 Token Tokenizer::nextToken(){
+
+    if (!feof(source)){
+        readLine();//TODO return
+
+        //TODO regex
+
+    }else{
+        tk.categ = CategoryEnum ::Eof;
+        tk.lex[0] = '\0';
+    }
+
     return tk;
 }
 
-void Tokenizer::readLine(){
-
+char* Tokenizer::readLine(){
+    return fgets(buffer,MAX_STRING,source);
 }
-
-// uma linha de cada vez
-//Erros léxicos devem ser enviados para o analisador sintático
-//
