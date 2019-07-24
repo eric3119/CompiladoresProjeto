@@ -3,13 +3,13 @@
 #define PROJETO_AB1_TOKENIZER_H
 
 #include <iostream>
-#include "CategoryEnum.hpp"
+#include "Category.hpp"
 #include <regex>
 
 const int MAX_STRING = 100;
 
 typedef struct Token {
-    CategoryEnum categ;
+    Category categ;
     char lex[MAX_STRING];
     int line, col;
 }Token;
@@ -26,6 +26,7 @@ private:
 public:
     explicit Tokenizer(FILE *c_source);
     Token nextToken();
+    bool empty();
 };
 
 

@@ -3,6 +3,7 @@
 Tokenizer::Tokenizer(FILE *c_source) : tk() {
     source = c_source;
     tk = {};
+    buffer[0] = '\0';
 }
 
 Token Tokenizer::nextToken(){
@@ -13,11 +14,15 @@ Token Tokenizer::nextToken(){
         //TODO regex
 
     }else{
-        tk.categ = CategoryEnum ::Eof;
+        tk.categ = Category ::Eof;
         tk.lex[0] = '\0';
     }
 
     return tk;
+}
+
+bool Tokenizer::empty(){
+    return tk.categ == Category ::Eof;
 }
 
 char* Tokenizer::readLine(){
