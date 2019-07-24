@@ -2,8 +2,8 @@
 #define PROJETO_AB1_CATEGORY_HPP
 
 enum class CategoryEnum { Program, Pt, Begin, End, Var, PtVg,
-    Pt2, Integer , Procedure, Function, AbPar, FePar, Read, Write,
+    Pt2, Vg, Integer, Real, Procedure, Function, AbPar, FePar, Read, Write,
     For, To, Do, Repeat, Until, If, Then, Else,
-    Eq, Maior, Menor, MaiorEg, MenorEq, Difer, Mais, Menos, Mult, Div, Id, CteI };
+    Eq, Maior, Menor, MaiorEg, MenorEq, Difer, Mais, Menos, Mult, Div, Id, CteI, CteR };
 
 #endif //PROJETO_AB1_CATEGORY_HPP
