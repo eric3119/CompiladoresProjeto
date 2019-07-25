@@ -40,5 +40,6 @@ char* categ_name(Category anEnum){
         case Category::CteI:return (char*)"CteI";
         case Category::CteR:return (char*)"CteR";//TODO update float
         case Category::Eof:return (char*)"Eof";
+        default:return (char*)"erro";
     }
 }
