@@ -3,8 +3,10 @@
 #define PROJETO_AB1_TOKENIZER_H
 
 #include <iostream>
-#include "Category.hpp"
+#include <fstream>
 #include <regex>
+
+#include "Category.hpp"
 
 const int MAX_STRING = 100;
 
@@ -17,14 +19,14 @@ typedef struct Token {
 class Tokenizer {
 
 private:
-    Token tk;
-    FILE *source;
-    char buffer[MAX_STRING];
+    Token tk{};
+    std::ifstream source;
+    std::string buffer;
 
-    char* readLine();
+    void readLine();
 
 public:
-    explicit Tokenizer(FILE *c_source);
+    explicit Tokenizer(const std::string& filename);
     Token nextToken();
     bool empty();
 };

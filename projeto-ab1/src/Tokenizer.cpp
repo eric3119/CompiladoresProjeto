@@ -1,21 +1,18 @@
 #include "Tokenizer.h"
 
-Tokenizer::Tokenizer(FILE *c_source) : tk() {
-    source = c_source;
+Tokenizer::Tokenizer(const std::string& filename) : source(filename) {
     tk = {};
     buffer[0] = '\0';
 }
 
 Token Tokenizer::nextToken(){
 
-    if (!feof(source)){
-        readLine();//TODO return
-
-        //TODO regex
-
-    }else{
+    if(source.eof()){
         tk.categ = Category ::Eof;
-        tk.lex[0] = '\0';
+        strcpy(tk.lex, "\0");
+        std::cout << buffer << std::endl;
+    }else{
+        readLine();
     }
 
     return tk;
@@ -25,6 +22,6 @@ bool Tokenizer::empty(){
     return tk.categ == Category ::Eof;
 }
 
-char* Tokenizer::readLine(){
-    return fgets(buffer,MAX_STRING,source);
+void Tokenizer::readLine(){
+    std::getline(source, buffer);
 }

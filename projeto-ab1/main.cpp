@@ -5,7 +5,6 @@ using namespace std;
 
 int main(int argc, const char **argv){
 
-    FILE *source;
     Tokenizer *tokenizer;
 
     if (argc != 2){
@@ -15,22 +14,14 @@ int main(int argc, const char **argv){
         exit(0);
     }
 
-    source = fopen(argv[1],"r");
+    string s(argv[1]);
 
-    if (!source){
-        cout << "file not found" << endl;
-        exit(0);
-    }
+    tokenizer = new Tokenizer(s);
+    Token teste = tokenizer->nextToken();
 
-    tokenizer = new Tokenizer(source);
-
-    while(!tokenizer->empty()){
-        Token teste = tokenizer->nextToken();
-
-        printf("          [%04d, %04d] (%04d, %20s) {%s}", teste.line, teste.col, teste.categ, categ_name(teste.categ), teste.lex);
-    }
-
-    fclose(source);
+    do{
+        printf("          [%04d, %04d] (%04d, %20s) {%s}\n", teste.line, teste.col, teste.categ, categ_name(teste.categ), teste.lex);
+    }while(!tokenizer->empty());
 
     return 0;
 }
