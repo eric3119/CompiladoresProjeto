@@ -17,10 +17,12 @@ int main(int argc, const char **argv){
     string s(argv[1]);
 
     tokenizer = new Tokenizer(s);
-    Token teste = tokenizer->nextToken();
+    Token teste;
 
     do{
-        printf("          [%04d, %04d] (%04d, %20s) {%s}\n", teste.line, teste.col, teste.categ, categ_name(teste.categ), teste.lex);
+        teste = tokenizer->nextToken();
+        printf("          [%04d, %04d] (%04d, %20s) ", teste.line, teste.col, teste.categ, categ_name(teste.categ));
+        cout << "{"+teste.lex+"}" << endl;
     }while(!tokenizer->empty());
 
     return 0;

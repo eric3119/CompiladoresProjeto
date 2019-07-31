@@ -8,11 +8,19 @@
 
 #include "Category.hpp"
 
-const int MAX_STRING = 100;
+const std::string RegExList = "(int)|"
+                              "(start)|"
+                              "(\\()|"
+                              "(\\))|"
+                              "(\\{)|"
+                              "(\\})|"
+                              "(write)|"
+                              "(\"(.w)*\")|"
+                              "(;)|";
 
 typedef struct Token {
     Category categ;
-    char lex[MAX_STRING];
+    std::string lex;
     int line, col;
 }Token;
 
@@ -22,8 +30,11 @@ private:
     Token tk{};
     std::ifstream source;
     std::string buffer;
+    std::regex re;
+    std::sregex_iterator current;
 
     void readLine();
+    bool nextLex();
 
 public:
     explicit Tokenizer(const std::string& filename);

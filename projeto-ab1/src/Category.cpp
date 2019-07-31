@@ -2,7 +2,7 @@
 
 char* categ_name(Category anEnum){
     switch (anEnum){
-        case Category::Program:return (char*)"Program";
+        case Category::Init:return (char*)"init";
         case Category::Pt:return (char*)"Pt";
         case Category::Begin:return (char*)"Begin";
         case Category::End:return (char*)"End";
@@ -11,7 +11,7 @@ char* categ_name(Category anEnum){
         case Category::Pt2:return (char*)"Pt2";
         case Category::Vg:return (char*)"Vg";
         case Category::Integer:return (char*)"Integer";
-        case Category::Real:return (char*)"Real";//TODO update float
+        case Category::Float:return (char*)"Float";//TODO update float
         case Category::Procedure:return (char*)"Procedure";
         case Category::Function:return (char*)"Function";
         case Category::AbPar:return (char*)"AbPar";
