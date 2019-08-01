@@ -8,17 +8,18 @@
 
 #include "Category.hpp"
 
-const std::string RegExList = "(int)|"
-                              "(init)|"
-                              "([(])|"
-                              "([)])|"
-                              "([{])|"
-                              "([}])|"
-                              "(write)|"
-                              "(print)|"
-                              "(return)|"
-                              "(\"(.w)*\")|"
-                              "(;)|";
+const std::string RegExList =   "(int)|"
+                                "(init)|"
+                                "([(])|"
+                                "([)])|"
+                                "([{])|"
+                                "([}])|"
+                                "(input)|"
+                                "(print)|"
+                                "(return)|"
+                                "(\"(.)\")|"
+                                "(;)|"
+                                "([0-9])";
 
 typedef struct Token {
     Category categ;

@@ -1,4 +1,5 @@
 #include "Tokenizer.h"
+#include "Category.hpp"
 
 Tokenizer::Tokenizer(const std::string& filename) : source(filename) {
     tk = {};
@@ -14,9 +15,11 @@ Token Tokenizer::nextToken(){
         std::cout << buffer << std::endl;
     }else{
         if (nextLex()){
-            tk.categ = Category ::AbPar;
+            tk.line = -1;
+            tk.col = -1;
+            tk.categ = Category ::Integer;//name_categ(tk.lex);
         }else{
-            readLine();
+            tk.categ = (Category)0;//erro
         }
 
     }
@@ -33,33 +36,18 @@ void Tokenizer::readLine(){
 }
 
 bool Tokenizer::nextLex(){
-    try {
-        std::sregex_iterator end;
-        while(current != end){
-            std::smatch match = *current;
-            std::cout << "saida" << match.str() << std::endl;
 
-            tk.lex = match.str();
-            current++;
-        }
-        if (current != end){
-            std::smatch match = *current;
-            std::cout << "saida >> " << match.str() << "\n";
-            tk.lex = match.str();
-            current++;
-            return true;
-        }else{
-            std::sregex_iterator new_regex(buffer.begin(), buffer.end(), re);
-            current = new_regex;
-            return false;
-        }
-//        while (next != end) {
-//            std::smatch match = *next;
-//            std::cout << match.str() << "\n";
-//            next++;
-//        }
-    } catch (std::regex_error& e) {
-        // Syntax error in the regular expression
+    std::sregex_iterator end;
+
+    if(current != end){
+        std::smatch match = *current;
+        tk.lex = match.str();
+        current++;
+        return true;
+    }else{
+        readLine();
+        buffer.erase(std::remove_if(buffer.begin(), buffer.end(), ::isspace), buffer.end());
+        current = std::sregex_iterator(buffer.begin(), buffer.end(), re);
         return false;
     }
 }
