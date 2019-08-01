@@ -25,12 +25,12 @@ int init(){
 
     int i, tam;
 
-    read tam;
+    input tam;
 
     int vet[tam];
 
     for(i = 0; i < tam; i++){
-        read vet[i];
+        input vet[i];
     }
 
     for(i = 0; i < tam; i++){

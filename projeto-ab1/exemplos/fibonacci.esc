@@ -4,7 +4,7 @@ int init(){
     b = 1;
 
     print "Digite um número limite: ";
-    read "%d", &limite;
+    input "%d", &limite;
 
     i = 0;
 

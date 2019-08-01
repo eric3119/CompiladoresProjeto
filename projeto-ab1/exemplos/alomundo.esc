@@ -1,4 +1,4 @@
 int init(){
-    print “Alô mundo”;
+    print "Alô mundo";
     return 0;
 }
