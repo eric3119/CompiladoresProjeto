@@ -9,12 +9,14 @@
 #include "Category.hpp"
 
 const std::string RegExList = "(int)|"
-                              "(start)|"
-                              "(\\()|"
-                              "(\\))|"
-                              "(\\{)|"
-                              "(\\})|"
+                              "(init)|"
+                              "([(])|"
+                              "([)])|"
+                              "([{])|"
+                              "([}])|"
                               "(write)|"
+                              "(print)|"
+                              "(return)|"
                               "(\"(.w)*\")|"
                               "(;)|";
 
@@ -28,8 +30,10 @@ class Tokenizer {
 
 private:
     Token tk{};
+
     std::ifstream source;
     std::string buffer;
+
     std::regex re;
     std::sregex_iterator current;
 

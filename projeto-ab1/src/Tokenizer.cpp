@@ -33,18 +33,24 @@ void Tokenizer::readLine(){
 }
 
 bool Tokenizer::nextLex(){
-
     try {
-        // std::regex re("(int)|(init)|(\\()|(\\))");
-        // std::sregex_iterator next(buffer.begin(), buffer.end(), re);
         std::sregex_iterator end;
+        while(current != end){
+            std::smatch match = *current;
+            std::cout << "saida" << match.str() << std::endl;
+
+            tk.lex = match.str();
+            current++;
+        }
         if (current != end){
             std::smatch match = *current;
-            std::cout << match.str() << "\n";
+            std::cout << "saida >> " << match.str() << "\n";
             tk.lex = match.str();
             current++;
             return true;
         }else{
+            std::sregex_iterator new_regex(buffer.begin(), buffer.end(), re);
+            current = new_regex;
             return false;
         }
 //        while (next != end) {
