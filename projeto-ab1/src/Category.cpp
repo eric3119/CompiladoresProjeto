@@ -3,17 +3,15 @@
 char* categ_name(Category anEnum){
     switch (anEnum){
         case Category::Init:return (char*)"init";
-        case Category::Pt:return (char*)"Pt";
-        case Category::Begin:return (char*)"Begin";
-        case Category::End:return (char*)"End";
         case Category::Var:return (char*)"Var";
         case Category::PtVg:return (char*)"PtVg";
         case Category::Pt2:return (char*)"Pt2";
         case Category::Vg:return (char*)"Vg";
-        case Category::Integer:return (char*)"Integer";
-        case Category::Float:return (char*)"Float";//TODO update float
-        case Category::Procedure:return (char*)"Procedure";
-        case Category::Function:return (char*)"Function";
+        case Category::Integer:return (char*)"int";
+        case Category::Float:return (char*)"float";
+        case Category::Char:return (char*)"char";
+        case Category::Boolean:return (char*)"bool";
+        case Category::Procedure:return (char*)"proc";
         case Category::AbPar:return (char*)"AbPar";
         case Category::FePar:return (char*)"FePar";
         case Category::Read:return (char*)"Read";
@@ -38,7 +36,7 @@ char* categ_name(Category anEnum){
         case Category::Div:return (char*)"Div";
         case Category::Id:return (char*)"Id";
         case Category::CteI:return (char*)"CteI";
-        case Category::CteR:return (char*)"CteR";//TODO update float
+        case Category::CteR:return (char*)"CteF";
         case Category::Eof:return (char*)"Eof";
         default:return (char*)"erro";
     }
