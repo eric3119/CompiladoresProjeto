@@ -17,7 +17,7 @@ const std::string RegExList =   "(int)|"
                                 "(input)|"
                                 "(print)|"
                                 "(return)|"
-                                "(\"(.)\")|"
+                                "(\"(.*)\")|"
                                 "(;)|"
                                 "([0-9])";
 
