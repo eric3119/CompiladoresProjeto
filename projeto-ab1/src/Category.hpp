@@ -7,7 +7,7 @@ enum class Category {
     Init=1, Integer, Float, Char, Boolean,
     PtVg, Pt2, Vg, AbPar, FePar, AbCol, FeCol, AbChav, FeChav,
     Procedure, Return, Break,
-    Read, Write,
+    Read, Print,
     For, While, If, ElseIf, Else,
     OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,

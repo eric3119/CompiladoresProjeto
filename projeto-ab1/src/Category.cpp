@@ -20,7 +20,7 @@ char* categ_name(Category anEnum){
         case Category::AbChav:return (char*)"AbChav";
         case Category::FeChav:return (char*)"FeChav";
         case Category::Read:return (char*)"Read";
-        case Category::Write:return (char*)"Write";
+        case Category::Print:return (char*)"Print";
         case Category::For:return (char*)"For";
         case Category::While:return (char*)"While";
         case Category::If:return (char*)"If";
