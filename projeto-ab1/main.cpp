@@ -9,7 +9,7 @@ int main(int argc, const char **argv){
 
     if (argc != 2){
 
-        cout << "use: main prog.ec" << endl;
+        cout << "use: main prog.esc" << endl;
 
         exit(0);
     }

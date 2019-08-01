@@ -1,0 +1,22 @@
+int init(){
+
+    int i , j , value;
+    int gap = 1;
+    while(gap < size) {
+        gap = 3*gap+1;
+    }
+    while (gap > 0) {
+        for(i = gap; i < size; i++) {
+            value = vet[i];
+            j = i;
+            while (j > gap-1 and value <= vet[j - gap]) {
+                vet[j] = vet [j - gap];
+                j = j - gap;
+            }
+            vet [j] = value;
+        }
+        gap = gap/3;
+    }
+
+    return 0;
+}
