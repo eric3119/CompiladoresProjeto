@@ -1,0 +1,20 @@
+int init(){
+    int a, b, i, aux, limite;
+    a = 0;
+    b = 1;
+
+    print "Digite um número limite: ";
+    read "%d", &limite;
+
+    i = 0;
+
+    while(i < limite){
+        aux = a + b;
+        a = b;
+        b = aux;
+        print "%d, ", auxiliar;
+        i++;
+    }
+
+    return 0;
+}

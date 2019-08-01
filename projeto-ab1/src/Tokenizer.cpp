@@ -36,7 +36,7 @@ bool Tokenizer::nextLex(){
 
     try {
         // std::regex re("(int)|(init)|(\\()|(\\))");
-        //std::sregex_iterator next(buffer.begin(), buffer.end(), re);
+        // std::sregex_iterator next(buffer.begin(), buffer.end(), re);
         std::sregex_iterator end;
         if (current != end){
             std::smatch match = *current;
@@ -57,3 +57,35 @@ bool Tokenizer::nextLex(){
         return false;
     }
 }
+
+//void regteste2(){
+//    string str = "The ape was at the apex";
+//    regex reg("(ape[^ ]?)");
+//
+//    sregex_iterator currentMatch(str.begin(), str.end(), reg);
+//    sregex_iterator lastMatch;
+//
+//    while (currentMatch!= lastMatch){
+//        smatch match = *currentMatch;
+//        cout << match.str() << endl;
+//        currentMatch++;
+//    }cout << endl;
+//
+//}
+//
+//void regteste(){
+//    string str = "The ape was at the apex";
+//    smatch matches;
+//    regex reg("(ape[^ ]?)");
+//
+//    while (regex_search(str, matches, reg)){
+//        cout << "Match: " << matches.ready() << endl;
+//        cout << "No match: " << matches.empty() << endl;
+//        cout << "# matches: " << matches.size() << endl;
+//        cout << "match: " << matches.str(1) << endl << endl;
+//        str = matches.suffix().str();
+//    }
+//
+//    regteste2();
+//
+//}
