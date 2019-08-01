@@ -19,7 +19,7 @@ char* categ_name(Category anEnum){
         case Category::FeCol:return (char*)"FeCol";
         case Category::AbChav:return (char*)"AbChav";
         case Category::FeChav:return (char*)"FeChav";
-        case Category::Read:return (char*)"Read";
+        case Category::Input:return (char*)"Input";
         case Category::Print:return (char*)"Print";
         case Category::For:return (char*)"For";
         case Category::While:return (char*)"While";
@@ -45,6 +45,6 @@ char* categ_name(Category anEnum){
         case Category::CteBool:return (char*)"CteBool";
         case Category::CteStr:return (char*)"CteStr";
         case Category::Eof:return (char*)"Eof";
-        default:return (char*)"erro";
+        default:return (char*)"********ERRO********";
     }
 }

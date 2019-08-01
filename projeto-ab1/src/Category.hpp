@@ -7,7 +7,7 @@ enum class Category {
     Init=1, Integer, Float, Char, Boolean,
     PtVg, Pt2, Vg, AbPar, FePar, AbCol, FeCol, AbChav, FeChav,
     Procedure, Return, Break,
-    Read, Print,
+    Input, Print,
     For, While, If, ElseIf, Else,
     OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,
@@ -15,6 +15,6 @@ enum class Category {
     Id, CteInt, CteFloat, CteChar, CteBool, CteStr, Eof
 };
 
-char* categ_name(Category anEnum);
+char* categ_name(Category);
 
 #endif //PROJETO_AB1_CATEGORY_HPP
