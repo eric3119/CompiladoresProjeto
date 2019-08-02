@@ -15,7 +15,6 @@ Token Tokenizer::nextToken(){
         std::cout << buffer << std::endl;
     }else{
         if (nextLex()){
-            tk.line = -1;
             tk.col = -1;
             tk.categ = Category ::Integer;//name_categ(tk.lex);
         }else{
@@ -46,6 +45,9 @@ bool Tokenizer::nextLex(){
         return true;
     }else{
         readLine();
+        printf("%4d  ", tk.line);
+        std::cout << buffer << std::endl;
+        tk.line++;
         buffer.erase(std::remove_if(buffer.begin(), buffer.end(), ::isspace), buffer.end());
         current = std::sregex_iterator(buffer.begin(), buffer.end(), re);
         return false;
