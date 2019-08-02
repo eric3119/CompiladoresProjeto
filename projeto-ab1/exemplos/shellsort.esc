@@ -33,6 +33,8 @@ int init(){
         input vet[i];
     }
 
+    shellSort(vet, tam);
+
     for(i = 0; i < tam; 1){
         print "%d ", vet[i];
     }
