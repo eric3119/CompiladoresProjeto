@@ -38,6 +38,8 @@ void Tokenizer::nextLex(){
         current++;
         tk.col = match.position(0);
         tk.categ = map_lex_categ[tk.lex];//name_categ(tk.lex);
+    }else if(source.eof()){
+        return;
     }else{
         readLine();
         tk.line++;
