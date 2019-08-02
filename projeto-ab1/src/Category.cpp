@@ -9,6 +9,7 @@ char* categ_name(Category anEnum){
         case Category::Integer:return (char*)"Integer";
         case Category::Float:return (char*)"Float";
         case Category::Char:return (char*)"Char";
+        case Category::String:return (char*)"String";
         case Category::Boolean:return (char*)"Boolean";
         case Category::Procedure:return (char*)"Procedure";
         case Category::Return:return (char*)"Return";
@@ -38,6 +39,7 @@ char* categ_name(Category anEnum){
         case Category::OpDiv:return (char*)"OpDiv";
         case Category::OpMod:return (char*)"OpMod";
         case Category::OpAtr:return (char*)"OpAtr";
+        case Category::OpConcat:return (char*)"OpConcat";
         case Category::Id:return (char*)"Id";
         case Category::CteInt:return (char*)"CteInt";
         case Category::CteFloat:return (char*)"CteFloat";
