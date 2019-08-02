@@ -39,7 +39,7 @@ private:
     std::sregex_iterator current;
 
     void readLine();
-    bool nextLex();
+    void nextLex();
 
 public:
     explicit Tokenizer(const std::string& filename);
