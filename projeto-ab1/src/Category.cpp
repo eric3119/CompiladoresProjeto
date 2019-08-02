@@ -2,7 +2,7 @@
 
 char* categ_name(Category anEnum){
     switch (anEnum){
-        case Category::Init:return (char*)"init";
+        case Category::Init:return (char*)"Init";
         case Category::PtVg:return (char*)"PtVg";
         case Category::Pt2:return (char*)"Pt2";
         case Category::Vg:return (char*)"Vg";

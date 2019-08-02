@@ -41,6 +41,9 @@ private:
     void readLine();
     void nextLex();
 
+    void init_map();
+    std::map<std::string, Category> map_lex_categ;
+
 public:
     explicit Tokenizer(const std::string& filename);
     Token nextToken();
