@@ -8,7 +8,7 @@ proc shellSort(int vet[], int size){
     }
 
     while (gap > 0) {
-        for(i = gap; i < size; i++) {
+        for(i = gap; i < size; 1) {
             value = vet[i];
             j = i;
             while (j > gap-1 and value <= vet[j - gap]) {
@@ -29,11 +29,11 @@ int init(){
 
     int vet[tam];
 
-    for(i = 0; i < tam; i++){
+    for(i = 0; i < tam; 1){
         input vet[i];
     }
 
-    for(i = 0; i < tam; i++){
+    for(i = 0; i < tam; 1){
         print "%d ", vet[i];
     }
 }
