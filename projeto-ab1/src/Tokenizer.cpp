@@ -3,8 +3,10 @@
 
 Tokenizer::Tokenizer(const std::string& filename) : source(filename) {
     tk = {};
-    buffer[0] = '\0';
-    re.assign(RegExList);
+    tk.col = 0;
+    current_position = -1;
+    buffer.clear();
+    //re.assign(RegExList);
     init_map();
 }
 
@@ -12,8 +14,9 @@ Token Tokenizer::nextToken(){
 
     if(source.eof()){
         tk.categ = Category ::Eof;
-        tk.lex = "\0";
+        tk.lex.clear();
     }else{
+        if(current_position == -1)current_position++;
         nextLex();
     }
 
@@ -24,32 +27,38 @@ bool Tokenizer::empty(){
     return tk.categ == Category ::Eof;
 }
 
-void Tokenizer::readLine(){
+void Tokenizer::nextLine(){
     std::getline(source, buffer);
+    tk.line++;
+    tk.col = 0;
+    current_position = -1;
+
+    printf("%4d  ", tk.line);
+    std::cout << buffer << std::endl;
 }
 
 void Tokenizer::nextLex(){
 
-    std::sregex_iterator end;
+//    std::sregex_iterator end;
+//
+//    if(current != end){
+//        std::smatch match = *current;
+//        tk.lex = match.str();
+//        current++;
+//        tk.col = match.position(0);
+//        tk.categ = map_lex_categ[tk.lex];//name_categ(tk.lex);
+//    }else
+//    if(source.eof()){
+//        return;
+//    }else{
+//        nextLine();
 
-    if(current != end){
-        std::smatch match = *current;
-        tk.lex = match.str();
-        current++;
-        tk.col = match.position(0);
-        tk.categ = map_lex_categ[tk.lex];//name_categ(tk.lex);
-    }else if(source.eof()){
+        findRegex();
+
         return;
-    }else{
-        readLine();
-        tk.line++;
-
-        printf("%4d  ", tk.line);
-        std::cout << buffer << std::endl;
-
-        current = std::sregex_iterator(buffer.begin(), buffer.end(), re);
-        nextLex();
-    }
+//        current = std::sregex_iterator(buffer.begin(), buffer.end(), re);
+//        nextLex();
+//    }
 }
 
 void Tokenizer::init_map() {
@@ -98,4 +107,104 @@ void Tokenizer::init_map() {
     map_lex_categ["cteb"] = Category::CteBool;
     map_lex_categ["ctes"] = Category::CteStr;
     //map_lex_categ["\0"] = Category::Eof;
+}
+
+bool is_delim(char a){
+    if( a == ' '||
+        a == ';'||
+        a == ':'||
+        a == ','||
+        a == '('||
+        a == ')'||
+        a == '['||
+        a == ']'||
+        a == '{'||
+        a == '}')
+        return true;
+
+    return a == '<' ||
+           a == '>' ||
+           a == '+' ||
+           a == '-' ||
+           a == '*' ||
+           a == '/' ||
+           a == '%' ||
+           a == '=' ||
+           a == '"' ||
+           a == '\''
+           ;
+//    map_lex_categ["=="] = Category::OpEq;
+//    map_lex_categ[">="] = Category::OpMaiorEq;
+//    map_lex_categ["<="] = Category::OpMenorEq;
+//    map_lex_categ["!="] = Category::OpDifer;
+//    map_lex_categ["++"] = Category::OpConcat;
+
+}
+
+void Tokenizer::findRegex(){
+
+    tk.col = current_position;
+    std::smatch m;
+    std::regex e;// ("int\\s+");
+
+    std::string temp;
+
+    int str_len = buffer.length();
+
+    if (current_position < str_len) {
+
+        while(current_position < str_len && buffer[current_position] == ' ')current_position++;
+
+        if (current_position >= str_len) return;
+
+        if(is_delim(buffer[current_position])){
+
+            temp += buffer[current_position];
+
+            D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
+
+            current_position++;
+            for (int i = 0; i < 44; ++i) {
+                e.assign(RegExList[i]);
+                if(std::regex_match(temp, m, e)){
+                    D(std::cout << temp + " match_RegEx_name " << categ_name((Category)(i+1)) << " pos " << i+1 << std::endl;)
+                    tk.lex = temp;
+                    tk.categ = (Category)(i+1);
+                    return;
+                }
+                D(if(i == 43))
+                    D(puts("********ERRO*********");)
+            }
+            temp.clear();
+            D(puts("");)
+        }
+
+        while (current_position < str_len && !is_delim(buffer[current_position])){
+            temp += buffer[current_position];
+            current_position++;
+        }
+
+        if (current_position >= str_len) return;
+
+        D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
+        for (int i = 0; i < 44; ++i) {
+            e.assign(RegExList[i]);
+            if(std::regex_match(temp, m, e)){
+                D(std::cout << temp + " match_RegEx_name " << categ_name((Category)(i+1)) << " pos " << i+1 << std::endl;)
+                tk.lex = temp;
+                tk.categ = (Category)(i+1);
+                return;
+            }
+            D(if(i == 43))
+                D(puts("********ERRO*********");)
+        }
+        temp.clear();
+        D(puts("");)
+
+
+    }else{
+        nextLine();
+        current_position++;
+        nextLex();
+    }
 }

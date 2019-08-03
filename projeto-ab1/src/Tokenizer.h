@@ -1,3 +1,10 @@
+//#define DEBUG
+
+#ifdef DEBUG
+#define D(x) x
+#else
+#define D(x)
+#endif
 
 #ifndef PROJETO_AB1_TOKENIZER_H
 #define PROJETO_AB1_TOKENIZER_H
@@ -8,52 +15,63 @@
 
 #include "Category.hpp"
 
-const std::string RegExList =   "(init)|"
-                                "(;)|"
-                                "(:)|"
-                                "(,)|"
-                                "(int)|"
-                                "(float)|"
-                                "(char)|"
-                                "(string)|"
-                                "(bool)|"
-                                "(proc)|"
-                                "(return)|"
-                                "(break)|"
-                                "([(])|"
-                                "([)])|"
-                                "([)|"
-                                "(])|"
-                                "([{])|"
-                                "([}])|"
-                                "(input)|"
-                                "(print)|"
-                                "(for)|"
-                                "(while)|"
-                                "(if)|"
-                                "(else if)|"
-                                "(else)|"
-                                "([==])|"
-                                "([>])|"
-                                "([<])|"
-                                "([>=])|"
-                                "([<=])|"
-                                "([!=])|"
-                                "([+])|"
-                                "([-])|"
-                                "([*])|"
-                                "([/])|"
-                                "([%])|"
-                                "([=])|"
-                                "([++])|"
-                                "([_a-zA-Z][_a-zA-Z0-9]*)|"
-                                "(-?([0-9]+))|"
-                                "(-?([0-9]+)\\.([0-9]+))|"
-                                "(\'.\')|"
-                                "(true|false)|"
-                                "(\"(.*)\")|"
-                                "(;)|"
-                                "([0-9])";
+static std::vector<std::string> RegExList = {
+        "init", "int", "float", "char", "string", "bool",
+        ";", ":", ",", "\\(", "\\)", "\\[", "\\]", "\\{", "\\}",
+        "proc", "return", "break",
+        "input", "print",
+        "for", "while", "if", "else if", "else",
+        "==", ">", "<", ">=", "<=", "!=",
+        "\\+", "-", "\\*", "/", "%",
+        "\\=", "\\+\\+",
+        "[_a-zA-Z][_a-zA-Z0-9]*", "-?([0-9]+)", "-?([0-9]+)\\.([0-9]+)", "\'.\'", "true|false", "\"(.*)\"",
+        };
+//const std::string RegExList =   "(init)|"
+//                                "(;)|"
+//                                "(:)|"
+//                                "(,)|"
+//                                "(int)|"
+//                                "(float)|"
+//                                "(char)|"
+//                                "(string)|"
+//                                "(bool)|"
+//                                "(proc)|"
+//                                "(return)|"
+//                                "(break)|"
+//                                "([(])|"
+//                                "([)])|"
+//                                "([)|"
+//                                "(])|"
+//                                "([{])|"
+//                                "([}])|"
+//                                "(input)|"
+//                                "(print)|"
+//                                "(for)|"
+//                                "(while)|"
+//                                "(if)|"
+//                                "(else if)|"
+//                                "(else)|"
+//                                "([==])|"
+//                                "([>])|"
+//                                "([<])|"
+//                                "([>=])|"
+//                                "([<=])|"
+//                                "([!=])|"
+//                                "([+])|"
+//                                "([-])|"
+//                                "([*])|"
+//                                "([/])|"
+//                                "([%])|"
+//                                "([=])|"
+//                                "([++])|"
+//                                "([_a-zA-Z][_a-zA-Z0-9]*)|"
+//                                "(-?([0-9]+))|"
+//                                "(-?([0-9]+)\\.([0-9]+))|"
+//                                "(\'.\')|"
+//                                "(true|false)|"
+//                                "(\"(.*)\")|"
+//                                "(;)|"
+//                                "([0-9])";
 typedef struct Token {
     Category categ;
     std::string lex;
@@ -71,7 +89,9 @@ private:
     std::regex re;
     std::sregex_iterator current;
 
-    void readLine();
+    int current_position;
+
+    void nextLine();
     void nextLex();
 
     void init_map();
@@ -81,6 +101,8 @@ public:
     explicit Tokenizer(const std::string& filename);
     Token nextToken();
     bool empty();
+
+    void findRegex();
 };
 
 
