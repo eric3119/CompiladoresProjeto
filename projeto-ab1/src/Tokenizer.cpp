@@ -56,7 +56,10 @@ int Tokenizer::nextLex(){
         case REGEX_NOT_FOUND: return REGEX_NOT_FOUND;
 
         case END_OF_STRING:
-            if(nextLine() == EOF) return END_OF_FILE;
+            if(nextLine() == EOF){
+                tk.col = current_position;
+                return END_OF_FILE;
+            }
             current_position++;
             return nextLex();
 
