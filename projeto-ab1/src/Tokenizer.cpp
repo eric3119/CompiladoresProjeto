@@ -141,6 +141,10 @@ bool is_delim(char a){
 
 }
 
+bool is_compound(char a){
+    return a == '=' || a == '+';
+}
+
 void Tokenizer::findRegex(){
 
     tk.col = current_position;
@@ -161,6 +165,22 @@ void Tokenizer::findRegex(){
 
             temp += buffer[current_position];
 
+            if(current_position+1 < str_len && is_compound(buffer[current_position+1])){// teste operadores compostos
+                current_position++;
+                temp+=buffer[current_position];
+            }else if(temp == "\"" || temp == "'"){// teste string ou char
+                char delim_temp = temp[0];
+                current_position++;
+
+                while(current_position < str_len){
+                    temp+=buffer[current_position];
+
+                    if (buffer[current_position] == delim_temp) break;
+
+                    current_position++;
+                }
+            }
+
             D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
 
             current_position++;
@@ -172,8 +192,8 @@ void Tokenizer::findRegex(){
                     tk.categ = (Category)(i+1);
                     return;
                 }
-                D(if(i == 43))
-                    D(puts("********ERRO*********");)
+                if(i == 43)
+                    puts("********ERRO*********");
             }
             temp.clear();
             D(puts("");)
@@ -184,7 +204,7 @@ void Tokenizer::findRegex(){
             current_position++;
         }
 
-        if (current_position >= str_len) return;
+        if (current_position >= str_len) return;//TODO remover
 
         D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
         for (int i = 0; i < 44; ++i) {
