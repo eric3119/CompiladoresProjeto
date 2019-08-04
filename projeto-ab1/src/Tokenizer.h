@@ -15,17 +15,6 @@
 
 #include "Category.hpp"
 
-static std::vector<std::string> RegExList = {
-        "init", "int", "float", "char", "string", "bool",
-        ";", ":", ",", "\\(", "\\)", "\\[", "\\]", "\\{", "\\}",
-        "proc", "return", "break",
-        "input", "print",
-        "for", "while", "if", "else if", "else",
-        "==", ">", "<", ">=", "<=", "!=",
-        "\\+", "-", "\\*", "/", "%",
-        "\\=", "\\+\\+",
-        "[_a-zA-Z][_a-zA-Z0-9]*", "-?([0-9]+)", "-?([0-9]+)\\.([0-9]+)", "\'.\'", "true|false", "\"(.*)\"",
-        };
 //const std::string RegExList =   "(init)|"
 //                                "(;)|"
 //                                "(:)|"
@@ -85,14 +74,24 @@ private:
 
     std::ifstream source;
     std::string buffer;
-
+    const std::vector<std::string> RegExList = {
+            "init", "int", "float", "char", "string", "bool",
+            ";", ":", ",", "\\(", "\\)", "\\[", "\\]", "\\{", "\\}",
+            "proc", "return", "break",
+            "input", "print",
+            "for", "while", "if", "else if", "else",
+            "==", ">", "<", ">=", "<=", "!=",
+            "\\+", "-", "\\*", "/", "%",
+            "\\=", "\\+\\+",
+            "[_a-zA-Z][_a-zA-Z0-9]*", "-?([0-9]+)", "-?([0-9]+)\\.([0-9]+)", "\'.\'", "true|false", "\"(.*)\"",
+    };
     std::regex re;
     std::sregex_iterator current;
 
     int current_position;
 
     void nextLine();
-    void nextLex();
+    int nextLex();
 
     void init_map();
     std::map<std::string, Category> map_lex_categ;
@@ -102,7 +101,7 @@ public:
     Token nextToken();
     bool empty();
 
-    void findRegex();
+    int findRegex();
 };
 
 

@@ -1,12 +1,16 @@
 #include "Tokenizer.h"
 #include "Category.hpp"
 
+#define REGEX_NOT_FOUND 0
+#define REGEX_FOUND 1
+#define END_OF_STRING 2
+#define ERRO_ANALIZE 3
+
 Tokenizer::Tokenizer(const std::string& filename) : source(filename) {
     tk = {};
     tk.col = 0;
     current_position = -1;
     buffer.clear();
-    //re.assign(RegExList);
     init_map();
 }
 
@@ -17,7 +21,10 @@ Token Tokenizer::nextToken(){
         tk.lex.clear();
     }else{
         if(current_position == -1)current_position++;
-        nextLex();
+        int result = nextLex();
+        if(result != REGEX_FOUND){
+            tk.categ = (Category)0;
+        }
     }
 
     return tk;
@@ -37,28 +44,21 @@ void Tokenizer::nextLine(){
     std::cout << buffer << std::endl;
 }
 
-void Tokenizer::nextLex(){
+int Tokenizer::nextLex(){
+    int result = findRegex();
 
-//    std::sregex_iterator end;
-//
-//    if(current != end){
-//        std::smatch match = *current;
-//        tk.lex = match.str();
-//        current++;
-//        tk.col = match.position(0);
-//        tk.categ = map_lex_categ[tk.lex];//name_categ(tk.lex);
-//    }else
-//    if(source.eof()){
-//        return;
-//    }else{
-//        nextLine();
+    switch (result){
+        case REGEX_FOUND: return REGEX_FOUND;
 
-        findRegex();
+        case REGEX_NOT_FOUND: return REGEX_NOT_FOUND;
 
-        return;
-//        current = std::sregex_iterator(buffer.begin(), buffer.end(), re);
-//        nextLex();
-//    }
+        case END_OF_STRING:
+            nextLine();
+            current_position++;
+            return nextLex();
+
+        default: return ERRO_ANALIZE;
+    }
 }
 
 void Tokenizer::init_map() {
@@ -106,7 +106,6 @@ void Tokenizer::init_map() {
     map_lex_categ["ctec"] = Category::CteChar;
     map_lex_categ["cteb"] = Category::CteBool;
     map_lex_categ["ctes"] = Category::CteStr;
-    //map_lex_categ["\0"] = Category::Eof;
 }
 
 bool is_delim(char a){
@@ -133,23 +132,16 @@ bool is_delim(char a){
            a == '"' ||
            a == '\''
            ;
-//    map_lex_categ["=="] = Category::OpEq;
-//    map_lex_categ[">="] = Category::OpMaiorEq;
-//    map_lex_categ["<="] = Category::OpMenorEq;
-//    map_lex_categ["!="] = Category::OpDifer;
-//    map_lex_categ["++"] = Category::OpConcat;
-
 }
 
 bool is_compound(char a){
     return a == '=' || a == '+';
 }
 
-void Tokenizer::findRegex(){
+int Tokenizer::findRegex(){
 
-    tk.col = current_position;
     std::smatch m;
-    std::regex e;// ("int\\s+");
+    std::regex e;
 
     std::string temp;
 
@@ -158,8 +150,9 @@ void Tokenizer::findRegex(){
     if (current_position < str_len) {
 
         while(current_position < str_len && buffer[current_position] == ' ')current_position++;
+        tk.col = current_position;
 
-        if (current_position >= str_len) return;
+        if (current_position >= str_len) return END_OF_STRING;
 
         if(is_delim(buffer[current_position])){
 
@@ -190,10 +183,12 @@ void Tokenizer::findRegex(){
                     D(std::cout << temp + " match_RegEx_name " << categ_name((Category)(i+1)) << " pos " << i+1 << std::endl;)
                     tk.lex = temp;
                     tk.categ = (Category)(i+1);
-                    return;
+                    return REGEX_FOUND;
                 }
-                if(i == 43)
-                    puts("********ERRO*********");
+                if(i == 43){
+                    tk.lex = temp;
+                    return REGEX_NOT_FOUND;
+                }
             }
             temp.clear();
             D(puts("");)
@@ -204,8 +199,6 @@ void Tokenizer::findRegex(){
             current_position++;
         }
 
-        if (current_position >= str_len) return;//TODO remover
-
         D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
         for (int i = 0; i < 44; ++i) {
             e.assign(RegExList[i]);
@@ -213,18 +206,13 @@ void Tokenizer::findRegex(){
                 D(std::cout << temp + " match_RegEx_name " << categ_name((Category)(i+1)) << " pos " << i+1 << std::endl;)
                 tk.lex = temp;
                 tk.categ = (Category)(i+1);
-                return;
+                return REGEX_FOUND;
             }
-            D(if(i == 43))
-                D(puts("********ERRO*********");)
         }
-        temp.clear();
         D(puts("");)
-
-
+        tk.lex = temp;
+        return REGEX_NOT_FOUND;
     }else{
-        nextLine();
-        current_position++;
-        nextLex();
+        return END_OF_STRING;
     }
 }
