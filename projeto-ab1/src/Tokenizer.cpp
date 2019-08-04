@@ -4,7 +4,8 @@
 #define REGEX_NOT_FOUND 0
 #define REGEX_FOUND 1
 #define END_OF_STRING 2
-#define ERRO_ANALIZE 3
+#define END_OF_FILE 3
+#define ERRO_ANALIZE 4
 
 Tokenizer::Tokenizer(const std::string& filename) : source(filename) {
     tk = {};
@@ -16,13 +17,14 @@ Tokenizer::Tokenizer(const std::string& filename) : source(filename) {
 
 Token Tokenizer::nextToken(){
 
-    if(source.eof()){
-        tk.categ = Category ::Eof;
-        tk.lex.clear();
-    }else{
-        if(current_position == -1)current_position++;
-        int result = nextLex();
-        if(result != REGEX_FOUND){
+    if(current_position == -1)current_position++;
+    int result = nextLex();
+
+    if(result != REGEX_FOUND){
+        if(result == END_OF_FILE){
+            tk.categ = Category ::Eof;
+            tk.lex.clear();
+        }else{
             tk.categ = (Category)0;
         }
     }
@@ -34,7 +36,8 @@ bool Tokenizer::empty(){
     return tk.categ == Category ::Eof;
 }
 
-void Tokenizer::nextLine(){
+int Tokenizer::nextLine(){
+    if(source.eof())return EOF;
     std::getline(source, buffer);
     tk.line++;
     tk.col = 0;
@@ -42,6 +45,7 @@ void Tokenizer::nextLine(){
 
     printf("%4d  ", tk.line);
     std::cout << buffer << std::endl;
+    return 1;
 }
 
 int Tokenizer::nextLex(){
@@ -53,7 +57,7 @@ int Tokenizer::nextLex(){
         case REGEX_NOT_FOUND: return REGEX_NOT_FOUND;
 
         case END_OF_STRING:
-            nextLine();
+            if(nextLine() == EOF) return END_OF_FILE;
             current_position++;
             return nextLex();
 

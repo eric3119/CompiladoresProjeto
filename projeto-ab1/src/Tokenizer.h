@@ -90,7 +90,7 @@ private:
 
     int current_position;
 
-    void nextLine();
+    int nextLine();
     int nextLex();
 
     void init_map();
