@@ -15,52 +15,6 @@
 
 #include "Category.hpp"
 
-//const std::string RegExList =   "(init)|"
-//                                "(;)|"
-//                                "(:)|"
-//                                "(,)|"
-//                                "(int)|"
-//                                "(float)|"
-//                                "(char)|"
-//                                "(string)|"
-//                                "(bool)|"
-//                                "(proc)|"
-//                                "(return)|"
-//                                "(break)|"
-//                                "([(])|"
-//                                "([)])|"
-//                                "([)|"
-//                                "(])|"
-//                                "([{])|"
-//                                "([}])|"
-//                                "(input)|"
-//                                "(print)|"
-//                                "(for)|"
-//                                "(while)|"
-//                                "(if)|"
-//                                "(else if)|"
-//                                "(else)|"
-//                                "([==])|"
-//                                "([>])|"
-//                                "([<])|"
-//                                "([>=])|"
-//                                "([<=])|"
-//                                "([!=])|"
-//                                "([+])|"
-//                                "([-])|"
-//                                "([*])|"
-//                                "([/])|"
-//                                "([%])|"
-//                                "([=])|"
-//                                "([++])|"
-//                                "([_a-zA-Z][_a-zA-Z0-9]*)|"
-//                                "(-?([0-9]+))|"
-//                                "(-?([0-9]+)\\.([0-9]+))|"
-//                                "(\'.\')|"
-//                                "(true|false)|"
-//                                "(\"(.*)\")|"
-//                                "(;)|"
-//                                "([0-9])";
 typedef struct Token {
     Category categ;
     std::string lex;
@@ -86,22 +40,17 @@ private:
             "[_a-zA-Z][_a-zA-Z0-9]*", "-?([0-9]+)", "-?([0-9]+)\\.([0-9]+)", "\'.\'", "true|false", "\"(.*)\"",
     };
     std::regex re;
-    std::sregex_iterator current;
 
     int current_position;
 
     int nextLine();
     int nextLex();
-
-    void init_map();
-    std::map<std::string, Category> map_lex_categ;
+    int findRegex();
 
 public:
     explicit Tokenizer(const std::string& filename);
     Token nextToken();
     bool empty();
-
-    int findRegex();
 };
 
 
