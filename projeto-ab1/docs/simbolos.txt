@@ -1,8 +1,9 @@
-init int float char bool
-, ; ( ) { } [ ]
-proc 
-read write 
+init int float char string bool
+; : , ( ) [ ] { }
+proc return break
+input print
 for while if else if else 
-= > < >= <= != 
+== > < >= <= !=
 + - * / %
-([a-zA-Z])([a-zA-Z0-9]*)
+= ++
+Id, CteInt, CteFloat, CteChar, CteBool, CteStr, Eof
