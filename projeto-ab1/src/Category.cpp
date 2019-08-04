@@ -47,6 +47,6 @@ char* categ_name(Category anEnum){
         case Category::CteBool:return (char*)"CteBool";
         case Category::CteStr:return (char*)"CteStr";
         case Category::Eof:return (char*)"Eof";
-        default:return (char*)"********ERRO********";
+        default:return (char*)"ERRO NA ANALIZE";
     }
 }
