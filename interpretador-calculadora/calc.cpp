@@ -1,9 +1,10 @@
 #include <iostream>
-#include "../projeto-ab1/src/Tokenizer.h"
+#include "src/Tokenizer.cpp"
 
 using namespace std;
 
 Token tk;
+Tokenizer *tokenizer;
 void fRes();
 double fEa();
 double fEar(double);
@@ -14,8 +15,9 @@ double fFar();
 
 void fRes(){
     double Eaval;
+    tk = tokenizer->nextToken();
     Eaval = fEa();
-    if(tk.categ == Category::OpAtr) cout << Eaval;
+    if(tk.categ == Category::OpResult) cout << Eaval;
     else cout << "'=' esperado" << endl;
 }
 
@@ -33,12 +35,13 @@ double fEa(){
 double fEar(double Earvh){
     double Taval, Ear1vh, Earvs, Ear1vs;
     if(tk.categ == Category::OpMais){
-        //Tokenizer::nextToken();
+        tk = tokenizer->nextToken();
         Taval = fTa();
         Ear1vh = Earvh + Taval;
         Ear1vs = fEar(Ear1vh);
         Earvs = Ear1vs;
     }else if(tk.categ == Category::OpMenos){
+        tk = tokenizer->nextToken();
         Taval = fTa();
         Ear1vh = Earvh - Taval;
         Ear1vs = fEar(Ear1vh);
@@ -53,17 +56,19 @@ double fEar(double Earvh){
 double fTa(){
     double Faval;
     if(tk.categ == Category::AbPar){
-        //Tokenizer::nextToken();
+        tk = tokenizer->nextToken();
         Faval = fEa();
         if (tk.categ != Category::FePar){
             cout << "')' esperado\n";
             exit(0);
         }else{
-            //tk = Tokenizer::nextToken();
+            tk = tokenizer->nextToken();
             return Faval;
         }
     }else if(tk.categ == Category::CteFloat){
-        return stof(tk.lex);
+        Faval = stof(tk.lex);
+        tk = tokenizer->nextToken();
+        return Faval;
     }else{
         cout << "'(' ou 'CteF' esperados\n";
         exit(0);
@@ -87,6 +92,10 @@ int main(int argc, const char* argv[]) {
         cout << "use: calc expr=\n";
         exit(0);
     }
+
+    tokenizer = new Tokenizer(argv[1]);
+
+    fRes();
 
     return 0;
 }
