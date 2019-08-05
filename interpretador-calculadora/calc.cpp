@@ -11,7 +11,6 @@ double fEar(double);
 double fTa();
 double fTar(double);
 double fFa();
-double fFar();
 
 void fRes(){
     double Eaval;
