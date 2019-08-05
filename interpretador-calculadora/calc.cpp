@@ -22,34 +22,10 @@ void fRes(){
 }
 
 double fEa(){
-//    double Taval,Earvh, Earvs,Eaval;
-//    Taval = fTa();
-//    Earvh = Taval;
-//    Earvs = fEar(Earvh);
-//    Eaval = Earvs;
-//    return Eaval;
-
     return fEar(fTa());
 }
 
 double fEar(double Earvh){
-//    double Taval, Ear1vh, Earvs, Ear1vs;
-//    if(tk.categ == Category::OpMais){
-//        tk = tokenizer->nextToken();
-//        Taval = fTa();
-//        Ear1vh = Earvh + Taval;
-//        Ear1vs = fEar(Ear1vh);
-//        Earvs = Ear1vs;
-//    }else if(tk.categ == Category::OpMenos){
-//        tk = tokenizer->nextToken();
-//        Taval = fTa();
-//        Ear1vh = Earvh - Taval;
-//        Ear1vs = fEar(Ear1vh);
-//        Earvs = Ear1vs;
-//    } else Earvs = Earvh;
-//
-//    return Earvs;
-
     if(tk.categ == Category::OpMais){
         tk = tokenizer->nextToken();
         return fEar(Earvh + fTa());
@@ -58,46 +34,26 @@ double fEar(double Earvh){
 }
 
 double fTa(){
-    double Faval, Tarvh, Tarvs, Taval;
-    Faval = fFa();
-    Tarvh = Faval;
-    Tarvs = fTar(Tarvh);
-    Taval = Tarvs;
-    return Taval;
+    return fTar(fFa());
 }
 
 double fTar(double Tarvh){
 
-    double Faval, Tar1vh, Tar1vs, Tarvs;
     if (tk.categ == Category::OpMult){
+
         tk = tokenizer->nextToken();
-
-        Faval = fFa();
-        Tar1vh = Tarvh * Faval;
-        Tar1vs = fTar(Tar1vh);
-        Tarvs = Tar1vs;
-
-        return Tarvs;
+        return fTar(Tarvh * fFa());
 
     }else if(tk.categ == Category::OpDiv){
-        tk = tokenizer->nextToken();
 
-        Faval = fFa();
-        Tar1vh = Tarvh / Faval;
-        Tar1vs = fTar(Tar1vh);
-        Tarvs = Tar1vs;
+        tk = tokenizer->nextToken();
+        return fTar(Tarvh / fFa());
 
     }else if(tk.categ == Category::OpPot){
         tk = tokenizer->nextToken();
+        return fTar(pow(Tarvh, fFa()));
 
-        Faval = fFa();
-        Tar1vh = pow(Tarvh, Faval);
-        Tar1vs = fTar(Tar1vh);
-        Tarvs = Tar1vs;
-
-    }else Tarvs = Tarvh;
-
-    return Tarvs;
+    }else return Tarvh;
 }
 
 double fFa(){
