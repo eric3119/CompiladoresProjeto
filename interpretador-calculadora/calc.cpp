@@ -8,7 +8,7 @@ void fRes();
 double fEa();
 double fEar(double);
 double fTa();
-double fTar();
+double fTar(double);
 double fFa();
 double fFar();
 
@@ -38,12 +38,48 @@ double fEar(double Earvh){
         Ear1vh = Earvh + Taval;
         Ear1vs = fEar(Ear1vh);
         Earvs = Ear1vs;
-    }else Earvs = Earvh;
+    }else if(tk.categ == Category::OpMenos){
+        Taval = fTa();
+        Ear1vh = Earvh - Taval;
+        Ear1vs = fEar(Ear1vh);
+        Earvs = Ear1vs;
+    } else Earvs = Earvh;
 
     return Earvs;
 
     // if(tk.categ == Category::OpMais){tk.next();return fEar(Earvh + fTa());else return Earvh;
 }
+
+double fTa(){
+    double Faval;
+    if(tk.categ == Category::AbPar){
+        //Tokenizer::nextToken();
+        Faval = fEa();
+        if (tk.categ != Category::FePar){
+            cout << "')' esperado\n";
+            exit(0);
+        }else{
+            //tk = Tokenizer::nextToken();
+            return Faval;
+        }
+    }else if(tk.categ == Category::CteFloat){
+        return stof(tk.lex);
+    }else{
+        cout << "'(' ou 'CteF' esperados\n";
+        exit(0);
+    }
+}
+
+//double fTar(double Tarvh){
+//    if (tk.categ == Category::OpMult){
+//
+//    }else if(tk.categ == Category::OpDiv){
+//
+//    }else if(tk.categ == Category::OpMod){//TODO '**'
+//
+//    }
+//    return Tarvh;
+//}
 
 int main(int argc, const char* argv[]) {
 
