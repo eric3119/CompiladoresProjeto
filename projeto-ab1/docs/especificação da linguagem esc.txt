@@ -1,34 +1,175 @@
-﻿Sumário
-Estrutura geral de um programa        2
-Nomes        2
-Tipos e estruturas de dados        2
-Forma de declaração        2
-Operadores        3
-Constantes literais        3
-Declarações        3
-Cadeias de caracteres        3
-Arranjos        3
-Equivalência de tipos e coerção        4
-Atribuição e expressões        4
-Precedência        4
-Associatividade        4
-Sintaxe e exemplo de estruturas de controle        4
-Comando de seleção        4
-Comandos de iteração        5
-Controle lógico        5
-Controle por contador        5
-Desvio incondicional        5
-Instruções de entrada e saída        5
-Subprogramas        6
-Métodos de passagem de parâmetros        6
-Exemplos        7
-Alô mundo        7
-Série de Fibonacci        7
-Shell sort        8
-Especificação dos tokens        9
-Enumeração com as categorias dos tokens        9
-Categorias simbólicas e expressões regulares        9
-Expressões regulares auxiliares        11
+﻿UNIVERSIDADE FEDERAL DE ALAGOAS - UFAL
+INSTITUTO DE COMPUTAÇÃO - IC
+
+
+
+
+
+
+
+
+
+
+ERIC DOS SANTOS COELHO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESPECIFICAÇÃO DA LINGUAGEM ESC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MACEIÓ
+2019
+ERIC DOS SANTOS COELHO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ESPECIFICAÇÃO DA LINGUAGEM ESC
+
+
+
+
+Trabalho apresentado à disciplina de Compiladores, ministrada pelo professor Alcino Dall Igna Junior.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MACEIÓ
+2019
+Sumário
+Estrutura geral de um programa        4
+Nomes        4
+Tipos e estruturas de dados        4
+Forma de declaração        4
+Operadores        5
+Constantes literais        5
+Declarações        5
+Cadeias de caracteres        5
+Arranjos        5
+Equivalência de tipos e coerção        6
+Atribuição e expressões        6
+Precedência        6
+Associatividade        6
+Sintaxe e exemplo de estruturas de controle        6
+Comando de seleção        6
+Comandos de iteração        7
+Controle lógico        7
+Controle por contador        7
+Desvio incondicional        7
+Instruções de entrada e saída        7
+Subprogramas        8
+Métodos de passagem de parâmetros        8
+Exemplos        9
+Alô mundo        9
+Série de Fibonacci        9
+Shell sort        10
+Especificação dos tokens        11
+Enumeração com as categorias dos tokens        11
+Categorias simbólicas e expressões regulares        11
+Expressões regulares auxiliares        13
 
 
 ________________
@@ -63,7 +204,7 @@ Tipo
 	Relacionais
 	Booleano
 	bool nome;
-	Relacionais e lógicas
+	Relacionais de igualdade e diferença e lógicas
 	Cadeias de caracteres
 	string nome;
 	Relacionais e concatenação
@@ -103,10 +244,8 @@ Os elementos dos arranjos são referenciados por índices listados entre colchet
 Equivalência de tipos e coerção
 A equivalência de tipos é por nome e é permitido conversões de tipo explícitas (cast). A coerção admitida é de int para float.
 Atribuição e expressões
-O operador de atribuição é o símbolo ‘=’ onde a expressão do lado direito é atribuída à variável alvo do lado esquerdo.
-        Os operadores and e or  são avaliados em curto-circuito e os tipos das operações são definidos de acordo com a variável alvo. 
-
-
+O operador de atribuição é o símbolo ‘=’ onde a expressão do lado direito é atribuída à variável alvo do lado esquerdo. Os tipos das operações são definidos de acordo com a variável alvo.
+        Os operadores and e or  são avaliados em curto-circuito.
 
 
 Precedência
@@ -128,6 +267,10 @@ Todos os blocos devem possuir chaves ({})
 Comando de seleção
                         
         O comando de seleção é o if que seleciona um caminho baseado em cada condição. Para mais de uma condição é usado o else if e o bloco opcional else que é selecionado caso nenhuma das condições sejam atendidas.
+
+
+
+
         if(condição) {
         ...
 } else if(condição) {
@@ -144,10 +287,10 @@ Enquanto a condição não for verdadeira o bloco de código é executado.
                 ...
 }
 Controle por contador
-A inicialização de variáveis é feita em var_int e a condição é testada antes de cada iteração, o incremento é uma constante inteira que será utilizada como incremento da var_int feito no final da iteração.
+A variável do laço é especificada em var_int e é incrementada ou decrementada pela constante inteira val_increm. O intervalo discreto de valores é definido em in (valor_inicial, valor_final).
 
 
-        for (var_int; condição; incremento){
+        for var_int in (valor_inicial, valor_final) step val_increm{
                 ...
 }
 Desvio incondicional
@@ -164,7 +307,7 @@ Desvio incondicional
 
         Instruções de entrada e saída                
                 A instrução de leitura da entrada padrão é realizada especificando as variáveis em que serão atribuídos os valores lidos.
-        read  var1, var2,...;
+        input var1, var2,...;
 
 
         Na instrução de saída padrão deve ser especificado o texto formatado e as variáveis ou constantes que vão ser substituídas
@@ -184,6 +327,7 @@ proc nome(parâmetros){
 
 Métodos de passagem de parâmetros
 As funções implementam o modo de entrada e saída, os parâmetros são passados por valor-resultado. Funções não podem ser passadas como parâmetro.
+Os procedimentos são implementados no modo de entrada.
 
 
 ________________
@@ -192,7 +336,7 @@ Exemplos
 
 
         int init(){
-    print “Alô mundo”;
+    print "Alô mundo";
     return 0;
 }
 
@@ -200,78 +344,86 @@ Exemplos
         Série de Fibonacci
 
 
-        int init(){
-    int a, b, i, aux, limite;
-    a = 0;
-    b = 1;
+        proc fibonacci(int valor_limite){
+int a, b, aux;
 
 
-    print "Digite um número limite: ";
-    input limite;
+if(valor_limite >= 0){
+        
+        print "0";
 
 
-    i = 0;
+a = 0;
+b = 1;
+aux = a + b;
 
 
-    while(i < limite){
-        aux = a + b;
-        a = b;
-        b = aux;
-        print "%d, ", auxiliar;
-        i = i + 1;
-    }
+while(aux <= limite){
+        print ", %d", aux;
+aux = a + b;
+a = b;
+b = aux;
+}
+}
+}
 
 
-    return 0;
-}        
-________________
+int init(){
+int limite;
+
+
+print "Digite um valor limite: ";
+input limite;
+fibonacci(limite);
+return 0;
+}
 Shell sort
         proc shellSort(int vet[], int size){
 
 
-    int i , j , value;
-    int gap = 1;
+int i , j , value;
+int gap = 1;
 
 
-    while(gap < size) {
-        gap = 3*gap+1;
-    }
+while(gap < size) {
+gap = 3*gap+1;
+}
 
 
-    while (gap > 0) {
-        for(i = gap; i < size; 1) {
-            value = vet[i];
-            j = i;
-            while (j > gap-1 and value <= vet[j - gap]) {
-                vet[j] = vet [j - gap];
-                j = j - gap;
-            }
-            vet[j] = value;
-        }
-        gap = gap/3;
-    }
+while (gap > 0) {
+for i in (gap, size) step 1 {
+value = vet[i];
+j = i;
+while (j > gap-1 and value <= vet[j - gap]) {
+vet[j] = vet [j - gap];
+j = j - gap;
+}
+vet[j] = value;
+}
+gap = gap/3;
+}
 }
 
 
 int init(){
 
 
-    int i, tam;
+int i, tam;
 
 
-    input tam;
-    int vet[tam];
+input tam;
+int vet[tam];
 
 
-    for(i = 0; i < tam; 1){
-        input vet[i];
-    }
+for(i = 0; i < tam; 1){
+input vet[i];
+print "%d ", vet[i];
+}    
+shellSort(vet, tam);
     
-    shellSort(vet, tam);
-    
-    for(i = 0; i < tam; 1){
-        print "%d ", vet[i];
-    }
+for(i = 0; i < tam; 1){
+print "%d ", vet[i];
+}
 }
 Especificação dos tokens
 
@@ -285,7 +437,7 @@ enum class Category {
     PtVg, Pt2, Vg, AbPar, FePar, AbCol, FeCol, AbChav, FeChav,
     Procedure, Return, Break,
     Input, Print,
-    For, While, If, ElseIf, Else,
+    For, In, Step, While, If, ElseIf, Else,
     OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,
     OpAtr, OpConcat,
@@ -339,6 +491,10 @@ Init
 	print
 	For
 	for
+	In
+	in
+	Step
+	step
 	While
 	while
 	If

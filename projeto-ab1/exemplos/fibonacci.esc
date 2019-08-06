@@ -1,20 +1,30 @@
-int init(){
-    int a, b, i, aux, limite;
-    a = 0;
-    b = 1;
+proc fibonacci(int valor_limite){
+    int a, b, aux;
 
-    print "Digite um número limite: ";
+    if(valor_limite >= 0){
+
+        print "0";
+
+        a = 0;
+        b = 1;
+        aux = a + b;
+
+        while(aux <= limite){
+            print ", %d", aux;
+            aux = a + b;
+            a = b;
+            b = aux;
+        }
+    }
+}
+
+int init(){
+    int limite;
+
+    print "Digite um valor limite: ";
     input limite;
 
-    i = 0;
-
-    while(i < limite){
-        aux = a + b;
-        a = b;
-        b = aux;
-        print "%d, ", auxiliar;
-        i = i + 1;
-    }
+    fibonacci(limite);
 
     return 0;
 }

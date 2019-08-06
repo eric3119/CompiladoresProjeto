@@ -1,13 +1,11 @@
-//#define DEBUG
+#ifndef PROJETO_AB1_TOKENIZER_H
+#define PROJETO_AB1_TOKENIZER_H
 
 #ifdef DEBUG
 #define D(x) x
 #else
 #define D(x)
 #endif
-
-#ifndef PROJETO_AB1_TOKENIZER_H
-#define PROJETO_AB1_TOKENIZER_H
 
 #include <iostream>
 #include <fstream>
@@ -33,11 +31,11 @@ private:
             ";", ":", ",", "\\(", "\\)", "\\[", "\\]", "\\{", "\\}",
             "proc", "return", "break",
             "input", "print",
-            "for", "while", "if", "else if", "else",
+            "for", "in", "step", "while", "if", "else if", "else",
             "==", ">", "<", ">=", "<=", "!=",
             "\\+", "-", "\\*", "/", "%",
             "\\=", "\\+\\+",
-            "[_a-zA-Z][_a-zA-Z0-9]*", "-?([0-9]+)", "-?([0-9]+)\\.([0-9]+)", "\'.\'", "true|false", "\"(.*)\"",
+            "[_a-zA-Z][_a-zA-Z0-9]*", "-?([0-9]+)", "-?([0-9]+)\\.([0-9]+)", "\'.\'", "true|false", "\"(.*)\""
     };
     std::regex re;
 

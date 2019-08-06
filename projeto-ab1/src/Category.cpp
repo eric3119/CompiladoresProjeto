@@ -23,6 +23,8 @@ char* categ_name(Category anEnum){
         case Category::Input:return (char*)"Input";
         case Category::Print:return (char*)"Print";
         case Category::For:return (char*)"For";
+        case Category::In:return (char*)"In";
+        case Category::Step:return (char*)"Step";
         case Category::While:return (char*)"While";
         case Category::If:return (char*)"If";
         case Category::ElseIf:return (char*)"ElseIf";

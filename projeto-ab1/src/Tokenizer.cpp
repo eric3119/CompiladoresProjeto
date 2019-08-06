@@ -134,7 +134,7 @@ int Tokenizer::findRegex(){
             D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
 
             current_position++;
-            for (int i = 0; i < 44; ++i) {
+            for (int i = 0; i < RegExList.size(); ++i) {
                 re.assign(RegExList[i]);
                 if(std::regex_match(temp, m, re)){
                     D(std::cout << temp + " match_RegEx_name " << categ_name((Category)(i+1)) << " pos " << i+1 << std::endl;)
@@ -142,7 +142,7 @@ int Tokenizer::findRegex(){
                     tk.categ = (Category)(i+1);
                     return REGEX_FOUND;
                 }
-                if(i == 43){
+                if(i == RegExList.size()-1){
                     tk.lex = temp;
                     return REGEX_NOT_FOUND;
                 }
@@ -157,7 +157,7 @@ int Tokenizer::findRegex(){
         }
 
         D(std::cout << "found delim" + buffer.substr(current_position, 1) +"\n" << "temp buffer is: "+temp +"\n";)
-        for (int i = 0; i < 44; ++i) {
+        for (int i = 0; i < RegExList.size(); ++i) {
             re.assign(RegExList[i]);
             if(std::regex_match(temp, m, re)){
                 D(std::cout << temp + " match_RegEx_name " << categ_name((Category)(i+1)) << " pos " << i+1 << std::endl;)

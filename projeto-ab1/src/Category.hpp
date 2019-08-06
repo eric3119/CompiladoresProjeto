@@ -6,7 +6,7 @@ enum class Category {
     PtVg, Pt2, Vg, AbPar, FePar, AbCol, FeCol, AbChav, FeChav,
     Procedure, Return, Break,
     Input, Print,
-    For, While, If, ElseIf, Else,
+    For, In, Step, While, If, ElseIf, Else,
     OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,
     OpAtr, OpConcat,
