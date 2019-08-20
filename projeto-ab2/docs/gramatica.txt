@@ -1,0 +1,132 @@
+﻿Início
+Início = Declarações
+          | ε
+
+
+Declarações
+Declarações = Variáveis
+ | Funções
+DeclVariáveis = Tipo ListaId ‘;’ Declarações
+DeclFunções = TipoFunção 'id' Parâmetros ‘;’ Declarações
+
+
+Bloco
+Bloco = DeclVariáveis
+ | Sentenças
+
+
+Comandos e sentenças
+Sentenças         = Instrução ‘;’ Sentenças 
+| Comando Sentenças 
+| ε
+
+
+Instrução = Entrada | Saída
+Comando = If | While | For | Desvio
+
+
+Entrada = ‘input’ ListaArgumentos
+Saída = ‘print’ CteS ListaArgumentos
+
+
+If           = ‘if’ ‘(‘ Condição ‘)’ ‘{‘ Bloco ‘}’ ElseIf Else
+ElseIf = ‘else if’ ‘(‘ Condição ‘)’ ‘{‘ Bloco ‘}’ ElseIf
+          | ε
+Else   = ‘else’ ‘{‘ Bloco ‘}’ 
+          | ε
+
+
+While = ‘while’ ‘(‘ Condição ‘)’ ‘{‘ Bloco ‘}’ 
+
+
+For = ‘for’ ‘id’ ‘in’ ‘(‘ CteI ’,’ CteI ‘)’ ‘step’ CteI ‘{‘ Bloco ‘}’
+
+
+Desvio = ‘break’
+
+
+Atribuição = ‘id’ OpAtribuição Expressão
+
+
+Constante = ‘const’ Tipo Atribuição
+
+
+Definições
+Definições = DefVar ‘;’ Definições
+                | DefFunc Definições
+                | ε
+DefVar  = Atribuição
+DefFunc = TipoFunção ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
+
+
+Parâmetros
+Parâmetros = Tipo ‘id’ LParâm
+LParâm        = ‘,’ Tipo ‘id’ LParâm
+| ε
+
+
+Argumentos
+Argumentos         = ‘(‘ ListaArgumentos ‘)’
+ListaArgumentos = Expressão , ListaArgumentos 
+| Expressão
+| ε
+
+
+Identificadores
+ListaId        = ListaId ‘,’ Id
+                | Id
+ListaId         = ‘id’ LId
+LId                = ‘,’ ‘id’ LId 
+| ε
+
+
+Tipos
+Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
+TipoFunção        = ‘proc’ | Tipo
+
+
+Expressões
+ExprAritm        = ExprArit Adit TermoAritm
+ExprRelac        = ExprRelac Relac TermoRelac
+ExprConc        = ExprConc OpConcat CteStr
+
+
+TermoAritm        = TermoAritm Mult FatorAritm
+TermoRelac        = TermoRelac Igual FatorRelac
+
+
+FatorAritm        = ‘id’
+| CteInt
+| CteFloat
+| ‘(‘ ExprAritm ‘)’ 
+FatorRelac = CteBool
+                | ‘(‘ ExprRelac ‘)’
+
+
+
+
+Operadores
+Unario        = OpMenos | OpNot
+Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq
+Igual                = OpEq | OpDifer
+Logic                = OpAnd | OpOr
+Adit                 = OpMais | OpMenos
+Mult                 = OpMult | OpDiv | OpMod
+
+
+OpEq                 = ‘==’
+OpMaior         = ‘>’
+OpMenor         = ‘<’
+OpMaiorEq         = ‘>=’
+OpMenorEq         = ‘<=’
+OpDifer         = ‘!=’
+OpAnd                = ‘and’
+OpOr                = ‘or’
+OpNot                = ‘!’
+OpMais         = ‘+’
+OpMenos         = ‘-’
+OpMult         = ‘*’
+OpDiv         = ‘/’
+OpMod         = ‘%’
+OpAtr         = ‘=’ 
+OpConcat        = ‘++’
