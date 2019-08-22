@@ -7,7 +7,7 @@ enum class Category {
     Procedure, Return, Break,
     Input, Print,
     For, In, Step, While, If, ElseIf, Else,
-    OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer,
+    OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer, OpAnd, OpOr, OpNot,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,
     OpAtr, OpConcat,
     Id, CteInt, CteFloat, CteChar, CteBool, CteStr, Eof

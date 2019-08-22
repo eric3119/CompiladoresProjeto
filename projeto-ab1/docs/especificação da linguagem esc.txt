@@ -250,7 +250,7 @@ O operador de atribuição é o símbolo ‘=’ onde a expressão do lado direi
 
 Precedência
 Precedência da mais alta para a mais baixa
-– unário
+!, – unário
         *, /, %
         + e – binários
         <, >, <=, >=
@@ -261,7 +261,7 @@ Associatividade
         Esquerda:         *, /, %, + e – binários
                         <, >, <=, >=, ==, !=
                         and, or
-Direita: – unário, = atribuição        
+Direita:         !, – unário, = atribuição        
 Sintaxe e exemplo de estruturas de controle
 Todos os blocos devem possuir chaves ({})
 Comando de seleção
@@ -438,7 +438,7 @@ enum class Category {
     Procedure, Return, Break,
     Input, Print,
     For, In, Step, While, If, ElseIf, Else,
-    OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer,
+    OpEq,OpMaior,OpMenor,OpMaiorEq,OpMenorEq,OpDifer,OpAnd,OpOr,OpNot,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,
     OpAtr, OpConcat,
     Id, CteInt, CteFloat, CteChar, CteBool, CteStr, Eof
@@ -515,6 +515,12 @@ Init
 	<=
 	OpDifer
 	!=
+	OpAnd
+	and
+	OpOr
+	or
+	OpNot
+	!
 	OpMais
 	+
 	OpMenos

@@ -35,6 +35,9 @@ char* categ_name(Category anEnum){
         case Category::OpMaiorEq:return (char*)"OpMaiorEq";
         case Category::OpMenorEq:return (char*)"OpMenorEq";
         case Category::OpDifer:return (char*)"OpDifer";
+        case Category::OpAnd:return (char*)"OpAnd";
+        case Category::OpOr:return (char*)"OpOr";
+        case Category::OpNot:return (char*)"OpNot";
         case Category::OpMais:return (char*)"OpMais";
         case Category::OpMenos:return (char*)"OpMenos";
         case Category::OpMult:return (char*)"OpMult";
