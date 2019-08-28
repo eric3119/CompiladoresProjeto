@@ -16,6 +16,13 @@ int main(int argc, const char **argv){
 
     string s(argv[1]);
 
+    ifstream fileTest(s);
+    if (!fileTest.is_open()){
+        cout << "File not found" << endl;
+        exit(0);
+    }
+    fileTest.close();
+
     tokenizer = new Tokenizer(s);
     Token teste;
 
