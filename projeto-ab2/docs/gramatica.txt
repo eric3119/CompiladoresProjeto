@@ -1,115 +1,129 @@
 ﻿Início
-Início = Declarações
-          | ε
+Início = Função Início
+          | Variável Início
+          | epsilon
 
 
 Declarações
-Declarações = Variáveis
- | Funções
-DeclVariáveis = Tipo ListaId ‘;’ Declarações
-DeclFunções = TipoFunção 'id' Parâmetros ‘;’ Declarações
+Função = Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘{‘ Bloco ‘}’ ‘;’ Início
+  | Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘;’ Início
+
+
+Variável
+Variável        = Tipo ListaId ‘;’
+| Tipo ListaAtr ‘;’
+| ‘const’ Tipo ListaAtr ‘;’
 
 
 Bloco
-Bloco = DeclVariáveis
- | Sentenças
+Bloco        = ChamadaFunc Bloco
+        | ‘id’ Atribuição ‘;’ Bloco
+| Função Bloco
+| Variável Bloco
+
+
+ChamadaFunc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
 
 
 Comandos e sentenças
-Sentenças         = Instrução ‘;’ Sentenças 
-| Comando Sentenças 
+Sentenças         = Comando Sentenças 
 | ε
 
 
-Instrução = Entrada | Saída
-Comando = If | While | For | Desvio
+Comando = If | While | For | Desvio | Entrada | Saída | Atribuição
 
 
-Entrada = ‘input’ ListaArgumentos
-Saída = ‘print’ CteS ListaArgumentos
+Entrada = ‘input’ ListaArgs ‘;’
+Saída = ‘print’ CteS ListaArgs ‘;’
 
 
-If           = ‘if’ ‘(‘ Condição ‘)’ ‘{‘ Bloco ‘}’ ElseIf Else
-ElseIf = ‘else if’ ‘(‘ Condição ‘)’ ‘{‘ Bloco ‘}’ ElseIf
+If           = ‘if’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ ElseIf Else
+ElseIf = ‘else if’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ ElseIf
           | ε
 Else   = ‘else’ ‘{‘ Bloco ‘}’ 
           | ε
 
 
-While = ‘while’ ‘(‘ Condição ‘)’ ‘{‘ Bloco ‘}’ 
+While = ‘while’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ 
 
 
-For = ‘for’ ‘id’ ‘in’ ‘(‘ CteI ’,’ CteI ‘)’ ‘step’ CteI ‘{‘ Bloco ‘}’
+For   = ‘for’ ‘id’ ‘in’ ‘(‘ ExprAritm ’,’ ExprAritm ‘)’ ‘step’ CteI ‘{‘ Bloco ‘}’
 
 
-Desvio = ‘break’
+Desvio = ‘break’ ‘;’
 
 
-Atribuição = ‘id’ OpAtribuição Expressão
-
-
-Constante = ‘const’ Tipo Atribuição
-
-
-Definições
-Definições = DefVar ‘;’ Definições
-                | DefFunc Definições
-                | ε
-DefVar  = Atribuição
-DefFunc = TipoFunção ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
+Atribuição = OpAtribuição Expressão
+ListaAtr        = ListaAtr ‘,’ ‘id’ Atribuição
+                | ‘id’ Atribuição
 
 
 Parâmetros
-Parâmetros = Tipo ‘id’ LParâm
-LParâm        = ‘,’ Tipo ‘id’ LParâm
-| ε
+ListaParam = ListaParam ‘,’ Tipo ‘id’
+                | ListaParam ‘,’ Tipo ‘id’ ‘[‘ ‘]’
+                | Tipo ‘id’ ‘[‘ ‘]’
+                | Tipo ‘id’
 
 
 Argumentos
-Argumentos         = ‘(‘ ListaArgumentos ‘)’
-ListaArgumentos = Expressão , ListaArgumentos 
+ListaArgs         = ListaArgs ‘,’ Expressão
 | Expressão
-| ε
 
 
 Identificadores
-ListaId        = ListaId ‘,’ Id
-                | Id
-ListaId         = ‘id’ LId
-LId                = ‘,’ ‘id’ LId 
-| ε
+ListaId        = ListaId ‘,’ ‘id’ Array
+                | ‘id’ Array
+
+
+Array = ‘[‘ ExprAritm ‘]’
+        | ‘[‘ ‘]’
+        | epsilon
 
 
 Tipos
-Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
-TipoFunção        = ‘proc’ | Tipo
+Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’ | ‘proc’
 
 
 Expressões
-ExprAritm        = ExprArit Adit TermoAritm
-ExprRelac        = ExprRelac Relac TermoRelac
-ExprConc        = ExprConc OpConcat CteStr
+Expressão        = ExprAritm | ExprBool | ExprConc
+
+
+ExprAritm        = ExprArit Adit TermoAritm 
+| TermoAritm
+ExprBool        = ExprBool Relac TermoBool
+| TermoBool
+ExprConc        = ExprConc OpConcat TermoConcat 
+| TermoConcat
 
 
 TermoAritm        = TermoAritm Mult FatorAritm
-TermoRelac        = TermoRelac Igual FatorRelac
+                | FatorAritm
+TermoBool        = TermoBool Igual FatorBool
+                | FatorBool
+TermoConcat = TermoConcat OpConcat FatorConcat
+                | FatorConcat
 
 
-FatorAritm        = ‘id’
+FatorAritm = Cast FatorAritmTipo
+| FatorAritmTipo
+FatorAritmTipo        = ‘id’
 | CteInt
 | CteFloat
 | ‘(‘ ExprAritm ‘)’ 
-FatorRelac = CteBool
-                | ‘(‘ ExprRelac ‘)’
+FatorBool         = CteBool
+| ‘(‘ ExprBool ‘)’
 
 
+FatorConcat = CteS | ‘id’ | ‘(‘ ExprConcat ‘)’ | ‘[‘ ListaArray ‘]’
+ListaArray  = ListaArray ‘,’ Expressao
+                 | Expressão
 
 
 Operadores
-Unario        = OpMenos | OpNot
-Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq
-Igual                = OpEq | OpDifer
-Logic                = OpAnd | OpOr
+Unario        = OpMenos | OpNot | Cast
+Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq 
+Igual         = OpEq | OpDifer
+Lógico        = OpAnd | OpOr
 Adit                 = OpMais | OpMenos
 Mult                 = OpMult | OpDiv | OpMod
 
@@ -130,3 +144,4 @@ OpDiv         = ‘/’
 OpMod         = ‘%’
 OpAtr         = ‘=’ 
 OpConcat        = ‘++’
+Cast                 = ‘(‘ Tipo ‘)’
