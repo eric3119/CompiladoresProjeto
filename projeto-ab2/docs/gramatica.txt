@@ -105,12 +105,13 @@ TermoConcat = TermoConcat OpConcat FatorConcat
                 | FatorConcat
 
 
-FatorAritm = Cast FatorAritmTipo
-| FatorAritmTipo
-FatorAritmTipo        = ‘id’
+FatorAritm = ‘(‘ Tipo ‘)’ ExprAritm
+| ‘id’
 | CteInt
 | CteFloat
-| ‘(‘ ExprAritm ‘)’ 
+| ‘(‘ ExprAritm ‘)’
+
+
 FatorBool         = CteBool
 | ‘(‘ ExprBool ‘)’
 
@@ -121,7 +122,7 @@ ListaArray  = ListaArray ‘,’ Expressao
 
 
 Operadores
-Unario        = OpMenos | OpNot | Cast
+Unario        = OpMenos | OpNot
 Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq 
 Igual         = OpEq | OpDifer
 Lógico        = OpAnd | OpOr
@@ -145,4 +146,3 @@ OpDiv         = ‘/’
 OpMod         = ‘%’
 OpAtr         = ‘=’ 
 OpConcat        = ‘++’
-Cast                 = ‘(‘ Tipo ‘)’
