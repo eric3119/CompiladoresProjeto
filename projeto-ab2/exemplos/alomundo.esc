@@ -1,0 +1,4 @@
+int init(){
+    print "Alô mundo";
+    return 0;
+}
