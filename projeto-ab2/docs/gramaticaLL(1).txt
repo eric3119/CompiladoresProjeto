@@ -1,19 +1,17 @@
 ﻿Início
 Início  = Tipo ‘id’ InícioF
-           | ‘const’ Tipo ListaAtr ‘;’ Início
+           | ‘const’ Tipo ‘id’ ListaAtr ‘;’ Início
            | ε
 InícioF = Função Início
            | Variável Início
-           | ListaAtr Início
 
 
 Bloco
 Bloco          = Tipo ‘id’ BlocoF
-          | ‘const’ Tipo ListaAtr ‘;’ Bloco
+          | ‘const’ Tipo ‘id’ ListaAtr ‘;’ Bloco
   | ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’ Bloco
 BlocoF = Função Bloco
   | Variável Bloco
-          | ListaAtr Bloco
 
 
 Função
@@ -30,12 +28,12 @@ Variável        = ListaId ‘;’
 Identificadores
 ListaId        = Array ListaIdR
 ListaIdR        = ‘,’ ‘id’ Array ListaIdR
-                | ε
+                | ‘;’
 
 
-ListaAtr        = ‘id’ Array Atribuição ListaAtrR
+ListaAtr        = Array Atribuição ListaAtrR
 ListaAtrR        = ‘,’ ‘id’ Array Atribuição ListaAtrR
-                | ε
+                | ‘;’
 
 
 Array = ‘[‘ ArrayF
