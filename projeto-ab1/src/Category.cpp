@@ -46,6 +46,7 @@ char* categ_name(Category anEnum){
         case Category::OpAtr:return (char*)"OpAtr";
         case Category::OpConcat:return (char*)"OpConcat";
         case Category::Id:return (char*)"Id";
+        case Category::Const:return (char*)"Const";
         case Category::CteInt:return (char*)"CteInt";
         case Category::CteFloat:return (char*)"CteFloat";
         case Category::CteChar:return (char*)"CteChar";

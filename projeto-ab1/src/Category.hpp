@@ -10,7 +10,7 @@ enum class Category {
     OpEq, OpMaior, OpMenor, OpMaiorEq, OpMenorEq, OpDifer, OpAnd, OpOr, OpNot,
     OpMais, OpMenos, OpMult, OpDiv, OpMod,
     OpAtr, OpConcat,
-    Id, CteInt, CteFloat, CteChar, CteBool, CteStr, Eof
+    Id, Const, CteInt, CteFloat, CteChar, CteBool, CteStr, Eof
 };
 
 char* categ_name(Category);
