@@ -21,8 +21,8 @@ FunçãoF = ‘{‘ Bloco ‘}’ ‘;’
 
 
 Variável
-Variável        = ListaId ‘;’
-                | ListaAtr ‘;’
+Variável        = ListaId
+                | ListaAtr
 
 
 Identificadores
