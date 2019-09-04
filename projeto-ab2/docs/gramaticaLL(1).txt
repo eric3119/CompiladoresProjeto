@@ -1,0 +1,169 @@
+﻿Início
+Início  = Tipo ‘id’ InícioF
+           | ‘const’ Tipo ListaAtr ‘;’ Início
+InícioF = Função Início
+           | Variável Início
+           | ListaAtr Início
+
+
+Bloco
+Bloco          = Tipo ‘id’ BlocoF
+          | ‘const’ Tipo ListaAtr ‘;’ Bloco
+  | ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’ Bloco
+BlocoF = Função Bloco
+  | Variável Bloco
+          | ListaAtr Bloco
+
+
+Função
+Função  = ‘(‘ ListaParam ‘)’ FunçãoF
+FunçãoF = ‘{‘ Bloco ‘}’ ‘;’
+           | ‘;’
+
+
+Variável
+Variável        = ListaId ‘;’
+                | ListaAtr ‘;’
+
+
+Identificadores
+ListaId        = Array ListaIdR
+ListaIdR        = ‘,’ ‘id’ Array ListaIdR
+                | epsilon
+
+
+ListaAtr        = ‘id’ Array Atribuição ListaAtrR
+ListaAtrR        = ‘,’ ‘id’ Array Atribuição ListaAtrR
+                | epsilon
+
+
+Array = ‘[‘ ArrayF
+         | ε
+ArrayF = ExprAritm ‘]’
+          | ‘]’
+
+
+Comandos e sentenças
+Sentenças         = Comando Sentenças 
+| ε
+
+
+Comando = If | While | For | Desvio | Entrada | Saída | Atribuição
+
+
+Entrada = ‘input’ ListaArgs ‘;’
+Saída = ‘print’ CteS ListaArgs ‘;’
+
+
+If           = ‘if’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ ElseIf Else
+ElseIf = ‘else if’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ ElseIf
+          | ε
+Else   = ‘else’ ‘{‘ Bloco ‘}’ 
+          | ε
+
+
+While = ‘while’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ 
+
+
+For   = ‘for’ ‘id’ ‘in’ ‘(‘ ExprAritm ’,’ ExprAritm ‘)’ ‘step’ CteI ‘{‘ Bloco ‘}’
+
+
+Desvio = ‘break’ ‘;’
+
+
+Atribuição = OpAtribuição Expressão
+
+
+Parâmetros
+ListaParam  = Tipo ‘id’ Array ListaParamR
+ListaParamR = ‘,’ Tipo ‘id’ Array
+                 | epsilon
+
+
+Argumentos
+ListaArgs         = Expressão ListaArgsR
+ListaArgsR        = ‘,’ Expressão
+                | epsilon
+
+
+Tipos
+Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’ | ‘proc’
+
+
+Expressões
+Expressão        = ExprAritm | ExprBool | ExprConc
+
+
+ExprAritm        = TermoAritm ExprAritR
+ExprAritR        = Adit TermoAritm
+                | epsilon
+ExprBool        = TermoBool ExprBoolR
+ExprBoolR        = Relac TermoBool
+                | epsilon
+
+
+ExprConcat         = TermoConcat ExprConcatR
+ExprConcatR = OpConcat TermoConcat
+                 | epsilon
+
+
+TermoAritm         = FatorAritm TermoAritmR
+TermoAritmR = Mult FatorAritm
+                 | epsilon
+
+
+TermoBool        = FatorBool TermoBoolR
+TermoBoolR = Igual FatorBool
+                | epsilon
+
+
+TermoConcat  = FatorConcat TermoConcatR
+TermoConcatR = OpConcat FatorConcat
+                  | epsilon
+
+
+FatorAritm  = ‘(‘ FatorAritmF
+ | ‘id’
+ | CteInt
+ | CteFloat
+FatorAritmF = Tipo ‘)’ ExprAritm
+                 | ExprAritm ‘)’
+
+
+FatorBool         = CteBool
+| ‘(‘ ExprBool ‘)’
+
+
+FatorConcat = CteS | ‘id’ | ‘(‘ ExprConcat ‘)’ | ‘[‘ ListaArray ‘]’
+
+
+ListaArray  = Expressão ListaArrayR 
+ListaArrayR = ‘,’ Expressao ListaArrayR
+                 | epsilon
+
+
+Operadores
+Unario        = OpMenos | OpNot | Cast
+Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq 
+Igual         = OpEq | OpDifer
+Lógico        = OpAnd | OpOr
+Adit                 = OpMais | OpMenos
+Mult                 = OpMult | OpDiv | OpMod
+
+
+OpEq                 = ‘==’
+OpMaior         = ‘>’
+OpMenor         = ‘<’
+OpMaiorEq         = ‘>=’
+OpMenorEq         = ‘<=’
+OpDifer         = ‘!=’
+OpAnd                = ‘and’
+OpOr                = ‘or’
+OpNot                = ‘!’
+OpMais         = ‘+’
+OpMenos         = ‘-’
+OpMult         = ‘*’
+OpDiv         = ‘/’
+OpMod         = ‘%’
+OpAtr         = ‘=’ 
+OpConcat        = ‘++’
