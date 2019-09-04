@@ -95,7 +95,7 @@ Expressões
 Expressão        = ExprAritm | ExprBool | ExprConc
 
 
-ExprAritm        = ExprArit Adit TermoAritm 
+ExprAritm        = ExprAritm Adit TermoAritm 
 | TermoAritm
 ExprBool        = ExprBool Relac TermoBool
 | TermoBool

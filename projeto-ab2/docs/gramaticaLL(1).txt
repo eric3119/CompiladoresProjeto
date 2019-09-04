@@ -1,6 +1,7 @@
 ﻿Início
 Início  = Tipo ‘id’ InícioF
            | ‘const’ Tipo ListaAtr ‘;’ Início
+           | ε
 InícioF = Função Início
            | Variável Início
            | ListaAtr Início
@@ -29,12 +30,12 @@ Variável        = ListaId ‘;’
 Identificadores
 ListaId        = Array ListaIdR
 ListaIdR        = ‘,’ ‘id’ Array ListaIdR
-                | epsilon
+                | ε
 
 
 ListaAtr        = ‘id’ Array Atribuição ListaAtrR
 ListaAtrR        = ‘,’ ‘id’ Array Atribuição ListaAtrR
-                | epsilon
+                | ε
 
 
 Array = ‘[‘ ArrayF
@@ -77,13 +78,13 @@ Atribuição = OpAtribuição Expressão
 Parâmetros
 ListaParam  = Tipo ‘id’ Array ListaParamR
 ListaParamR = ‘,’ Tipo ‘id’ Array
-                 | epsilon
+                 | ε
 
 
 Argumentos
 ListaArgs         = Expressão ListaArgsR
 ListaArgsR        = ‘,’ Expressão
-                | epsilon
+                | ε
 
 
 Tipos
@@ -96,30 +97,30 @@ Expressão        = ExprAritm | ExprBool | ExprConc
 
 ExprAritm        = TermoAritm ExprAritR
 ExprAritR        = Adit TermoAritm
-                | epsilon
+                | ε
 ExprBool        = TermoBool ExprBoolR
 ExprBoolR        = Relac TermoBool
-                | epsilon
+                | ε
 
 
 ExprConcat         = TermoConcat ExprConcatR
 ExprConcatR = OpConcat TermoConcat
-                 | epsilon
+                 | ε
 
 
 TermoAritm         = FatorAritm TermoAritmR
 TermoAritmR = Mult FatorAritm
-                 | epsilon
+                 | ε
 
 
 TermoBool        = FatorBool TermoBoolR
 TermoBoolR = Igual FatorBool
-                | epsilon
+                | ε
 
 
 TermoConcat  = FatorConcat TermoConcatR
 TermoConcatR = OpConcat FatorConcat
-                  | epsilon
+                  | ε
 
 
 FatorAritm  = ‘(‘ FatorAritmF
@@ -139,11 +140,11 @@ FatorConcat = CteS | ‘id’ | ‘(‘ ExprConcat ‘)’ | ‘[‘ ListaArray 
 
 ListaArray  = Expressão ListaArrayR 
 ListaArrayR = ‘,’ Expressao ListaArrayR
-                 | epsilon
+                 | ε
 
 
 Operadores
-Unario        = OpMenos | OpNot | Cast
+Unario        = OpMenos | OpNot
 Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq 
 Igual         = OpEq | OpDifer
 Lógico        = OpAnd | OpOr
