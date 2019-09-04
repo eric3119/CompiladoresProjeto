@@ -1,12 +1,28 @@
 ﻿Início
-Início = Função Início
-          | Variável Início
-          | Função
-          | Variável
+Início = ListaFunc Início
+          | ListaVar Início
 
 
-Declarações
-Função = Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘{‘ Bloco ‘}’ ‘;’ Início
+ListaFunc         = ListaFunc Função
+                | Função
+
+
+ListaVar        = ListaVar Variável
+                | Variável
+
+
+Bloco
+Bloco        = ChamadaFunc Bloco
+        | ‘id’ Atribuição ‘;’ Bloco
+| ListaFunc Bloco
+| ListaVar Bloco
+
+
+ChamadaFunc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
+
+
+Função
+Função = Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘{‘ Bloco ‘}’ Início
   | Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘;’ Início
 
 
@@ -16,14 +32,14 @@ Variável        = Tipo ListaId ‘;’
 | ‘const’ Tipo ListaAtr ‘;’
 
 
-Bloco
-Bloco        = ChamadaFunc Bloco
-        | ‘id’ Atribuição ‘;’ Bloco
-| Função Bloco
-| Variável Bloco
+Identificadores
+ListaId        = ListaId ‘,’ ‘id’ Array
+                | ‘id’ Array
 
 
-ChamadaFunc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
+Array = ‘[‘ ExprAritm ‘]’
+        | ‘[‘ ‘]’
+        | ε
 
 
 Comandos e sentenças
@@ -55,30 +71,20 @@ Desvio = ‘break’ ‘;’
 
 
 Atribuição = OpAtribuição Expressão
-ListaAtr        = ListaAtr ‘,’ ‘id’ Atribuição
-                | ‘id’ Atribuição
+
+
+ListaAtr        = ListaAtr ‘,’ ‘id’ Array Atribuição
+                | ‘id’ Array Atribuição
 
 
 Parâmetros
-ListaParam = ListaParam ‘,’ Tipo ‘id’
-                | ListaParam ‘,’ Tipo ‘id’ ‘[‘ ‘]’
-                | Tipo ‘id’ ‘[‘ ‘]’
-                | Tipo ‘id’
+ListaParam = ListaParam ‘,’ Tipo ‘id’ Array
+                | Tipo ‘id’ Array
 
 
 Argumentos
 ListaArgs         = ListaArgs ‘,’ Expressão
 | Expressão
-
-
-Identificadores
-ListaId        = ListaId ‘,’ ‘id’ Array
-                | ‘id’ Array
-
-
-Array = ‘[‘ ExprAritm ‘]’
-        | ‘[‘ ‘]’
-        | ε
 
 
 Tipos
