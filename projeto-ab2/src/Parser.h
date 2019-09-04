@@ -13,6 +13,7 @@ class Parser {
 private:
     Token tk{};
     void nextToken();
+    void printToken();
 
     std::ifstream source;
 public:
