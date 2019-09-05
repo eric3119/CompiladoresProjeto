@@ -1,153 +1,179 @@
 ﻿Início
-Início  = Tipo ‘id’ InícioF
-           | ‘const’ Tipo ‘id’ ListaAtr ‘;’ Início
-           | ε
-InícioF = Função Início
-           | Variável Início
+Início = ListaFunc Início
+  | ListaProc Início
+          | ListaVar Início
+          | ‘func’ ‘init’ ‘(‘ Parâmetros ‘)’ Bloco
 
 
-Bloco
-Bloco          = Tipo ‘id’ BlocoF
-          | ‘const’ Tipo ‘id’ ListaAtr ‘;’ Bloco
-  | ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’ Bloco
-BlocoF = Função Bloco
-  | Variável Bloco
+ListaFunc         = Função ListaFunc
+                | Função
+
+
+ListaProc         = Proc ListaProc
+                | Proc
+
+
+ListaVar        = Variável ListaVar
+                | Variável
 
 
 Função
-Função  = ‘(‘ ListaParam ‘)’ FunçãoF
-FunçãoF = ‘{‘ Bloco ‘}’ ‘;’
-           | ‘;’
+Função  = ‘func’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ FunçãoF
+FunçãoF = Bloco | ‘;’
+
+
+Procedimento
+Proc        = ‘proc’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ ProcF
+ProcF        = Bloco | ‘;’
 
 
 Variável
-Variável        = ListaId
-                | ListaAtr
+Variável        = Tipo ListaId ‘;’
+| ‘const’ Tipo ListaAtr ‘;’
 
 
-Identificadores
-ListaId        = Array ListaIdR
-ListaIdR        = ‘,’ ‘id’ Array ListaIdR
-                | ‘;’
-
-
-ListaAtr        = Array Atribuição ListaAtrR
-ListaAtrR        = ‘,’ ‘id’ Array Atribuição ListaAtrR
-                | ‘;’
-
-
-Array = ‘[‘ ArrayF
-         | ε
-ArrayF = ExprAritm ‘]’
-          | ‘]’
-
-
-Comandos e sentenças
-Sentenças         = Comando Sentenças 
+ListaAtr        = ‘id’ ListaAtrF ListaAtrR 
+ListaAtrR        = ‘,’ ‘id’ ListaAtrF ListaAtrR 
 | ε
 
 
-Comando = If | While | For | Desvio | Entrada | Saída | Atribuição
+ListaAtrF        = Atribuição
+                | Array Atribuição
+
+
+Identificadores
+ListaId        = Id ListaIdR
+ListaIdR        = ‘,’ Id ListaIdR
+                | ε
+
+
+Id = ‘id’ IdF
+IdF = ‘(‘ ListaArgs ‘)’ | Atribuição | Array IdFF | ε
+IdFF = Atribuição | ε
+
+
+Array  = ‘[‘ ArrayF
+ArrayF = ‘]’ | ExprBool ‘]’
+
+
+Bloco
+Bloco        = ‘{‘ ListaSentenças ‘}’
+
+
+Sentenças
+ListaSentenças = Sentença ListaSentenças
+                    | Sentença
+
+
+Sentença = If | While | For | Desvio | Return | Entrada | Saída 
+   | Atribuição | ChamadaProc | ε
 
 
 Entrada = ‘input’ ListaArgs ‘;’
-Saída = ‘print’ CteS ListaArgs ‘;’
 
 
-If           = ‘if’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ ElseIf Else
-ElseIf = ‘else if’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ ElseIf
+Saída = ‘print’ CteStr ListaArgs ‘;’
+
+
+If           = ‘if’ ‘(‘ ExprBool ‘)’ Bloco ElseIf Else
+ElseIf = ‘else if’ ‘(‘ ExprBool ‘)’ Bloco ElseIf
           | ε
-Else   = ‘else’ ‘{‘ Bloco ‘}’ 
+Else   = ‘else’ Bloco
           | ε
 
 
-While = ‘while’ ‘(‘ ExprBool ‘)’ ‘{‘ Bloco ‘}’ 
+While = ‘while’ ‘(‘ ExprBool ‘)’ Bloco
 
 
-For   = ‘for’ ‘id’ ‘in’ ‘(‘ ExprAritm ’,’ ExprAritm ‘)’ ‘step’ CteI ‘{‘ Bloco ‘}’
+For =‘for’ Id ‘in’ ‘(‘ ExprBool ’,’ ExprBool ‘)’ ‘step’ ExprBool Bloco
 
 
 Desvio = ‘break’ ‘;’
 
 
-Atribuição = OpAtribuição Expressão
+Return = ‘return’ ExprBool ‘;’
+
+
+Atribuição = OpAtribuição ExprBool ‘;’
+
+
+ChamadaProc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
 
 
 Parâmetros
-ListaParam  = Tipo ‘id’ Array ListaParamR
-ListaParamR = ‘,’ Tipo ‘id’ Array
+Parâmetros        = ListaParam
+                | ε
+
+
+ListaParam  = Tipo Id ListaParamR
+ListaParamR = ‘,’ Tipo Id
                  | ε
 
 
 Argumentos
-ListaArgs         = Expressão ListaArgsR
-ListaArgsR        = ‘,’ Expressão
+Argumentos        = ListaArgs | ε
+
+
+ListaArgs         = ExprBool ListaArgsR 
+ListaArgsR        = ‘,’ ExprBool
                 | ε
 
 
 Tipos
-Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’ | ‘proc’
+Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
 
 
 Expressões
-Expressão        = ExprAritm | ExprBool | ExprConc
-
-
-ExprAritm        = TermoAritm ExprAritR
-ExprAritR        = Adit TermoAritm
-                | ε
-ExprBool        = TermoBool ExprBoolR
-ExprBoolR        = Relac TermoBool
+ExprBool         = TermoBool ExprBoolR
+ExprBoolR        = OpLogic TermoBool
                 | ε
 
 
-ExprConcat         = TermoConcat ExprConcatR
-ExprConcatR = OpConcat TermoConcat
+TermoBool         = ExprConcat OpRelac ExprConcat
+| ExprConcat
+| ‘!’ TermoBool
+
+
+ExprConcat         = ExprAritm ExprConcatR
+ExprConcatR = OpConcat ExprAritm
                  | ε
+
+
+ExprAritm        = TermoAritm ExprAritmR
+ExprAritmR        = OpAritm TermoAritm
+                | ε
 
 
 TermoAritm         = FatorAritm TermoAritmR
-TermoAritmR = Mult FatorAritm
+TermoAritmR = OpMult FatorAritm
                  | ε
 
 
-TermoBool        = FatorBool TermoBoolR
-TermoBoolR = Igual FatorBool
-                | ε
-
-
-TermoConcat  = FatorConcat TermoConcatR
-TermoConcatR = OpConcat FatorConcat
-                  | ε
-
-
-FatorAritm  = ‘(‘ FatorAritmF
- | ‘id’
+FatorAritm         = ‘(‘ FatorAritmF
+ | Id
  | CteInt
  | CteFloat
-FatorAritmF = Tipo ‘)’ ExprAritm
-                 | ExprAritm ‘)’
+ | CteChar
+ | CteBool
+ | CteStr
+ | ‘[‘ ListaArray ‘]’
+FatorAtirmF = Tipo ‘)’ ExprBool 
+                 | ExprBool ‘)’
 
 
-FatorBool         = CteBool
-| ‘(‘ ExprBool ‘)’
 
 
-FatorConcat = CteS | ‘id’ | ‘(‘ ExprConcat ‘)’ | ‘[‘ ListaArray ‘]’
-
-
-ListaArray  = Expressão ListaArrayR 
-ListaArrayR = ‘,’ Expressao ListaArrayR
+ListaArray  = ExprBool ListaArrayR
+ListaArrayR = ‘,’ ExprBool
                  | ε
 
 
 Operadores
-Unario        = OpMenos | OpNot
-Relac                = OpMaior | OpMenor | OpMaiorEq | OpMenorEq 
-Igual         = OpEq | OpDifer
-Lógico        = OpAnd | OpOr
-Adit                 = OpMais | OpMenos
-Mult                 = OpMult | OpDiv | OpMod
+OpUnario        = OpMenos | OpNot
+OpRelac        = OpMaior | OpMenor | OpMaiorEq | OpMenorEq | OpEq | OpDifer
+OpLogic        = OpAnd | OpOr
+OpAdit        = OpMais | OpMenos
+OpMult        = OpMult | OpDiv | OpMod
 
 
 OpEq                 = ‘==’
