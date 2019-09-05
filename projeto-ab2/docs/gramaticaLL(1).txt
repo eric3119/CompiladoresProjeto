@@ -67,8 +67,8 @@ ListaSentenças = Sentença ListaSentenças
                     | Sentença
 
 
-Sentença = If | While | For | Desvio | Return | Entrada | Saída 
-   | Atribuição | ChamadaProc | ε
+Sentença        = If | While | For | Desvio | Return | Entrada | Saída 
+           | Id ‘;’ | ε
 
 
 Entrada = ‘input’ ListaArgs ‘;’
@@ -97,9 +97,6 @@ Return = ‘return’ ExprBool ‘;’
 
 
 Atribuição = OpAtribuição ExprBool ‘;’
-
-
-ChamadaProc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
 
 
 Parâmetros
