@@ -2,7 +2,7 @@
 Início = ListaFunc Início
   | ListaProc Início
           | ListaVar Início
-          | ‘func’ ‘init’ ‘(‘ ListaParam ‘)’ Bloco
+          | ‘func’ ‘init’ ‘(‘ Parâmetros ‘)’ Bloco
 
 
 ListaFunc         = Função ListaFunc
@@ -18,13 +18,13 @@ ListaVar        = Variável ListaVar
 
 
 Função
-Função = ‘func’ Tipo ‘id’ ‘(‘ ListaParam ‘)’ Bloco
-  | ‘func’ Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘;’
+Função = ‘func’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
+  | ‘func’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ ‘;’
 
 
 Procedimento
-Proc = ‘proc’ Tipo ‘id’ ‘(‘ ListaParam ‘)’ Bloco
-  | ‘proc’ Tipo ‘id’ ‘(‘ ListaParam ‘)’ ‘;’
+Proc = ‘proc’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
+  | ‘proc’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ ‘;’
 
 
 Variável
@@ -52,8 +52,6 @@ Array = ‘[‘ ‘]’ | ‘[‘ ExprBool ‘]’
 
 Bloco
 Bloco        = ‘{‘ ListaSentenças ‘}’
-
-
 Sentenças
 ListaSentenças = Sentença ListaSentenças
                     | Sentença
@@ -95,11 +93,10 @@ ChamadaProc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
 
 
 Parâmetros
-ListaParam = ListaParam ‘,’ Param
-                | Param
-
-
-Param = Tipo Id | ε
+Parâmetros        = ListaParam
+                | ε
+ListaParam = ListaParam ‘,’ Tipo Id
+                | Tipo Id
 
 
 Argumentos
@@ -112,8 +109,6 @@ Args         = ExprBool | ε
 
 Tipos
 Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
-
-
 Expressões
 ExprBool         = ExprBool OpLogic TermoBool
 | TermoBool
