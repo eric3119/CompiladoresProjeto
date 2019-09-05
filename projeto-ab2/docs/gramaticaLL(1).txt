@@ -25,7 +25,7 @@ FunçãoF = Bloco | ‘;’
 
 
 Procedimento
-Proc        = ‘proc’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ ProcF
+Proc        = ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ ProcF
 ProcF        = Bloco | ‘;’
 
 
@@ -65,10 +65,11 @@ Bloco        = ‘{‘ ListaSentenças ‘}’
 Sentenças
 ListaSentenças = Sentença ListaSentenças
                     | Sentença
+                    | ε
 
 
 Sentença        = If | While | For | Desvio | Return | Entrada | Saída 
-           | Id ‘;’ | ε
+           | Id ‘;’ | ListaVar
 
 
 Entrada = ‘input’ Argumentos ‘;’
@@ -96,7 +97,7 @@ Desvio = ‘break’ ‘;’
 Return = ‘return’ ExprBool ‘;’
 
 
-Atribuição = OpAtribuição ExprBool ‘;’
+Atribuição = OpAtribuição ExprBool
 
 
 Parâmetros
@@ -128,9 +129,10 @@ ExprBoolR        = OpLogic TermoBool ExprBoolR
                 | ε
 
 
-TermoBool         = ExprConcat OpRelac ExprConcat
-| ExprConcat
+TermoBool         = ExprConcat TermoBoolF
 | ‘!’ TermoBool
+TermoBoolF = OpRelac ExprConcat
+                | ε
 
 
 ExprConcat         = ExprAritm ExprConcatR

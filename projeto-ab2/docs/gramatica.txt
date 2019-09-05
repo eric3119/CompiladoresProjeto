@@ -25,8 +25,8 @@ Função = ‘func’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
 
 
 Procedimento
-Proc = ‘proc’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
-  | ‘proc’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ ‘;’
+Proc = ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
+  | ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ ‘;’
 
 
 Variável
@@ -62,10 +62,11 @@ Bloco        = ‘{‘ ListaSentenças ‘}’
 Sentenças
 ListaSentenças = Sentença ListaSentenças
                     | Sentença
+    | ε
 
 
-Sentença = If | While | For | Desvio | Return | Entrada | Saída 
-   | Id ‘;’ | ε
+Sentença         = If | While | For | Desvio | Return | Entrada | Saída 
+           | Id ‘;’ | ListaVar
 
 
 Entrada = ‘input’ Argumentos ‘;’
@@ -93,7 +94,7 @@ Desvio = ‘break’ ‘;’
 Return = ‘return’ ExprBool ‘;’
 
 
-Atribuição = OpAtribuição ExprBool ‘;’
+Atribuição = OpAtribuição ExprBool
 
 
 Parâmetros
