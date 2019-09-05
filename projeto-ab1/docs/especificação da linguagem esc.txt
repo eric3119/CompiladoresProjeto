@@ -230,7 +230,7 @@ Desvio incondicional
         Na instrução de saída padrão deve ser especificado o texto formatado e as variáveis ou constantes que vão ser substituídas
 
 
-        print “%2d %.2f”, var1, cons1;
+        print “%2d %.2f” var1, cons1;
 Subprogramas
 As funções são declaradas no corpo do programa e seguem a forma:
 tipo nome(parâmetros){
