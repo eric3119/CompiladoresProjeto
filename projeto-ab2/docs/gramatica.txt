@@ -45,13 +45,18 @@ ListaId        = ListaId ‘,’ Id
 
 Id = ‘id’ | ‘id’ Array
    | ‘id’ Atribuição | ‘id’ Array Atribuição
+   | ‘id’ ‘(‘ ListaArgs ‘)’
 
 
 Array = ‘[‘ ‘]’ | ‘[‘ ExprBool ‘]’
 
 
+
+
 Bloco
 Bloco        = ‘{‘ ListaSentenças ‘}’
+
+
 Sentenças
 ListaSentenças = Sentença ListaSentenças
                     | Sentença
@@ -93,22 +98,23 @@ ChamadaProc = ‘id’ ‘(‘ ListaArgs ‘)’ ‘;’
 
 
 Parâmetros
-Parâmetros        = ListaParam
-                | ε
+Parâmetros        = ListaParam | ε
 ListaParam = ListaParam ‘,’ Tipo Id
                 | Tipo Id
 
 
 Argumentos
-ListaArgs         = ListaArgs ‘,’ Args
-| Args
+Argumentos        = ListaArgs | ε
+ListaArgs         = ListaArgs ‘,’ ExprBool
+| ExprBool
 
 
-Args         = ExprBool | ε
 
 
 Tipos
 Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
+
+
 Expressões
 ExprBool         = ExprBool OpLogic TermoBool
 | TermoBool
@@ -132,7 +138,6 @@ TermoAritm        = TermoAritm OpMult FatorAritm
 
 
 FatorAritm        = ‘(‘ Tipo ‘)’ ExprBool 
-| ‘id’ ‘(‘ ListaArgs ‘)’
 | Id
 | CteInt
 | CteFloat
