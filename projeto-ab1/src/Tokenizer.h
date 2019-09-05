@@ -27,7 +27,7 @@ private:
     std::ifstream source;
     std::string buffer;
     const std::vector<std::string> RegExList = {
-            "init", "int", "float", "char", "string", "bool",
+            "int", "float", "char", "string", "bool",
             ";", ":", ",", "\\(", "\\)", "\\[", "\\]", "\\{", "\\}",
             "proc", "func", "return", "break",
             "input", "print",

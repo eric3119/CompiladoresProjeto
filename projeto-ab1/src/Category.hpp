@@ -2,7 +2,7 @@
 #define PROJETO_AB1_CATEGORY_HPP
 
 enum class Category {
-    Init=1, Integer, Float, Char, String, Boolean,
+    Integer=1, Float, Char, String, Boolean,
     PtVg, Pt2, Vg, AbPar, FePar, AbCol, FeCol, AbChav, FeChav,
     Procedure, Func, Return, Break,
     Input, Print,
