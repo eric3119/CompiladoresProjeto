@@ -47,7 +47,7 @@ ListaId        = ListaId ‘,’ Id
 
 Id = ‘id’ | ‘id’ Array
    | ‘id’ Atribuição | ‘id’ Array Atribuição
-   | ‘id’ ‘(‘ ListaArgs ‘)’
+   | ‘id’ ‘(‘ Argumentos ‘)’
 
 
 Array = ‘[‘ ‘]’ | ‘[‘ ExprBool ‘]’
@@ -68,10 +68,10 @@ Sentença = If | While | For | Desvio | Return | Entrada | Saída
    | Id ‘;’ | ε
 
 
-Entrada = ‘input’ ListaArgs ‘;’
+Entrada = ‘input’ Argumentos ‘;’
 
 
-Saída = ‘print’ CteStr ListaArgs ‘;’
+Saída = ‘print’ CteStr Argumentos ‘;’
 
 
 If           = ‘if’ ‘(‘ ExprBool ‘)’ Bloco ElseIf Else

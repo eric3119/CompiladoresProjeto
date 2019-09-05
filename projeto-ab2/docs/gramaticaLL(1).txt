@@ -50,7 +50,7 @@ ListaIdR        = ‘,’ Id ListaIdR
 
 
 Id = ‘id’ IdF
-IdF = ‘(‘ ListaArgs ‘)’ | Atribuição | Array IdFF | ε
+IdF = ‘(‘ Argumentos ‘)’ | Atribuição | Array IdFF | ε
 IdFF = Atribuição | ε
 
 
@@ -71,10 +71,10 @@ Sentença        = If | While | For | Desvio | Return | Entrada | Saída
            | Id ‘;’ | ε
 
 
-Entrada = ‘input’ ListaArgs ‘;’
+Entrada = ‘input’ Argumentos ‘;’
 
 
-Saída = ‘print’ CteStr ListaArgs ‘;’
+Saída = ‘print’ CteStr Argumentos ‘;’
 
 
 If           = ‘if’ ‘(‘ ExprBool ‘)’ Bloco ElseIf Else
@@ -105,7 +105,7 @@ Parâmetros        = ListaParam
 
 
 ListaParam  = Tipo Id ListaParamR
-ListaParamR = ‘,’ Tipo Id
+ListaParamR = ‘,’ Tipo Id ListaParamR
                  | ε
 
 
@@ -114,7 +114,7 @@ Argumentos        = ListaArgs | ε
 
 
 ListaArgs         = ExprBool ListaArgsR 
-ListaArgsR        = ‘,’ ExprBool
+ListaArgsR        = ‘,’ ExprBool ListaArgsR
                 | ε
 
 
@@ -124,7 +124,7 @@ Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘st
 
 Expressões
 ExprBool         = TermoBool ExprBoolR
-ExprBoolR        = OpLogic TermoBool
+ExprBoolR        = OpLogic TermoBool ExprBoolR
                 | ε
 
 
@@ -134,17 +134,17 @@ TermoBool         = ExprConcat OpRelac ExprConcat
 
 
 ExprConcat         = ExprAritm ExprConcatR
-ExprConcatR = OpConcat ExprAritm
+ExprConcatR = OpConcat ExprAritm ExprConcatR
                  | ε
 
 
 ExprAritm        = TermoAritm ExprAritmR
-ExprAritmR        = OpAritm TermoAritm
+ExprAritmR        = OpAritm TermoAritm ExprAritmR
                 | ε
 
 
 TermoAritm         = FatorAritm TermoAritmR
-TermoAritmR = OpMult FatorAritm
+TermoAritmR = OpMult FatorAritm TermoAritmR
                  | ε
 
 
@@ -163,13 +163,14 @@ FatorAtirmF = Tipo ‘)’ ExprBool
 
 
 ListaArray  = ExprBool ListaArrayR
-ListaArrayR = ‘,’ ExprBool
+ListaArrayR = ‘,’ ExprBool ListaArrayR
                  | ε
 
 
 Operadores
 OpUnario        = OpMenos | OpNot
-OpRelac        = OpMaior | OpMenor | OpMaiorEq | OpMenorEq | OpEq | OpDifer
+OpRelac        = OpMaior | OpMenor | OpMaiorEq | OpMenorEq | OpEq 
+| OpDifer
 OpLogic        = OpAnd | OpOr
 OpAdit        = OpMais | OpMenos
 OpMult        = OpAster | OpDiv | OpMod
