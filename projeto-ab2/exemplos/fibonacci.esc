@@ -10,7 +10,7 @@ proc fibonacci(int valor_limite){
         aux = a + b;
 
         while(aux <= limite){
-            print ", %d", aux;
+            print ", %d" aux;
             aux = a + b;
             a = b;
             b = aux;
