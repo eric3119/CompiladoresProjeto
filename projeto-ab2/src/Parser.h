@@ -54,7 +54,6 @@ public:
     int desvio();
     int fReturn();
     int atribuicao();
-    int chamadaProc();
     int parametros();
     int listaParam();
     int listaParamR();
@@ -97,6 +96,13 @@ public:
     int opAtr();
     int opConcat();
 
+    bool printAndNext(Category c);
+
+    void printRule(std::string r);
+
+    bool cmpCateg(Category c);
+
+    void printAndNext();
 };
 
 
