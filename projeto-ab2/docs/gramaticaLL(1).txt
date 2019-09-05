@@ -2,7 +2,9 @@
 Início = ListaFunc Início
   | ListaProc Início
           | ListaVar Início
-          | ‘func’ ‘init’ ‘(‘ Parâmetros ‘)’ Bloco
+  | ListaFunc
+  | ListaProc
+          | ListaVar
 
 
 ListaFunc         = Função ListaFunc
