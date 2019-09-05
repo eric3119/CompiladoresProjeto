@@ -91,7 +91,7 @@ public:
     int opNot();
     int opMais();
     int opMenos();
-    int opMult();
+    int opAster();
     int opDiv();
     int opMod();
     int opAtr();

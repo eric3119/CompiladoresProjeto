@@ -175,7 +175,7 @@ OpUnario        = OpMenos | OpNot
 OpRelac        = OpMaior | OpMenor | OpMaiorEq | OpMenorEq | OpEq | OpDifer
 OpLogic        = OpAnd | OpOr
 OpAdit        = OpMais | OpMenos
-OpMult        = OpMult | OpDiv | OpMod
+OpMult        = OpAster | OpDiv | OpMod
 
 
 OpEq                 = ‘==’
@@ -189,7 +189,7 @@ OpOr                = ‘or’
 OpNot                = ‘!’
 OpMais         = ‘+’
 OpMenos         = ‘-’
-OpMult         = ‘*’
+OpAster         = ‘*’
 OpDiv         = ‘/’
 OpMod         = ‘%’
 OpAtr         = ‘=’ 

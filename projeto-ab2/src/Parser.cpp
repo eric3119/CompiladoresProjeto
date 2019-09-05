@@ -96,7 +96,7 @@ int Parser::opOr(){}
 int Parser::opNot(){}
 int Parser::opMais(){}
 int Parser::opMenos(){}
-int Parser::opMult(){}
+int Parser::opAster(){}
 int Parser::opDiv(){}
 int Parser::opMod(){}
 int Parser::opAtr(){}
