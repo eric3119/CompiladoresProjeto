@@ -139,13 +139,10 @@ int Parser::funcaoF(){
 int Parser::proc(){
     int res = ERRO;
 
-    cout << "          Proc = 'proc' Tipo 'id' '(' Parâmetros ')' ProcF\n";
+    cout << "          Proc = 'proc' 'id' '(' Parâmetros ')' ProcF\n";
 
     if(tk.categ == Category::Procedure){
-        printToken();
-        nextToken();
-        res = tipo();
-        if(res == ERRO) {return res;}
+        printAndNext();
         if(tk.categ == Category::Id){
             printToken();
             nextToken();
@@ -283,23 +280,17 @@ int Parser::listaId(){
     return res;
 }
 int Parser::listaIdR(){
-    int res = ERRO;
-
     if(tk.categ == Category::Vg){
-        cout << "          ListaIdR = ',' Id ListaIdR\n";
-        printToken();
-        nextToken();
+        printRule("ListaIdR = ',' Id ListaIdR");
+        printAndNext();
         if(tk.categ == Category::Id){
-            printToken();
-            nextToken();
-            res = id();
-            if (res == ERRO) return res;
+            if (id() == ERRO) return ERRO;
             return listaIdR();
         }else return ERRO;
     }
-    cout << "          ListaIdR = EPSILON\n";
-    
-    return res;
+
+    printRule("ListaIdR = EPSILON");
+    return OK;
 }
 int Parser::id(){
     int res = ERRO;
@@ -418,12 +409,9 @@ int Parser::bloco(){
     return res;
 }
 int Parser::listaSentencas(){
-    int res = ERRO;
-
     cout << "          ListaSentenças = Sentença ListaSentenças\n";
 
-    res = sentenca();
-    if(res == ERRO) return res;
+    if(sentenca() == ERRO) return ERRO;
 
     if(
             tk.categ == Category::If ||
@@ -433,12 +421,17 @@ int Parser::listaSentencas(){
             tk.categ == Category::Return ||
             tk.categ == Category::Input ||
             tk.categ == Category::Print ||
-            tk.categ == Category::Id
+            tk.categ == Category::Id||
+            tk.categ == Category::Integer ||
+            tk.categ == Category::Float ||
+            tk.categ == Category::Char ||
+            tk.categ == Category::String ||
+            tk.categ == Category::Boolean
             ){
         return listaSentencas();
     }
 
-    return res;
+    return OK;
 }
 int Parser::sentenca(){
 
@@ -471,6 +464,14 @@ int Parser::sentenca(){
             nextToken();
             return OK;
         }else return ERRO;
+    }else if(tk.categ == Category::Integer ||
+             tk.categ == Category::Float ||
+             tk.categ == Category::Char ||
+             tk.categ == Category::String ||
+             tk.categ == Category::Boolean ||
+             tk.categ == Category::Const){
+        printRule("Sentença = ListaVar");
+        return listaVar();
     }
 
     cout << "          Sentença = EPSILON\n";
@@ -698,16 +699,11 @@ int Parser::fReturn(){
     return res;
 }
 int Parser::atribuicao(){
-    int res = ERRO;
-
-    printRule("Atribuição = OpAtribuição ExprBool ';'");
+    printRule("Atribuição = OpAtribuição ExprBool");
 
     if(!printAndNext(Category::OpAtr)){return ERRO;}
-    res = exprBool();
-    if(res == ERRO) return res;
 
-    if(printAndNext(Category::PtVg)) return OK;
-    else return ERRO;
+    return exprBool();
 }
 int Parser::parametros(){
     int res = OK;
