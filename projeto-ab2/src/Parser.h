@@ -71,7 +71,7 @@ public:
     int termoAritm();
     int termoAritmR();
     int fatorAritm();
-    int fatorAtirmF();
+    int fatorAritmF();
     int listaArray();
     int listaArrayR();
     int opUnario();
@@ -103,6 +103,8 @@ public:
     bool cmpCateg(Category c);
 
     void printAndNext();
+
+    int termoBoolF();
 };
 
 

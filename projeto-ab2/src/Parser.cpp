@@ -38,8 +38,9 @@ int Parser::inicio(){
         if(res == ERRO) {return res;}
         if(tk.categ != Category::Eof) {return inicio();}
         else {return ERRO;}
-    }else return ERRO;
-    return res;
+    }else if(cmpCateg(Category::Eof)) return OK;
+
+    return ERRO;
 }
 int Parser::listaFunc(){
     int res = ERRO;
@@ -817,59 +818,185 @@ int Parser::tipo(){
     }else return ERRO;
 }
 int Parser::exprBool(){
-    int res = ERRO;
-    
-    return res;
+    printRule("ExprBool = TermoBool ExprBoolR");
+    if(termoBool() == ERRO) return ERRO;
+    return exprBoolR();
 }
 int Parser::exprBoolR(){
-    int res = ERRO;
-    
-    return res;
+    if(cmpCateg(Category::OpAnd) || cmpCateg(Category::OpOr)){
+        printRule("ExprBoolR = OpLogic TermoBool ExprBoolR");
+        if(opLogic() == ERRO) return ERRO;
+        if(termoBool() == ERRO) return ERRO;
+        return exprBoolR();
+    }
+
+    printRule("ExprBoolR = EPSILON");
+    return OK;
 }
 int Parser::termoBool(){
-    int res = ERRO;
-    
-    return res;
+    if(cmpCateg(Category::OpNot)){
+        printRule("TermoBool = '!' TermoBool");
+        printAndNext();
+
+        return termoBool();
+    } else if (
+            cmpCateg(Category::AbPar) ||
+            cmpCateg(Category::Id) ||
+            cmpCateg(Category::CteInt) ||
+            cmpCateg(Category::CteFloat) ||
+            cmpCateg(Category::CteChar) ||
+            cmpCateg(Category::CteBool) ||
+            cmpCateg(Category::CteStr) ||
+            cmpCateg(Category::AbCol)
+            ){
+        printRule("TermoBool = ExprConcat TermoBoolF");
+
+        if(exprConcat() == ERRO) return ERRO;
+        return termoBoolF();
+    } else return ERRO;
+
+}
+int Parser::termoBoolF() {
+    if(
+            cmpCateg(Category::OpEq)||
+            cmpCateg(Category::OpDifer)||
+            cmpCateg(Category::OpMaior)||
+            cmpCateg(Category::OpMaiorEq)||
+            cmpCateg(Category::OpMenor)||
+            cmpCateg(Category::OpMenorEq)
+            ){
+        printRule("TermoBoolF = OpRelac ExprConcat");
+        printAndNext();
+        return exprConcat();
+    }
+    printRule("TermoBoolF = EPSILON");
+    return OK;
 }
 int Parser::exprConcat(){
-    int res = ERRO;
-    
-    return res;
+    printRule("ExprConcat = ExprAritm ExprConcatR;");
+    if(exprAritm() == ERRO) return ERRO;
+    return exprConcatR();
 }
 int Parser::exprConcatR(){
-    int res = ERRO;
-    
-    return res;
+    if(cmpCateg(Category::OpConcat)){
+        printRule("ExprConcatR = OpConcat ExprAritm ExprConcatR");
+        printAndNext();
+        if(exprAritm() == ERRO) return ERRO;
+
+        return exprConcatR();
+    }
+
+    printRule("ExprConcatR = EPSILON");
+    return OK;
 }
 int Parser::exprAritm(){
-    int res = ERRO;
-    
-    return res;
+    if(termoAritm() == ERRO) return ERRO;
+    printRule("ExprAritm = TermoAritm ExprAritmR");
+    return exprAritmR();
 }
 int Parser::exprAritmR(){
-    int res = ERRO;
-    
-    return res;
+    if(cmpCateg(Category::OpMenos)||
+       cmpCateg(Category::OpMais)){
+        printRule("ExprAritmR = OpAritm TermoAritm ExprAritmR");
+        printAndNext();
+        if(termoAritm() == ERRO) return ERRO;
+
+        return exprAritmR();
+    }
+
+    printRule("ExprAritmR = EPSILON");
+    return OK;
 }
 int Parser::termoAritm(){
-    int res = ERRO;
-    
-    return res;
+    if(cmpCateg(Category::AbPar) ||
+       cmpCateg(Category::Id) ||
+       cmpCateg(Category::CteInt) ||
+       cmpCateg(Category::CteFloat) ||
+       cmpCateg(Category::CteChar) ||
+       cmpCateg(Category::CteBool) ||
+       cmpCateg(Category::CteStr) ||
+       cmpCateg(Category::AbCol)){
+        printRule("TermoAritm = FatorAritm TermoAritmR");
+        if(fatorAritm() == ERRO) return ERRO;
+        return termoAritmR();
+    }else return ERRO;
 }
 int Parser::termoAritmR(){
-    int res = ERRO;
-    
-    return res;
+    if( cmpCateg(Category::OpMod)||
+        cmpCateg(Category::OpMult)||
+        cmpCateg(Category::OpDiv)){
+        printRule("TermoAritmR = OpMult FatorAritm TermoAritmR");
+        printAndNext();
+
+        if(fatorAritm() == ERRO) return ERRO;
+        return termoAritmR();
+    }
+
+    printRule("TermoAritmR = EPSILON");
+    return OK;
 }
 int Parser::fatorAritm(){
-    int res = ERRO;
-    
-    return res;
+    if(cmpCateg(Category::AbPar)){
+        printRule("FatorAritm = '(' FatorAritmF");
+        printAndNext();
+        return fatorAritmF();
+    }else if(cmpCateg(Category::Id)){
+        printRule("FatorAritm = Id");
+        return id();
+    }else if(cmpCateg(Category::CteInt)){
+        printRule("FatorAritm = CteInt");
+        printAndNext();
+        return OK;
+    }else if(cmpCateg(Category::CteFloat)){
+        printRule("FatorAritm = CteFloat");
+        printAndNext();
+        return OK;
+    }else if(cmpCateg(Category::CteChar)){
+        printRule("FatorAritm = CteChar");
+        printAndNext();
+        return OK;
+    }else if(cmpCateg(Category::CteBool)){
+        printRule("FatorAritm = CteBool");
+        printAndNext();
+        return OK;
+    }else if(cmpCateg(Category::CteStr)){
+        printRule("FatorAritm = CteStr");
+        printAndNext();
+        return OK;
+    }else if(cmpCateg(Category::AbCol)){
+        printRule("FatorAritm = '[' ListaArray ']'");
+        printAndNext();
+        if(listaArray() ==ERRO) return ERRO;
+        if(!printAndNext(Category::FeCol)) return ERRO;
+        return OK;
+    }
 }
-int Parser::fatorAtirmF(){
-    int res = ERRO;
-    
-    return res;
+int Parser::fatorAritmF(){
+    if(tk.categ == Category::Integer ||
+       tk.categ == Category::Float ||
+       tk.categ == Category::Char ||
+       tk.categ == Category::String ||
+       tk.categ == Category::Boolean){
+        printRule("FatorAtirmF = Tipo ')' ExprBool");
+        if(tipo() ==ERRO)return ERRO;
+
+        if(!printAndNext(Category::FePar)) return ERRO;
+
+        return exprBool();
+    }else if(tk.categ == Category ::OpNot ||
+             tk.categ == Category ::OpMenos ||
+             tk.categ == Category ::Id ||
+             tk.categ == Category ::CteInt ||
+             tk.categ == Category ::CteFloat ||
+             tk.categ == Category ::CteBool ||
+             tk.categ == Category ::CteStr ||
+             tk.categ == Category ::AbCol){
+        printRule("FatorAtirmF = ExprBool ')'");
+        if(exprBool() == ERRO) return ERRO;
+
+        if(printAndNext(Category::FePar)) return OK;
+        else return ERRO;
+    }
 }
 int Parser::listaArray(){
     int res = ERRO;
@@ -883,107 +1010,107 @@ int Parser::listaArrayR(){
 }
 int Parser::opUnario(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opRelac(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opLogic(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opAdit(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMult(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opEq(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMaior(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMenor(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMaiorEq(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMenorEq(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opDifer(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opAnd(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opOr(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opNot(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMais(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMenos(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opAster(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opDiv(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opMod(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opAtr(){
     int res = ERRO;
-    
+
     return res;
 }
 int Parser::opConcat(){
     int res = ERRO;
-    
+
     return res;
 }
 
