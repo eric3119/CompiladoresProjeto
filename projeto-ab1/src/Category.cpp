@@ -12,6 +12,7 @@ char* categ_name(Category anEnum){
         case Category::String:return (char*)"String";
         case Category::Boolean:return (char*)"Boolean";
         case Category::Procedure:return (char*)"Procedure";
+        case Category::Func:return (char*)"Func";
         case Category::Return:return (char*)"Return";
         case Category::Break:return (char*)"Break";
         case Category::AbPar:return (char*)"AbPar";

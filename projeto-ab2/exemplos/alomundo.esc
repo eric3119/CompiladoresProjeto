@@ -1,4 +1,4 @@
-int init(){
+func int init(){
     print "Alô mundo";
     return 0;
 }

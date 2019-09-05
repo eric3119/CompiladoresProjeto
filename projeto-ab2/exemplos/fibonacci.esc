@@ -18,7 +18,7 @@ proc fibonacci(int valor_limite){
     }
 }
 
-int init(){
+func int init(){
     int limite;
 
     print "Digite um valor limite: ";

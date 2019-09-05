@@ -6,70 +6,6 @@ INSTITUTO DE COMPUTAÇÃO - IC
 
 
 
-
-
-
-
-ERIC DOS SANTOS COELHO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-ESPECIFICAÇÃO DA LINGUAGEM ESC
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-MACEIÓ
-2019
 ERIC DOS SANTOS COELHO
 
 
@@ -123,53 +59,39 @@ Trabalho apresentado à disciplina de Compiladores, ministrada pelo professor Al
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 MACEIÓ
-2019
+2019.1
 Sumário
-Estrutura geral de um programa        4
-Nomes        4
-Tipos e estruturas de dados        4
-Forma de declaração        4
-Operadores        5
-Constantes literais        5
-Declarações        5
-Cadeias de caracteres        5
-Arranjos        5
-Equivalência de tipos e coerção        6
-Atribuição e expressões        6
-Precedência        6
-Associatividade        6
-Sintaxe e exemplo de estruturas de controle        6
-Comando de seleção        6
-Comandos de iteração        7
-Controle lógico        7
-Controle por contador        7
-Desvio incondicional        7
-Instruções de entrada e saída        7
-Subprogramas        8
-Métodos de passagem de parâmetros        8
-Exemplos        9
-Alô mundo        9
-Série de Fibonacci        9
-Shell sort        10
-Especificação dos tokens        11
-Enumeração com as categorias dos tokens        11
-Categorias simbólicas e expressões regulares        11
-Expressões regulares auxiliares        13
+Estrutura geral de um programa        3
+Nomes        3
+Tipos e estruturas de dados        3
+Forma de declaração        3
+Operadores        4
+Constantes literais        4
+Declarações        4
+Cadeias de caracteres        4
+Arranjos        4
+Equivalência de tipos e coerção        4
+Atribuição e expressões        5
+Precedência        5
+Associatividade        5
+Sintaxe e exemplo de estruturas de controle        5
+Comando de seleção        5
+Comandos de iteração        6
+Controle lógico        6
+Controle por contador        6
+Desvio incondicional        6
+Instruções de entrada e saída        6
+Subprogramas        7
+Métodos de passagem de parâmetros        7
+Exemplos        8
+Alô mundo        8
+Série de Fibonacci        8
+Shell sort        9
+Especificação dos tokens        10
+Enumeração com as categorias dos tokens        10
+Categorias simbólicas e expressões regulares        10
+Expressões regulares auxiliares        12
 
 
 ________________
@@ -178,7 +100,7 @@ ________________
 Estrutura geral de um programa
 
 
-A linguagem admite escopo global e as variáveis são declaradas ao especificar o tipo e o nome em qualquer parte do programa. Funções são declaradas especificando o tipo de retorno e a lista de parâmetros.
+A linguagem admite escopo global e as variáveis são declaradas ao especificar o tipo e o nome em qualquer parte do programa. Funções são precedidas da palavra ‘func’ e são declaradas especificando o tipo de retorno, o nome e a lista de parâmetros.
 A execução é iniciada a partir da função init() e as funções são definidas em qualquer parte especificando o tipo de retorno, o nome e a lista de parâmetros.
 Nomes
 Os nomes são sensíveis à caixa e tem tamanho máximo de 100 caracteres alfanuméricos iniciando com uma letra.
@@ -226,8 +148,8 @@ Aritméticos
 	
 
 Constantes literais
-int                -?(\d+)
-float                -?(\d+)\.(\d+)
+int                (\d+)
+float                (\d+)\.(\d+)
 char                 ‘.’
 bool                 (true)|(false)
 string         “(.*)”
@@ -244,31 +166,26 @@ Os elementos dos arranjos são referenciados por índices listados entre colchet
 Equivalência de tipos e coerção
 A equivalência de tipos é por nome e é permitido conversões de tipo explícitas (cast). A coerção admitida é de int para float.
 Atribuição e expressões
-O operador de atribuição é o símbolo ‘=’ onde a expressão do lado direito é atribuída à variável alvo do lado esquerdo. Os tipos das operações são definidos de acordo com a variável alvo.
+A atribuição é dada pelo comando var_alvo = expressao onde a expressão do lado direito é atribuída à variável alvo do lado esquerdo. Os tipos das operações são definidos de acordo com a variável alvo.
         Os operadores and e or  são avaliados em curto-circuito.
-
-
 Precedência
 Precedência da mais alta para a mais baixa
 !, – unário
         *, /, %
         + e – binários
-        <, >, <=, >=
-==, !=
+        ++
+        <, >, <=, >=, ==, !=
 and, or
-= atribuição        
 Associatividade
         Esquerda:         *, /, %, + e – binários
                         <, >, <=, >=, ==, !=
                         and, or
-Direita:         !, – unário, = atribuição        
+Direita:         !, – unário        
 Sintaxe e exemplo de estruturas de controle
 Todos os blocos devem possuir chaves ({})
 Comando de seleção
                         
         O comando de seleção é o if que seleciona um caminho baseado em cada condição. Para mais de uma condição é usado o else if e o bloco opcional else que é selecionado caso nenhuma das condições sejam atendidas.
-
-
 
 
         if(condição) {
@@ -435,7 +352,7 @@ Enumeração com as categorias dos tokens
 enum class Category {
     Init=1, Integer, Float, Char, String, Boolean,
     PtVg, Pt2, Vg, AbPar, FePar, AbCol, FeCol, AbChav, FeChav,
-    Procedure, Return, Break,
+    Procedure, Func, Return, Break,
     Input, Print,
     For, In, Step, While, If, ElseIf, Else,
     OpEq,OpMaior,OpMenor,OpMaiorEq,OpMenorEq,OpDifer,OpAnd,OpOr,OpNot,
@@ -481,6 +398,8 @@ Init
 	}
 	Procedure
 	proc
+	Func
+	func
 	Return
 	return
 	Break

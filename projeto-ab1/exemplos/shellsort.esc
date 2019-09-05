@@ -21,7 +21,7 @@ proc shellSort(int vet[], int size){
     }
 }
 
-int init(){
+func int init(){
 
     int i, tam;
 

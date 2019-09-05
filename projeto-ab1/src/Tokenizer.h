@@ -29,7 +29,7 @@ private:
     const std::vector<std::string> RegExList = {
             "init", "int", "float", "char", "string", "bool",
             ";", ":", ",", "\\(", "\\)", "\\[", "\\]", "\\{", "\\}",
-            "proc", "return", "break",
+            "proc", "func", "return", "break",
             "input", "print",
             "for", "in", "step", "while", "if", "else if", "else",
             "==", ">", "<", ">=", "<=", "!=", "and", "or", "!",
