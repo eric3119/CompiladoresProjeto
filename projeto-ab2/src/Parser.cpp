@@ -790,7 +790,13 @@ bool Parser::printAndNext(Category c){
         nextToken();
         return true;
     }
+    printErr(c);
     return false;
+}
+
+void Parser::printErr(Category c){
+    cout << "\tErro: '" << tk.lex << "' na posição (" << tk.line << ", " << tk.col << ")" << endl
+         << "\tEsperado '" << categ_lex(c) << "'\n";
 }
 
 bool Parser::cmpCateg(Category c){
