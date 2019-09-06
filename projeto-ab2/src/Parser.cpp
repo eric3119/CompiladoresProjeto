@@ -2,230 +2,164 @@
 
 using namespace std;
 
-void Parser::parse() {
-    tk = tokenizer.nextToken();
-    int res = inicio();
-    cout << "\nParse " << (res == OK? "OK":"ERROR") << endl;
-}
-
 Parser::Parser(const std::string& filename) : tokenizer(filename) {}
 
+void Parser::parse() {
+    tk = tokenizer.nextToken();
+    cout << endl << (inicio() == OK? "Parse OK":"Parse ERROR") << endl;
+}
+
 int Parser::inicio(){
-    int res = ERRO;
+    if(cmpCateg(Category::Func)){
+        printRule("Início = ListaFunc Início");
 
-    if(tk.categ == Category::Func){
-        cout << "          Início = ListaFunc Início\n";
-        res = listaFunc();
-        if(res == ERRO) {return res;}
-        if(tk.categ != Category::Eof) {return inicio();}
-        else {return ERRO;}
-    }else if(tk.categ == Category::Procedure){
-        cout << "          Início = ListaProc Início\n";
-        res = listaProc();
-        if(res == ERRO) {return res;}
-        if(tk.categ != Category::Eof) {return inicio();}
-        else {return ERRO;}
+        if(listaFunc() == ERRO) return ERRO;
+        return inicio();
+    }else if(cmpCateg(Category::Procedure)){
+        printRule("Início = ListaProc Início");
+
+        if(listaProc() == ERRO) return ERRO;
+        return inicio();
     }else if(
-        tk.categ == Category::Integer ||
-        tk.categ == Category::Float ||
-        tk.categ == Category::Char ||
-        tk.categ == Category::String ||
-        tk.categ == Category::Boolean ||
-        tk.categ == Category::Const
+        cmpCateg(Category::Integer) ||
+        cmpCateg(Category::Float) ||
+        cmpCateg(Category::Char) ||
+        cmpCateg(Category::String) ||
+        cmpCateg(Category::Boolean) ||
+        cmpCateg(Category::Const)
         ){
-        cout << "          Início = ListaVar Início\n";
-        res = listaVar();
-        if(res == ERRO) {return res;}
-        if(tk.categ != Category::Eof) {return inicio();}
-        else {return ERRO;}
-    }else if(cmpCateg(Category::Eof)) return OK;
+        printRule("Início = ListaVar Início");
 
-    return ERRO;
+        if(listaVar() == ERRO) return ERRO;
+        return inicio();
+    }else if(cmpCateg(Category::Eof)){
+        printRule("Início = EPSILON");
+        return OK;
+    } else return ERRO;
 }
 int Parser::listaFunc(){
-    int res = ERRO;
-    if(tk.categ == Category::Func){
-        cout << "          ListaFunc = Função ListaFunc\n";
-        res = funcao();
-        if(res == ERRO) {return res;}
-        if(tk.categ == Category::Func) {return funcao();}
-        else {return OK;}
+    if(cmpCateg(Category::Func)){
+        printRule("ListaFunc = Função ListaFunc");
+        if(funcao() == ERRO) return ERRO;
+        return listaFunc();
     }
-    return res;
+
+    printRule("ListaFunc = EPSILON");
+    return OK;
 }
 int Parser::listaProc(){
-    int res = ERRO;
+    if(cmpCateg(Category::Procedure)){
+        printRule("ListaProc = Proc ListaProc");
 
-    if(tk.categ == Category::Procedure){
-        cout << "          ListaProc = Proc ListaProc\n";
-        res = proc();
-        if(res == ERRO) {return res;}
-        if(tk.categ == Category::Procedure) {return proc();}
-        else {return OK;}
+        if(proc() == ERRO) return ERRO;
+        return listaProc();
     }
 
-    return res;
+    printRule("ListaProc = EPSILON");
+    return OK;
 }
 int Parser::listaVar(){
-    int res = ERRO;
-
     if(
-            tk.categ == Category::Integer ||
-            tk.categ == Category::Float ||
-            tk.categ == Category::Char ||
-            tk.categ == Category::String ||
-            tk.categ == Category::Boolean ||
-            tk.categ == Category::Const
+            cmpCateg(Category::Integer) ||
+            cmpCateg(Category::Float) ||
+            cmpCateg(Category::Char) ||
+            cmpCateg(Category::String) ||
+            cmpCateg(Category::Boolean) ||
+            cmpCateg(Category::Const)
             ){
-        cout << "          ListaVar = Variável ListaVar\n";
-        res = variavel();
-        if(res == ERRO) {return res;}
-        if(
-                tk.categ == Category::Integer ||
-                tk.categ == Category::Float ||
-                tk.categ == Category::Char ||
-                tk.categ == Category::String ||
-                tk.categ == Category::Boolean ||
-                tk.categ == Category::Const
-                ) {return variavel();}
-        else {return OK;}
+        printRule("ListaVar = Variável ListaVar");
+
+        if(variavel() == ERRO) return ERRO;
+        return listaVar();
     }
 
-    return res;
+    printRule("ListaVar = EPSILON");
+    return OK;
 }
 int Parser::funcao(){
-    int res = ERRO;
-    cout << "          Função = 'func' Tipo 'id' '(' Parâmetros ')' FunçãoF\n";
-
-    if(tk.categ == Category::Func){
+    if(cmpCateg(Category::Func)){
+        printRule("Função = 'func' Tipo 'id' '(' Parâmetros ')' FunçãoF");
         printToken();
         nextToken();
-        res = tipo();
-        if(res == ERRO) {return res;}
-        if(tk.categ == Category::Id){
-            printToken();
-            nextToken();
-            if(tk.categ == Category::AbPar){
-                printToken();
-                nextToken();
-                res = parametros();
-                if(res == ERRO) {return res;}
-                if(tk.categ == Category::FePar){
-                    printToken();
-                    nextToken();
-                    return funcaoF();
-                }else return ERRO;
-            }else return ERRO;
-        }else return ERRO;
-    } else return ERRO;
 
-    return res;
+        if(tipo() == ERRO) return ERRO;
+
+        if(!printAndNext(Category::Id)) return ERRO;
+        if(!printAndNext(Category::AbPar)) return ERRO;
+
+        if(parametros() == ERRO) return ERRO;
+        if(!printAndNext(Category::FePar)) return ERRO;
+
+        return funcaoF();
+    } else return ERRO;
 }
 int Parser::funcaoF(){
-    int res = ERRO;
-
-    if(tk.categ == Category::AbChav){
-        cout << "         FunçãoF = Bloco\n";
+    if(cmpCateg(Category::AbChav)){
+        printRule("FunçãoF = Bloco");
         return bloco();
-    }else if(tk.categ == Category::PtVg){
-        cout << "         FunçãoF = ';'\n";
-        printToken();
-        nextToken();
+    }else if(cmpCateg(Category::PtVg)){
+        printRule("FunçãoF = ';'");
+        printAndNext();
         return OK;
     }else return ERRO;
-
-    return res;
 }
 int Parser::proc(){
-    int res = ERRO;
 
-    cout << "          Proc = 'proc' 'id' '(' Parâmetros ')' ProcF\n";
-
-    if(tk.categ == Category::Procedure){
+    if(cmpCateg(Category::Procedure)){
+        printRule("Proc = 'proc' 'id' '(' Parâmetros ')' ProcF");
         printAndNext();
-        if(tk.categ == Category::Id){
-            printToken();
-            nextToken();
-            if(tk.categ == Category::AbPar){
-                printToken();
-                nextToken();
-                res = parametros();
-                if(res == ERRO) {return res;}
-                if(tk.categ == Category::FePar){
-                    printToken();
-                    nextToken();
-                    return procF();
-                }else return ERRO;
-            }else return ERRO;
-        }else return ERRO;
+        if(!printAndNext(Category::Id)) return ERRO;
+        if(!printAndNext(Category::AbPar)) return ERRO;
+
+        if(parametros() == ERRO) return ERRO;
+
+        if(!printAndNext(Category::FePar)) return ERRO;
+
+        return procF();
     } else return ERRO;
-    
-    return res;
 }
 int Parser::procF(){
-    int res = ERRO;
-
-    if(tk.categ == Category::AbChav){
-        cout << "         ProcF = Bloco\n";
+    if(cmpCateg(Category::AbChav)){
+        printRule("ProcF = Bloco");
         return bloco();
-    }else if(tk.categ == Category::PtVg){
-        cout << "         ProcF = ';'\n";
-        printToken();
-        nextToken();
+    }else if(cmpCateg(Category::PtVg)){
+        printRule("ProcF = ';'");
+        printAndNext();
         return OK;
     }else return ERRO;
-
-    return res;
 }
 int Parser::variavel(){
-    int res = ERRO;
+    if(cmpCateg(Category::Const)){
+        printRule("Variável = 'const' Tipo ListaAtr ';'");
+        printAndNext();
 
-    if(tk.categ == Category::Const){
-        cout << "          Variável = 'const' Tipo ListaAtr ';'\n";
-        if (tk.categ == Category::Const){
-            printToken();
-            nextToken();
+        if(tipo() == ERRO) return ERRO;
+        if(listaAtr() == ERRO) return ERRO;
 
-            res = tipo();
-            if (res == ERRO) return res;
+        if(!printAndNext(Category::PtVg)) return ERRO;
 
-            res = listaAtr();
-            if (res == ERRO) return res;
-
-            if(tk.categ == Category::PtVg){
-                printToken();
-                nextToken();
-                return OK;
-            }else return ERRO;
-        }
+        return OK;
     }else if(
-            tk.categ == Category::Integer ||
-            tk.categ == Category::Float ||
-            tk.categ == Category::Char ||
-            tk.categ == Category::String ||
-            tk.categ == Category::Boolean
+            cmpCateg(Category::Integer) ||
+            cmpCateg(Category::Float) ||
+            cmpCateg(Category::Char) ||
+            cmpCateg(Category::String) ||
+            cmpCateg(Category::Boolean)
             ){
-        cout << "          Variável = Tipo ListaId ';'\n";
-        res = tipo();
-        if (res == ERRO) return res;
+        printRule("Variável = Tipo ListaId ';'");
 
-        res = listaId();
-        if (res == ERRO) return res;
+        if (tipo() == ERRO) return ERRO;
+        if (listaId() == ERRO) return ERRO;
+        if (!printAndNext(Category::PtVg)) return ERRO;
 
-        if(tk.categ == Category::PtVg){
-            printToken();
-            nextToken();
-            return OK;
-        }else return ERRO;
+        return OK;
     }else return ERRO;
-
-    return res;
 }
 int Parser::listaAtr(){
     int res = ERRO;
 
-    if(tk.categ == Category::Id){
-        cout << "          ListaAtr = 'id' ListaAtrF ListaAtrR\n";
+    if(cmpCateg(Category::Id)){
+        printRule("ListaAtr = 'id' ListaAtrF ListaAtrR");
         printToken();
         nextToken();
         res = listaAtrF();
@@ -237,11 +171,11 @@ int Parser::listaAtr(){
 int Parser::listaAtrR(){
     int res = OK;
 
-    if(tk.categ == Category::Vg){
-        cout << "          ListaAtrR = ',' 'id' ListaAtrF ListaAtrR\n";
+    if(cmpCateg(Category::Vg)){
+        printRule("ListaAtrR = ',' 'id' ListaAtrF ListaAtrR");
         printToken();
         nextToken();
-        if(tk.categ == Category::Id){
+        if(cmpCateg(Category::Id)){
             printToken();
             nextToken();
             res = listaAtrF();
@@ -249,17 +183,17 @@ int Parser::listaAtrR(){
             return listaAtrR();
         }else return ERRO;
     }
-    cout << "          ListaAtrR = EPSILON\n";
+    printRule("ListaAtrR = EPSILON");
     return res;
 }
 int Parser::listaAtrF(){
     int res = ERRO;
 
-    if(tk.categ == Category::OpAtr){
-        cout << "          ListaAtrF = Atribuição\n";
+    if(cmpCateg(Category::OpAtr)){
+        printRule("ListaAtrF = Atribuição");
         return atribuicao();
-    }else if(tk.categ == Category::AbCol){
-        cout << "          ListaAtrF = Array Atribuição\n";
+    }else if(cmpCateg(Category::AbCol)){
+        printRule("ListaAtrF = Array Atribuição");
         res = array();
         if (res == ERRO) return res;
         return atribuicao();
@@ -270,8 +204,8 @@ int Parser::listaAtrF(){
 int Parser::listaId(){
     int res = ERRO;
 
-    if(tk.categ == Category::Id){
-        cout << "          ListaId = Id ListaIdR\n";
+    if(cmpCateg(Category::Id)){
+        printRule("ListaId = Id ListaIdR");
         res = id();
         if(res == ERRO) return res;
         return listaIdR();
@@ -280,10 +214,10 @@ int Parser::listaId(){
     return res;
 }
 int Parser::listaIdR(){
-    if(tk.categ == Category::Vg){
+    if(cmpCateg(Category::Vg)){
         printRule("ListaIdR = ',' Id ListaIdR");
         printAndNext();
-        if(tk.categ == Category::Id){
+        if(cmpCateg(Category::Id)){
             if (id() == ERRO) return ERRO;
             return listaIdR();
         }else return ERRO;
@@ -295,62 +229,62 @@ int Parser::listaIdR(){
 int Parser::id(){
     int res = ERRO;
 
-    if(tk.categ == Category::Id){
-        cout << "          Id = 'id' IdF\n";
+    if(cmpCateg(Category::Id)){
+        printRule("Id = 'id' IdF");
         printToken();
         nextToken();
 
         return idF();
     }
-    
+
     return res;
 }
 int Parser::idF(){
     int res = OK;
 
-    if(tk.categ == Category::AbPar){
-        cout << "          IdF = '(' Argumentos ')'\n";
+    if(cmpCateg(Category::AbPar)){
+        printRule("IdF = '(' Argumentos ')'");
         printToken();
         nextToken();
         res = argumentos();
         if (res == ERRO) return res;
 
-        if(tk.categ == Category::FePar){
+        if(cmpCateg(Category::FePar)){
             printToken();
             nextToken();
 
             return OK;
         } else return ERRO;
-    }else if(tk.categ == Category::OpAtr){
-        cout << "          IdF = Atribuição\n";
+    }else if(cmpCateg(Category::OpAtr)){
+        printRule("IdF = Atribuição");
         return atribuicao();
-    }else if(tk.categ == Category::AbCol){
-        cout << "          IdF = Array IdFF\n";
+    }else if(cmpCateg(Category::AbCol)){
+        printRule("IdF = Array IdFF");
         res = array();
         if(res == ERRO) return res;
 
         return idFF();
     }
 
-    cout << "          IdF = EPSILON\n";
+    printRule("IdF = EPSILON");
 
     return res;
 }
 int Parser::idFF(){
 
-    if(tk.categ == Category::OpAtr){
-        cout << "          IdFF = Atribuição\n";
+    if(cmpCateg(Category::OpAtr)){
+        printRule("IdFF = Atribuição");
         return atribuicao();
     }
 
-    cout << "          IdFF = EPSILON\n";
+    printRule("IdFF = EPSILON");
     return OK;
 }
 int Parser::array(){
     int res = ERRO;
 
-    if(tk.categ == Category::AbCol){
-        cout << "          Array  = '[' ArrayF\n";
+    if(cmpCateg(Category::AbCol)){
+        printRule("Array  = '[' ArrayF");
         printToken();
         nextToken();
 
@@ -362,25 +296,25 @@ int Parser::array(){
 int Parser::arrayF(){
     int res = ERRO;
 
-    if(tk.categ == Category ::FeCol){
-        cout << "          ArrayF = ']'\n";
+    if(cmpCateg(Category ::FeCol)){
+        printRule("ArrayF = ']'");
         printToken();
         nextToken();
     }else if(
-            tk.categ == Category ::OpNot ||
-            tk.categ == Category ::OpMenos ||
-            tk.categ == Category ::Id ||
-            tk.categ == Category ::CteInt ||
-            tk.categ == Category ::CteFloat ||
-            tk.categ == Category ::CteBool ||
-            tk.categ == Category ::CteStr ||
-            tk.categ == Category ::AbCol
+            cmpCateg(Category ::OpNot) ||
+            cmpCateg(Category ::OpMenos) ||
+            cmpCateg(Category ::Id) ||
+            cmpCateg(Category ::CteInt) ||
+            cmpCateg(Category ::CteFloat) ||
+            cmpCateg(Category ::CteBool) ||
+            cmpCateg(Category ::CteStr) ||
+            cmpCateg(Category ::AbCol)
             ){
-        cout << "          ArrayF = ExprBool ']'\n";
+        printRule("ArrayF = ExprBool ']'");
         res = exprBool();
         if(res == ERRO) return res;
 
-        if(tk.categ == Category::FeCol){
+        if(cmpCateg(Category::FeCol)){
             printToken();
             nextToken();
             return OK;
@@ -392,41 +326,41 @@ int Parser::arrayF(){
 int Parser::bloco(){
     int res = ERRO;
 
-    if(tk.categ == Category::AbChav){
-        cout << "          Bloco = '{' ListaSentenças '}'\n";
+    if(cmpCateg(Category::AbChav)){
+        printRule("Bloco = '{' ListaSentenças '}'");
         printToken();
         nextToken();
         res = listaSentencas();
         if (res == ERRO) return res;
 
-        if(tk.categ == Category::FeChav){
+        if(cmpCateg(Category::FeChav)){
             printToken();
             nextToken();
             return OK;
         }else return ERRO;
     }
-    
+
     return res;
 }
 int Parser::listaSentencas(){
-    cout << "          ListaSentenças = Sentença ListaSentenças\n";
+    printRule("ListaSentenças = Sentença ListaSentenças");
 
     if(sentenca() == ERRO) return ERRO;
 
     if(
-            tk.categ == Category::If ||
-            tk.categ == Category::While ||
-            tk.categ == Category::For ||
-            tk.categ == Category::Break ||
-            tk.categ == Category::Return ||
-            tk.categ == Category::Input ||
-            tk.categ == Category::Print ||
-            tk.categ == Category::Id||
-            tk.categ == Category::Integer ||
-            tk.categ == Category::Float ||
-            tk.categ == Category::Char ||
-            tk.categ == Category::String ||
-            tk.categ == Category::Boolean
+            cmpCateg(Category::If)||
+            cmpCateg(Category::While) ||
+            cmpCateg(Category::For) ||
+            cmpCateg(Category::Break) ||
+            cmpCateg(Category::Return) ||
+            cmpCateg(Category::Input) ||
+            cmpCateg(Category::Print) ||
+            cmpCateg(Category::Id) ||
+            cmpCateg(Category::Integer) ||
+            cmpCateg(Category::Float) ||
+            cmpCateg(Category::Char) ||
+            cmpCateg(Category::String) ||
+            cmpCateg(Category::Boolean)
             ){
         return listaSentencas();
     }
@@ -435,60 +369,60 @@ int Parser::listaSentencas(){
 }
 int Parser::sentenca(){
 
-    if(tk.categ == Category::If){
-        cout << "          Sentença = If\n";
+    if(cmpCateg(Category::If)){
+        printRule("Sentença = If");
         return fIf();
-    } else if(tk.categ == Category::While){
-        cout << "          Sentença = While\n";
+    } else if(cmpCateg(Category::While)){
+        printRule("Sentença = While");
         return fWhile();
-    } else if(tk.categ == Category::For){
-        cout << "          Sentença = For\n";
+    } else if(cmpCateg(Category::For)){
+        printRule("Sentença = For");
         return fFor();
-    } else if(tk.categ == Category::Break){
-        cout << "          Sentença = Desvio\n";
+    } else if(cmpCateg(Category::Break)){
+        printRule("Sentença = Desvio");
         return desvio();
-    }else if(tk.categ == Category::Return){
-        cout << "          Sentença = Return\n";
+    }else if(cmpCateg(Category::Return)){
+        printRule("Sentença = Return");
         return fReturn();
-    }else if(tk.categ == Category::Input){
-        cout << "          Sentença = Entrada\n";
+    }else if(cmpCateg(Category::Input)){
+        printRule("Sentença = Entrada");
         return entrada();
-    }else if(tk.categ == Category::Print){
-        cout << "          Sentença = Saída\n";
+    }else if(cmpCateg(Category::Print)){
+        printRule("Sentença = Saída");
         return saida();
-    }else if(tk.categ == Category::Id){
-        cout << "          Sentença = Id ';'\n";
+    }else if(cmpCateg(Category::Id)){
+        printRule("Sentença = Id ';'");
         if(id() == ERRO) return ERRO;
-        if(tk.categ == Category::PtVg){
+        if(cmpCateg(Category::PtVg)){
             printToken();
             nextToken();
             return OK;
         }else return ERRO;
-    }else if(tk.categ == Category::Integer ||
-             tk.categ == Category::Float ||
-             tk.categ == Category::Char ||
-             tk.categ == Category::String ||
-             tk.categ == Category::Boolean ||
-             tk.categ == Category::Const){
+    }else if(cmpCateg(Category::Integer) ||
+             cmpCateg(Category::Float) ||
+             cmpCateg(Category::Char) ||
+             cmpCateg(Category::String) ||
+             cmpCateg(Category::Boolean) ||
+             cmpCateg(Category::Const)){
         printRule("Sentença = ListaVar");
         return listaVar();
     }
 
-    cout << "          Sentença = EPSILON\n";
+    printRule("Sentença = EPSILON");
     return OK;
 }
 int Parser::entrada(){
     int res = ERRO;
 
-    cout << "          Entrada = 'input' Argumentos ';'\n";
+    printRule("Entrada = 'input' Argumentos ';'");
 
-    if(tk.categ == Category::Input){
+    if(cmpCateg(Category::Input)){
         printToken();
         nextToken();
         res = argumentos();
         if(res == ERRO) return res;
 
-        if(tk.categ == Category::PtVg){
+        if(cmpCateg(Category::PtVg)){
             printToken();
             nextToken();
             return OK;
@@ -500,11 +434,11 @@ int Parser::entrada(){
 int Parser::saida(){
     int res = ERRO;
 
-    if(tk.categ == Category::Print){
-        cout << "          Saída = 'print' CteStr Argumentos ';'\n";
+    if(cmpCateg(Category::Print)){
+        printRule("Saída = 'print' CteStr Argumentos ';'");
         printToken();
         nextToken();
-        if(tk.categ == Category::CteStr){
+        if(cmpCateg(Category::CteStr)){
             printToken();
             nextToken();
         }else return ERRO;
@@ -512,23 +446,23 @@ int Parser::saida(){
         res = argumentos();
         if(res == ERRO) return res;
 
-        if(tk.categ == Category::PtVg){
+        if(cmpCateg(Category::PtVg)){
             printToken();
             nextToken();
             return OK;
         }else return ERRO;
     }else return ERRO;
-    
+
     return res;
 }
 int Parser::fIf(){
     int res = ERRO;
 
-    if(tk.categ == Category::If){
-        cout << "          If    = 'if' '(' ExprBool ')' Bloco ElseIf Else\n";
+    if(cmpCateg(Category::If)){
+        printRule("If    = 'if' '(' ExprBool ')' Bloco ElseIf Else");
         printToken();
         nextToken();
-        if(tk.categ == Category::AbPar){
+        if(cmpCateg(Category::AbPar)){
             printToken();
             nextToken();
         }else return ERRO;
@@ -536,7 +470,7 @@ int Parser::fIf(){
         res = exprBool();
         if(res == ERRO) return res;
 
-        if(tk.categ == Category::FePar){
+        if(cmpCateg(Category::FePar)){
             printToken();
             nextToken();
         }else return ERRO;
@@ -547,14 +481,14 @@ int Parser::fIf(){
         if(res == ERRO) return res;
         return fElse();
     }
-    
+
     return res;
 }
 int Parser::fElseIf(){
     int res = OK;
 
-    if(tk.categ == Category::ElseIf){
-        cout << "          ElseIf = 'else if' '(' ExprBool ')' Bloco ElseIf\n";
+    if(cmpCateg(Category::ElseIf)){
+        printRule("ElseIf = 'else if' '(' ExprBool ')' Bloco ElseIf");
         printToken();
         nextToken();
         if(tk.categ == Category::AbPar){
@@ -575,28 +509,28 @@ int Parser::fElseIf(){
         return fElseIf();
     }
 
-    cout << "          ElseIf = EPSILON\n";
+    printRule("ElseIf = EPSILON");
     return res;
 }
 int Parser::fElse(){
     int res = OK;
 
-    if(tk.categ == Category::Else){
-        cout << "          Else = 'else' Bloco\n";
+    if(cmpCateg(Category::Else)){
+        printRule("Else = 'else' Bloco");
         printToken();
         nextToken();
 
         return bloco();
     }
 
-    cout << "          Else = EPSILON\n";
+    printRule("Else = EPSILON");
     return res;
 }
 int Parser::fWhile(){
     int res = ERRO;
 
-    if(tk.categ == Category::While){
-        cout << "          While = 'while' '(' ExprBool ')' Bloco\n";
+    if(cmpCateg(Category::While)){
+        printRule("While = 'while' '(' ExprBool ')' Bloco");
 
         printToken();
         nextToken();
@@ -614,14 +548,14 @@ int Parser::fWhile(){
         }else return ERRO;
         return bloco();
     }
-    
+
     return res;
 }
 int Parser::fFor(){
     int res = ERRO;
 
-    if(tk.categ == Category::For){
-        cout << "          For ='for' Id 'in' '(' ExprBool ',' ExprBool ')' 'step' ExprBool Bloco\n";
+    if(cmpCateg(Category::For)){
+        printRule("For ='for' Id 'in' '(' ExprBool ',' ExprBool ')' 'step' ExprBool Bloco");
         printToken();
         nextToken();
 
@@ -670,7 +604,7 @@ int Parser::fFor(){
 int Parser::desvio(){
     int res = ERRO;
 
-    if(tk.categ == Category::Break){
+    if(cmpCateg(Category::Break)){
         printRule("Desvio = 'break' ';'");
         printToken();
         nextToken();
@@ -684,7 +618,7 @@ int Parser::desvio(){
 int Parser::fReturn(){
     int res = ERRO;
 
-    if(tk.categ == Category::Return){
+    if(cmpCateg(Category::Return)){
         printRule("Return = 'return' ExprBool ';'");
         printToken();
         nextToken();
@@ -709,11 +643,11 @@ int Parser::parametros(){
     int res = OK;
 
     if(
-            tk.categ == Category::Integer ||
-            tk.categ == Category::Float ||
-            tk.categ == Category::Char ||
-            tk.categ == Category::String ||
-            tk.categ == Category::Boolean
+            cmpCateg(Category::Integer) ||
+            cmpCateg(Category::Float) ||
+            cmpCateg(Category::Char) ||
+            cmpCateg(Category::String) ||
+            cmpCateg(Category::Boolean)
             ){
         printRule("Parâmetros = ListaParam");
         return listaParam();
@@ -791,23 +725,23 @@ int Parser::listaArgsR(){
 int Parser::tipo(){
     int res = ERRO;
 
-    if(tk.categ == Category::Integer){
+    if(cmpCateg(Category::Integer)){
         printRule("Tipo = 'int'");
         printAndNext();
         return OK;
-    }else if(tk.categ == Category::Float){
+    }else if(cmpCateg(Category::Float)){
         printRule("Tipo = 'float'");
         printAndNext();
         return OK;
-    }else if(tk.categ == Category::Char){
+    }else if(cmpCateg(Category::Char)){
         printRule("Tipo = 'char'");
         printAndNext();
         return OK;
-    }else if(tk.categ == Category::Boolean){
+    }else if(cmpCateg(Category::Boolean)){
         printRule("Tipo = 'bool'");
         printAndNext();
         return OK;
-    }else if(tk.categ == Category::String){
+    }else if(cmpCateg(Category::String)){
         printRule("Tipo = 'string'");
         printAndNext();
         return OK;
@@ -821,7 +755,9 @@ int Parser::exprBool(){
 int Parser::exprBoolR(){
     if(cmpCateg(Category::OpAnd) || cmpCateg(Category::OpOr)){
         printRule("ExprBoolR = OpLogic TermoBool ExprBoolR");
-        if(opLogic() == ERRO) return ERRO;
+        printToken();
+        nextToken();
+
         if(termoBool() == ERRO) return ERRO;
         return exprBoolR();
     }
@@ -965,151 +901,55 @@ int Parser::fatorAritm(){
         if(listaArray() ==ERRO) return ERRO;
         if(!printAndNext(Category::FeCol)) return ERRO;
         return OK;
-    }
+    }else return ERRO;
 }
 int Parser::fatorAritmF(){
-    if(tk.categ == Category::Integer ||
-       tk.categ == Category::Float ||
-       tk.categ == Category::Char ||
-       tk.categ == Category::String ||
-       tk.categ == Category::Boolean){
+    if(cmpCateg(Category::Integer) ||
+       cmpCateg(Category::Float) ||
+       cmpCateg(Category::Char) ||
+       cmpCateg(Category::String) ||
+       cmpCateg(Category::Boolean)){
         printRule("FatorAtirmF = Tipo ')' ExprBool");
         if(tipo() ==ERRO)return ERRO;
 
         if(!printAndNext(Category::FePar)) return ERRO;
 
         return exprBool();
-    }else if(tk.categ == Category ::OpNot ||
-             tk.categ == Category ::OpMenos ||
-             tk.categ == Category ::Id ||
-             tk.categ == Category ::CteInt ||
-             tk.categ == Category ::CteFloat ||
-             tk.categ == Category ::CteBool ||
-             tk.categ == Category ::CteStr ||
-             tk.categ == Category ::AbCol){
+    }else if(cmpCateg(Category ::OpNot) ||
+             cmpCateg(Category ::OpMenos) ||
+             cmpCateg(Category ::Id) ||
+             cmpCateg(Category ::CteInt) ||
+             cmpCateg(Category ::CteFloat) ||
+             cmpCateg(Category ::CteBool) ||
+             cmpCateg(Category ::CteStr) ||
+             cmpCateg(Category ::AbCol)){
         printRule("FatorAtirmF = ExprBool ')'");
         if(exprBool() == ERRO) return ERRO;
 
         if(printAndNext(Category::FePar)) return OK;
         else return ERRO;
-    }
+    }else return ERRO;
 }
 int Parser::listaArray(){
-    int res = ERRO;
-    
-    return res;
+    printRule("ListaArray = ExprBool ListaArrayR");
+
+    if(exprBool() == ERRO) return ERRO;
+
+    return listaArrayR();
 }
 int Parser::listaArrayR(){
-    int res = ERRO;
-    
-    return res;
-}
-int Parser::opUnario(){
-    int res = ERRO;
+    if(cmpCateg(Category::Vg)){
+        printRule("ListaArrayR = ‘,’ ExprBool ListaArrayR");
+        printAndNext();
 
-    return res;
-}
-int Parser::opRelac(){
-    int res = ERRO;
+        if(exprBool() == ERRO) return ERRO;
 
-    return res;
-}
-int Parser::opLogic(){
-    int res = ERRO;
+        return listaArrayR();
+    }
 
-    return res;
+    printRule("ListaArrayR = EPSILON");
+    return OK;
 }
-int Parser::opAdit(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMult(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opEq(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMaior(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMenor(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMaiorEq(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMenorEq(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opDifer(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opAnd(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opOr(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opNot(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMais(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMenos(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opAster(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opDiv(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opMod(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opAtr(){
-    int res = ERRO;
-
-    return res;
-}
-int Parser::opConcat(){
-    int res = ERRO;
-
-    return res;
-}
-
 void Parser::nextToken() {
     tk = tokenizer.nextToken();
 }
@@ -1137,6 +977,6 @@ void Parser::printAndNext(){
     nextToken();
 }
 
-void Parser::printRule(string r){
+void Parser::printRule(const string& r){
     cout << "          " << r << endl;
 }

@@ -1,0 +1,20 @@
+   1  proc shellSort(int vet[], int size){
+
+          Início = ListaProc Início
+          ListaProc = Proc ListaProc
+          Proc = 'proc' 'id' '(' Parâmetros ')' ProcF
+          [0001, 0000] (0015,            Procedure) {proc}
+          [0001, 0005] (0044,                   Id) {shellSort}
+          [0001, 0014] (0009,                AbPar) {(}
+          Parâmetros = ListaParam
+          ListaParam  = Tipo Id ListaParamR
+          Tipo = 'int'
+          [0001, 0015] (0001,              Integer) {int}
+          Id = 'id' IdF
+          [0001, 0019] (0044,                   Id) {vet}
+          IdF = Array IdFF
+          Array  = '[' ArrayF
+          [0001, 0022] (0011,                AbCol) {[}
+          ArrayF = ']'
+          [0001, 0023] (0012,                FeCol) {]}
+Parse ERROR

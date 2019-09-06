@@ -1,0 +1,46 @@
+   1  func int init(){
+
+          Início = ListaFunc Início
+          ListaFunc = Função ListaFunc
+          Função = 'func' Tipo 'id' '(' Parâmetros ')' FunçãoF
+          [0001, 0000] (0016,                 Func) {func}
+          Tipo = 'int'
+          [0001, 0005] (0001,              Integer) {int}
+          [0001, 0009] (0044,                   Id) {init}
+          [0001, 0013] (0009,                AbPar) {(}
+          Parâmetros = EPSILON
+          [0001, 0014] (0010,                FePar) {)}
+          FunçãoF = Bloco
+          Bloco = '{' ListaSentenças '}'
+          [0001, 0015] (0013,               AbChav) {{}
+   2      print "Alô mundo";
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Saída
+          Saída = 'print' CteStr Argumentos ';'
+          [0002, 0004] (0020,                Print) {print}
+          [0002, 0010] (0050,               CteStr) {"Alô mundo"}
+          Argumentos = EPSILON
+          [0002, 0022] (0006,                 PtVg) {;}
+   3      return 0;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Return
+          Return = 'return' ExprBool ';'
+          [0003, 0004] (0017,               Return) {return}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = CteInt
+          [0003, 0011] (0046,               CteInt) {0}
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0003, 0012] (0006,                 PtVg) {;}
+   4  }
+          [0004, 0000] (0014,               FeChav) {}}
+          ListaFunc = EPSILON
+          Início = EPSILON
+Parse OK

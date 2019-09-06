@@ -10,17 +10,20 @@
 #define OK 1
 
 class Parser {
-private:
-    Token tk{};
-    void nextToken();
-    void printToken();
-
-    std::ifstream source;
 public:
     Tokenizer tokenizer;
     void parse();
 
     Parser(const std::string& filename);
+private:
+    Token tk{};
+    void nextToken();
+    void printToken();
+
+    bool printAndNext(Category c);
+    void printAndNext();
+    void printRule(const std::string &r);
+    bool cmpCateg(Category c);
 
     int inicio();
     int listaFunc();
@@ -64,6 +67,7 @@ public:
     int exprBool();
     int exprBoolR();
     int termoBool();
+    int termoBoolF();
     int exprConcat();
     int exprConcatR();
     int exprAritm();
@@ -74,37 +78,6 @@ public:
     int fatorAritmF();
     int listaArray();
     int listaArrayR();
-    int opUnario();
-    int opRelac();
-    int opLogic();
-    int opAdit();
-    int opMult();
-    int opEq();
-    int opMaior();
-    int opMenor();
-    int opMaiorEq();
-    int opMenorEq();
-    int opDifer();
-    int opAnd();
-    int opOr();
-    int opNot();
-    int opMais();
-    int opMenos();
-    int opAster();
-    int opDiv();
-    int opMod();
-    int opAtr();
-    int opConcat();
-
-    bool printAndNext(Category c);
-
-    void printRule(std::string r);
-
-    bool cmpCateg(Category c);
-
-    void printAndNext();
-
-    int termoBoolF();
 };
 
 

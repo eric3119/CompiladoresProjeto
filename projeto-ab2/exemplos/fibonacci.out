@@ -1,0 +1,418 @@
+   1  proc fibonacci(int valor_limite){
+
+          Início = ListaProc Início
+          ListaProc = Proc ListaProc
+          Proc = 'proc' 'id' '(' Parâmetros ')' ProcF
+          [0001, 0000] (0015,            Procedure) {proc}
+          [0001, 0005] (0044,                   Id) {fibonacci}
+          [0001, 0014] (0009,                AbPar) {(}
+          Parâmetros = ListaParam
+          ListaParam  = Tipo Id ListaParamR
+          Tipo = 'int'
+          [0001, 0015] (0001,              Integer) {int}
+          Id = 'id' IdF
+          [0001, 0019] (0044,                   Id) {valor_limite}
+          IdF = EPSILON
+          ListaParamR = EPSILON
+          [0001, 0031] (0010,                FePar) {)}
+          ProcF = Bloco
+          Bloco = '{' ListaSentenças '}'
+          [0001, 0032] (0013,               AbChav) {{}
+   2      int a, b, aux;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = ListaVar
+          ListaVar = Variável ListaVar
+          Variável = Tipo ListaId ';'
+          Tipo = 'int'
+          [0002, 0004] (0001,              Integer) {int}
+          ListaId = Id ListaIdR
+          Id = 'id' IdF
+          [0002, 0008] (0044,                   Id) {a}
+          IdF = EPSILON
+          ListaIdR = ',' Id ListaIdR
+          [0002, 0009] (0008,                   Vg) {,}
+          Id = 'id' IdF
+          [0002, 0011] (0044,                   Id) {b}
+          IdF = EPSILON
+          ListaIdR = ',' Id ListaIdR
+          [0002, 0012] (0008,                   Vg) {,}
+          Id = 'id' IdF
+          [0002, 0014] (0044,                   Id) {aux}
+          IdF = EPSILON
+          ListaIdR = EPSILON
+          [0002, 0017] (0006,                 PtVg) {;}
+   3  
+   4      if(valor_limite >= 0){
+          ListaVar = EPSILON
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = If
+          If    = 'if' '(' ExprBool ')' Bloco ElseIf Else
+          [0004, 0004] (0025,                   If) {if}
+          [0004, 0006] (0009,                AbPar) {(}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0004, 0007] (0044,                   Id) {valor_limite}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = OpRelac ExprConcat
+          [0004, 0020] (0031,            OpMaiorEq) {>=}
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = CteInt
+          [0004, 0023] (0046,               CteInt) {0}
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          ExprBoolR = EPSILON
+          [0004, 0024] (0010,                FePar) {)}
+          Bloco = '{' ListaSentenças '}'
+          [0004, 0025] (0013,               AbChav) {{}
+   5  
+   6          print "0";
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Saída
+          Saída = 'print' CteStr Argumentos ';'
+          [0006, 0008] (0020,                Print) {print}
+          [0006, 0014] (0050,               CteStr) {"0"}
+          Argumentos = EPSILON
+          [0006, 0017] (0006,                 PtVg) {;}
+   7  
+   8          a = 0;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0008, 0008] (0044,                   Id) {a}
+          IdF = Atribuição
+          Atribuição = OpAtribuição ExprBool
+          [0008, 0010] (0042,                OpAtr) {=}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = CteInt
+          [0008, 0012] (0046,               CteInt) {0}
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0008, 0013] (0006,                 PtVg) {;}
+   9          b = 1;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0009, 0008] (0044,                   Id) {b}
+          IdF = Atribuição
+          Atribuição = OpAtribuição ExprBool
+          [0009, 0010] (0042,                OpAtr) {=}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = CteInt
+          [0009, 0012] (0046,               CteInt) {1}
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0009, 0013] (0006,                 PtVg) {;}
+  10          aux = a + b;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0010, 0008] (0044,                   Id) {aux}
+          IdF = Atribuição
+          Atribuição = OpAtribuição ExprBool
+          [0010, 0012] (0042,                OpAtr) {=}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0010, 0014] (0044,                   Id) {a}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = OpAritm TermoAritm ExprAritmR
+          [0010, 0016] (0037,               OpMais) {+}
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0010, 0018] (0044,                   Id) {b}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0010, 0019] (0006,                 PtVg) {;}
+  11  
+  12          while(aux <= limite){
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = While
+          While = 'while' '(' ExprBool ')' Bloco
+          [0012, 0008] (0024,                While) {while}
+          [0012, 0013] (0009,                AbPar) {(}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0012, 0014] (0044,                   Id) {aux}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = OpRelac ExprConcat
+          [0012, 0018] (0032,            OpMenorEq) {<=}
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0012, 0021] (0044,                   Id) {limite}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          ExprBoolR = EPSILON
+          [0012, 0027] (0010,                FePar) {)}
+          Bloco = '{' ListaSentenças '}'
+          [0012, 0028] (0013,               AbChav) {{}
+  13              print ", %d" aux;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Saída
+          Saída = 'print' CteStr Argumentos ';'
+          [0013, 0012] (0020,                Print) {print}
+          [0013, 0018] (0050,               CteStr) {", %d"}
+          Argumentos = ListaArgs
+          ListaArgs  = ExprBool ListaArgsR
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0013, 0025] (0044,                   Id) {aux}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          ListaArgsR = EPSILON
+          [0013, 0028] (0006,                 PtVg) {;}
+  14              aux = a + b;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0014, 0012] (0044,                   Id) {aux}
+          IdF = Atribuição
+          Atribuição = OpAtribuição ExprBool
+          [0014, 0016] (0042,                OpAtr) {=}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0014, 0018] (0044,                   Id) {a}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = OpAritm TermoAritm ExprAritmR
+          [0014, 0020] (0037,               OpMais) {+}
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0014, 0022] (0044,                   Id) {b}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0014, 0023] (0006,                 PtVg) {;}
+  15              a = b;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0015, 0012] (0044,                   Id) {a}
+          IdF = Atribuição
+          Atribuição = OpAtribuição ExprBool
+          [0015, 0014] (0042,                OpAtr) {=}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0015, 0016] (0044,                   Id) {b}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0015, 0017] (0006,                 PtVg) {;}
+  16              b = aux;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0016, 0012] (0044,                   Id) {b}
+          IdF = Atribuição
+          Atribuição = OpAtribuição ExprBool
+          [0016, 0014] (0042,                OpAtr) {=}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0016, 0016] (0044,                   Id) {aux}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0016, 0019] (0006,                 PtVg) {;}
+  17          }
+          [0017, 0008] (0014,               FeChav) {}}
+  18      }
+          [0018, 0004] (0014,               FeChav) {}}
+  19  }
+          ElseIf = EPSILON
+          Else = EPSILON
+          [0019, 0000] (0014,               FeChav) {}}
+  20  
+  21  func int init(){
+          ListaProc = EPSILON
+          Início = ListaFunc Início
+          ListaFunc = Função ListaFunc
+          Função = 'func' Tipo 'id' '(' Parâmetros ')' FunçãoF
+          [0021, 0000] (0016,                 Func) {func}
+          Tipo = 'int'
+          [0021, 0005] (0001,              Integer) {int}
+          [0021, 0009] (0044,                   Id) {init}
+          [0021, 0013] (0009,                AbPar) {(}
+          Parâmetros = EPSILON
+          [0021, 0014] (0010,                FePar) {)}
+          FunçãoF = Bloco
+          Bloco = '{' ListaSentenças '}'
+          [0021, 0015] (0013,               AbChav) {{}
+  22      int limite;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = ListaVar
+          ListaVar = Variável ListaVar
+          Variável = Tipo ListaId ';'
+          Tipo = 'int'
+          [0022, 0004] (0001,              Integer) {int}
+          ListaId = Id ListaIdR
+          Id = 'id' IdF
+          [0022, 0008] (0044,                   Id) {limite}
+          IdF = EPSILON
+          ListaIdR = EPSILON
+          [0022, 0014] (0006,                 PtVg) {;}
+  23  
+  24      print "Digite um valor limite: ";
+          ListaVar = EPSILON
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Saída
+          Saída = 'print' CteStr Argumentos ';'
+          [0024, 0004] (0020,                Print) {print}
+          [0024, 0010] (0050,               CteStr) {"Digite um valor limite: "}
+          Argumentos = EPSILON
+          [0024, 0036] (0006,                 PtVg) {;}
+  25      input limite;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Entrada
+          Entrada = 'input' Argumentos ';'
+          [0025, 0004] (0019,                Input) {input}
+          Argumentos = ListaArgs
+          ListaArgs  = ExprBool ListaArgsR
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0025, 0010] (0044,                   Id) {limite}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          ListaArgsR = EPSILON
+          [0025, 0016] (0006,                 PtVg) {;}
+  26  
+  27      fibonacci(limite);
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Id ';'
+          Id = 'id' IdF
+          [0027, 0004] (0044,                   Id) {fibonacci}
+          IdF = '(' Argumentos ')'
+          [0027, 0013] (0009,                AbPar) {(}
+          Argumentos = ListaArgs
+          ListaArgs  = ExprBool ListaArgsR
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = Id
+          Id = 'id' IdF
+          [0027, 0014] (0044,                   Id) {limite}
+          IdF = EPSILON
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          ListaArgsR = EPSILON
+          [0027, 0020] (0010,                FePar) {)}
+          [0027, 0021] (0006,                 PtVg) {;}
+  28  
+  29      return 0;
+          ListaSentenças = Sentença ListaSentenças
+          Sentença = Return
+          Return = 'return' ExprBool ';'
+          [0029, 0004] (0017,               Return) {return}
+          ExprBool = TermoBool ExprBoolR
+          TermoBool = ExprConcat TermoBoolF
+          ExprConcat = ExprAritm ExprConcatR;
+          TermoAritm = FatorAritm TermoAritmR
+          FatorAritm = CteInt
+          [0029, 0011] (0046,               CteInt) {0}
+          TermoAritmR = EPSILON
+          ExprAritm = TermoAritm ExprAritmR
+          ExprAritmR = EPSILON
+          ExprConcatR = EPSILON
+          TermoBoolF = EPSILON
+          ExprBoolR = EPSILON
+          [0029, 0012] (0006,                 PtVg) {;}
+  30  }
+          [0030, 0000] (0014,               FeChav) {}}
+  31  
+          ListaFunc = EPSILON
+          Início = EPSILON
+Parse OK
