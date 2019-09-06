@@ -104,6 +104,9 @@ Variável        = Tipo ListaId ‘;’
 | ‘const’ Tipo ListaAtr ‘;’
 
 
+ListaId        = ListaId ‘,’ Id | Id
+
+
 ListaAtr        = ListaAtr ‘,’ ‘id’ Atribuição 
 | ListaAtr ‘,’ ‘id’ Array Atribuição
                 | ‘id’ Atribuição 
@@ -111,22 +114,12 @@ ListaAtr        = ListaAtr ‘,’ ‘id’ Atribuição
 
 
 Identificadores
-ListaId        = ListaId ‘,’ Id
-                | Id
-
-
 Id = ‘id’ | ‘id’ Array
    | ‘id’ Atribuição | ‘id’ Array Atribuição
    | ‘id’ ‘(‘ Argumentos ‘)’
-
-
 Array = ‘[‘ ‘]’ | ‘[‘ ExprBool ‘]’
-
-
 Bloco
 Bloco        = ‘{‘ ListaSentenças ‘}’
-
-
 
 
 Sentenças
@@ -181,6 +174,8 @@ Tipos
 Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
 
 
+
+
 Expressões
 ExprBool         = ExprBool OpLogic TermoBool
 | TermoBool
@@ -228,9 +223,9 @@ OpAtr         = ‘=’
 OpConcat        = ‘++’
 
 
+
+
 Gramática LL(1)
-
-
 Início
 Início = ListaFunc Início
   | ListaProc Início
@@ -262,9 +257,12 @@ Variável        = Tipo ListaId ‘;’
 | ‘const’ Tipo ListaAtr ‘;’
 
 
+ListaId        = Id ListaIdR
+ListaIdR        = ‘,’ Id ListaIdR | ε
+
+
 ListaAtr        = ‘id’ ListaAtrF ListaAtrR 
-ListaAtrR        = ‘,’ ‘id’ ListaAtrF ListaAtrR 
-| ε
+ListaAtrR        = ‘,’ ‘id’ ListaAtrF ListaAtrR | ε
 
 
 ListaAtrF        = Atribuição
@@ -272,11 +270,6 @@ ListaAtrF        = Atribuição
 
 
 Identificadores
-ListaId        = Id ListaIdR
-ListaIdR        = ‘,’ Id ListaIdR
-                | ε
-
-
 Id = ‘id’ IdF
 IdF = ‘(‘ Argumentos ‘)’ | Atribuição | Array IdFF | ε
 IdFF = Atribuição | ε
@@ -284,8 +277,6 @@ IdFF = Atribuição | ε
 
 Array  = ‘[‘ ArrayF
 ArrayF = ‘]’ | ExprBool ‘]’
-
-
 Bloco
 Bloco        = ‘{‘ ListaSentenças ‘}’
 
@@ -331,8 +322,7 @@ Parâmetros        = ListaParam | ε
 
 
 ListaParam  = Tipo Id ListaParamR
-ListaParamR = ‘,’ Tipo Id ListaParamR
-                 | ε
+ListaParamR = ‘,’ Tipo Id ListaParamR | ε
 
 
 Argumentos
@@ -340,14 +330,11 @@ Argumentos        = ListaArgs | ε
 
 
 ListaArgs         = ExprBool ListaArgsR 
-ListaArgsR        = ‘,’ ExprBool ListaArgsR
-                | ε
+ListaArgsR        = ‘,’ ExprBool ListaArgsR | ε
 
 
 Tipos
 Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
-
-
 Expressões
 ExprBool         = TermoBool ExprBoolR
 ExprBoolR        = OpLogic TermoBool ExprBoolR | ε
@@ -382,10 +369,10 @@ FatorAtirmF = Tipo ‘)’ ExprBool
                  | ExprBool ‘)’
 
 
-
-
 ListaArray  = ExprBool ListaArrayR
 ListaArrayR = ‘,’ ExprBool ListaArrayR | ε
+
+
 
 
 Operadores

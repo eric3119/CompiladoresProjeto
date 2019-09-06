@@ -29,6 +29,10 @@ Variável        = Tipo ListaId ‘;’
 | ‘const’ Tipo ListaAtr ‘;’
 
 
+ListaId        = ListaId ‘,’ Id
+                | Id
+
+
 ListaAtr        = ListaAtr ‘,’ ‘id’ Atribuição 
 | ListaAtr ‘,’ ‘id’ Array Atribuição
                 | ‘id’ Atribuição 
@@ -36,8 +40,6 @@ ListaAtr        = ListaAtr ‘,’ ‘id’ Atribuição
 
 
 Identificadores
-ListaId        = ListaId ‘,’ Id
-                | Id
 
 
 Id = ‘id’ | ‘id’ Array
@@ -48,10 +50,14 @@ Id = ‘id’ | ‘id’ Array
 Array = ‘[‘ ‘]’ | ‘[‘ ExprBool ‘]’
 
 
+
+
+
+
+
+
 Bloco
 Bloco        = ‘{‘ ListaSentenças ‘}’
-
-
 
 
 Sentenças
@@ -104,6 +110,8 @@ ListaArgs         = ListaArgs ‘,’ ExprBool
 
 Tipos
 Tipo                 = ‘int’ | ‘float’ | ‘char’ | ‘bool’ | ‘string’
+
+
 
 
 Expressões

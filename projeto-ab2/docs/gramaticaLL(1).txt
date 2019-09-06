@@ -29,21 +29,19 @@ Variável        = Tipo ListaId ‘;’
 | ‘const’ Tipo ListaAtr ‘;’
 
 
-ListaAtr        = ‘id’ ListaAtrF ListaAtrR 
-ListaAtrR        = ‘,’ ‘id’ ListaAtrF ListaAtrR 
-| ε
-
-
-ListaAtrF        = Atribuição
-                | Array Atribuição
-
-
-Identificadores
 ListaId        = Id ListaIdR
 ListaIdR        = ‘,’ Id ListaIdR
                 | ε
 
 
+ListaAtr        = ‘id’ ListaAtrF ListaAtrR 
+ListaAtrR        = ‘,’ ‘id’ ListaAtrF ListaAtrR 
+| ε
+ListaAtrF        = Atribuição
+                | Array Atribuição
+
+
+Identificadores
 Id = ‘id’ IdF
 IdF = ‘(‘ Argumentos ‘)’ | Atribuição | Array IdFF | ε
 IdFF = Atribuição | ε
@@ -51,6 +49,8 @@ IdFF = Atribuição | ε
 
 Array  = ‘[‘ ArrayF
 ArrayF = ‘]’ | ExprBool ‘]’
+
+
 
 
 Bloco
@@ -147,8 +147,6 @@ FatorAritm         = ‘(‘ FatorAritmF
  | ‘[‘ ListaArray ‘]’
 FatorAtirmF = Tipo ‘)’ ExprBool 
                  | ExprBool ‘)’
-
-
 
 
 ListaArray  = ExprBool ListaArrayR
