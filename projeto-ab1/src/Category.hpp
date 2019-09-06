@@ -14,6 +14,5 @@ enum class Category {
 };
 
 char* categ_name(Category);
-char* categ_lex(Category);
 
 #endif //PROJETO_AB1_CATEGORY_HPP
