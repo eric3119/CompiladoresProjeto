@@ -149,6 +149,7 @@
           ExprBoolR = EPSILON
           [0007, 0021] (0006,                 PtVg) {;}
    8      }
+          ListaSentenças = EPSILON
           [0008, 0004] (0014,               FeChav) {}}
    9  
   10      while (gap > 0) {
@@ -496,6 +497,7 @@
           ExprBoolR = EPSILON
           [0016, 0027] (0006,                 PtVg) {;}
   17              }
+          ListaSentenças = EPSILON
           [0017, 0012] (0014,               FeChav) {}}
   18              vet[j] = value;
           ListaSentenças = Sentença ListaSentenças
@@ -540,6 +542,7 @@
           ExprBoolR = EPSILON
           [0018, 0026] (0006,                 PtVg) {;}
   19          }
+          ListaSentenças = EPSILON
           [0019, 0008] (0014,               FeChav) {}}
   20          gap = gap/3;
           ListaSentenças = Sentença ListaSentenças
@@ -569,8 +572,10 @@
           ExprBoolR = EPSILON
           [0020, 0019] (0006,                 PtVg) {;}
   21      }
+          ListaSentenças = EPSILON
           [0021, 0004] (0014,               FeChav) {}}
   22  }
+          ListaSentenças = EPSILON
           [0022, 0000] (0014,               FeChav) {}}
   23  
   24  func int init(){
@@ -806,6 +811,7 @@
           ListaArgsR = EPSILON
           [0034, 0026] (0006,                 PtVg) {;}
   35      }
+          ListaSentenças = EPSILON
           [0035, 0004] (0014,               FeChav) {}}
   36  
   37      shellSort(vet, tam);
@@ -948,8 +954,10 @@
           ListaArgsR = EPSILON
           [0040, 0026] (0006,                 PtVg) {;}
   41      }
+          ListaSentenças = EPSILON
           [0041, 0004] (0014,               FeChav) {}}
   42  }
+          ListaSentenças = EPSILON
           [0042, 0000] (0014,               FeChav) {}}
   43  
           ListaFunc = EPSILON

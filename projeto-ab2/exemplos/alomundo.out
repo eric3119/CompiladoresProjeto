@@ -40,6 +40,7 @@
           ExprBoolR = EPSILON
           [0003, 0012] (0006,                 PtVg) {;}
    4  }
+          ListaSentenças = EPSILON
           [0004, 0000] (0014,               FeChav) {}}
           ListaFunc = EPSILON
           Início = EPSILON

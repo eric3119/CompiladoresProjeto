@@ -156,119 +156,87 @@ int Parser::variavel(){
     }else return ERRO;
 }
 int Parser::listaAtr(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Id)){
         printRule("ListaAtr = 'id' ListaAtrF ListaAtrR");
-        printToken();
-        nextToken();
-        res = listaAtrF();
-        if (res == ERRO) return res;
+        printAndNext();
+        if (listaAtrF() == ERRO) return ERRO;
         return listaAtrR();
-    }
-    return res;
+    }else return ERRO;
 }
 int Parser::listaAtrR(){
-    int res = OK;
-
     if(cmpCateg(Category::Vg)){
         printRule("ListaAtrR = ',' 'id' ListaAtrF ListaAtrR");
-        printToken();
-        nextToken();
-        if(cmpCateg(Category::Id)){
-            printToken();
-            nextToken();
-            res = listaAtrF();
-            if (res == ERRO) return res;
-            return listaAtrR();
-        }else return ERRO;
+        printAndNext();
+
+        if(!printAndNext(Category::Id)) return ERRO;
+        if(listaAtrF() == ERRO) return ERRO;
+        return listaAtrR();
     }
     printRule("ListaAtrR = EPSILON");
-    return res;
+    return OK;
 }
 int Parser::listaAtrF(){
-    int res = ERRO;
-
     if(cmpCateg(Category::OpAtr)){
         printRule("ListaAtrF = Atribuição");
         return atribuicao();
     }else if(cmpCateg(Category::AbCol)){
         printRule("ListaAtrF = Array Atribuição");
-        res = array();
-        if (res == ERRO) return res;
+        if (array() == ERRO) return ERRO;
         return atribuicao();
     }
 
-    return res;
+    return ERRO;
 }
 int Parser::listaId(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Id)){
         printRule("ListaId = Id ListaIdR");
-        res = id();
-        if(res == ERRO) return res;
+        if(id() == ERRO) return ERRO;
         return listaIdR();
     }
-
-    return res;
+    return ERRO;
 }
 int Parser::listaIdR(){
     if(cmpCateg(Category::Vg)){
         printRule("ListaIdR = ',' Id ListaIdR");
         printAndNext();
-        if(cmpCateg(Category::Id)){
-            if (id() == ERRO) return ERRO;
-            return listaIdR();
-        }else return ERRO;
+        if (id() == ERRO) return ERRO;
+        return listaIdR();
     }
 
     printRule("ListaIdR = EPSILON");
     return OK;
 }
 int Parser::id(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Id)){
         printRule("Id = 'id' IdF");
-        printToken();
-        nextToken();
+        printAndNext();
 
         return idF();
     }
 
-    return res;
+    return ERRO;
 }
 int Parser::idF(){
-    int res = OK;
-
     if(cmpCateg(Category::AbPar)){
         printRule("IdF = '(' Argumentos ')'");
-        printToken();
-        nextToken();
-        res = argumentos();
-        if (res == ERRO) return res;
+        printAndNext();
 
-        if(cmpCateg(Category::FePar)){
-            printToken();
-            nextToken();
+        if (argumentos() == ERRO) return ERRO;
 
-            return OK;
-        } else return ERRO;
+        if(printAndNext(Category::FePar)) return OK;
+        else return ERRO;
     }else if(cmpCateg(Category::OpAtr)){
         printRule("IdF = Atribuição");
         return atribuicao();
     }else if(cmpCateg(Category::AbCol)){
         printRule("IdF = Array IdFF");
-        res = array();
-        if(res == ERRO) return res;
+        if(array() == ERRO) return ERRO;
 
         return idFF();
     }
 
     printRule("IdF = EPSILON");
-
-    return res;
+    return OK;
 }
 int Parser::idFF(){
 
@@ -281,17 +249,14 @@ int Parser::idFF(){
     return OK;
 }
 int Parser::array(){
-    int res = ERRO;
-
     if(cmpCateg(Category::AbCol)){
         printRule("Array  = '[' ArrayF");
-        printToken();
-        nextToken();
+        printAndNext();
 
         return arrayF();
     }
 
-    return res;
+    return ERRO;
 }
 int Parser::arrayF(){
     if(cmpCateg(Category ::FeCol)){
@@ -317,28 +282,17 @@ int Parser::arrayF(){
     return ERRO;
 }
 int Parser::bloco(){
-    int res = ERRO;
-
     if(cmpCateg(Category::AbChav)){
         printRule("Bloco = '{' ListaSentenças '}'");
-        printToken();
-        nextToken();
-        res = listaSentencas();
-        if (res == ERRO) return res;
+        printAndNext();
+        if (listaSentencas() == ERRO) return ERRO;
 
-        if(cmpCateg(Category::FeChav)){
-            printToken();
-            nextToken();
-            return OK;
-        }else return ERRO;
+        if(printAndNext(Category::FeChav)) return OK;
+        else return ERRO;
     }
-
-    return res;
+    return ERRO;
 }
 int Parser::listaSentencas(){
-    printRule("ListaSentenças = Sentença ListaSentenças");
-
-    if(sentenca() == ERRO) return ERRO;
 
     if(
             cmpCateg(Category::If)||
@@ -355,9 +309,12 @@ int Parser::listaSentencas(){
             cmpCateg(Category::String) ||
             cmpCateg(Category::Boolean)
             ){
+        printRule("ListaSentenças = Sentença ListaSentenças");
+        if(sentenca() == ERRO) return ERRO;
         return listaSentencas();
     }
 
+    printRule("ListaSentenças = EPSILON");
     return OK;
 }
 int Parser::sentenca(){
@@ -400,9 +357,7 @@ int Parser::sentenca(){
         printRule("Sentença = ListaVar");
         return listaVar();
     }
-
-    printRule("Sentença = EPSILON");
-    return OK;
+    return ERRO;
 }
 int Parser::entrada(){
     int res = ERRO;

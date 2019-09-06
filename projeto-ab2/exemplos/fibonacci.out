@@ -295,12 +295,15 @@
           ExprBoolR = EPSILON
           [0016, 0019] (0006,                 PtVg) {;}
   17          }
+          ListaSentenças = EPSILON
           [0017, 0008] (0014,               FeChav) {}}
   18      }
+          ListaSentenças = EPSILON
           [0018, 0004] (0014,               FeChav) {}}
   19  }
           ElseIf = EPSILON
           Else = EPSILON
+          ListaSentenças = EPSILON
           [0019, 0000] (0014,               FeChav) {}}
   20  
   21  func int init(){
@@ -411,6 +414,7 @@
           ExprBoolR = EPSILON
           [0029, 0012] (0006,                 PtVg) {;}
   30  }
+          ListaSentenças = EPSILON
           [0030, 0000] (0014,               FeChav) {}}
   31  
           ListaFunc = EPSILON
