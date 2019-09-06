@@ -343,11 +343,8 @@ int Parser::sentenca(){
     }else if(cmpCateg(Category::Id)){
         printRule("Sentença = Id ';'");
         if(id() == ERRO) return ERRO;
-        if(cmpCateg(Category::PtVg)){
-            printToken();
-            nextToken();
-            return OK;
-        }else return ERRO;
+        if(printAndNext(Category::PtVg)) return OK;
+        else return ERRO;
     }else if(cmpCateg(Category::Integer) ||
              cmpCateg(Category::Float) ||
              cmpCateg(Category::Char) ||
@@ -360,144 +357,76 @@ int Parser::sentenca(){
     return ERRO;
 }
 int Parser::entrada(){
-    int res = ERRO;
-
     printRule("Entrada = 'input' Argumentos ';'");
 
     if(cmpCateg(Category::Input)){
-        printToken();
-        nextToken();
-        res = argumentos();
-        if(res == ERRO) return res;
+        printAndNext();
+        if(argumentos() == ERRO) return ERRO;
 
-        if(cmpCateg(Category::PtVg)){
-            printToken();
-            nextToken();
-            return OK;
-        }else return ERRO;
-    }else return ERRO;
-
-    return res;
+        if(printAndNext(Category::PtVg)) return OK;
+        else return ERRO;
+    }
+    return ERRO;
 }
 int Parser::saida(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Print)){
         printRule("Saída = 'print' CteStr Argumentos ';'");
-        printToken();
-        nextToken();
-        if(cmpCateg(Category::CteStr)){
-            printToken();
-            nextToken();
-        }else return ERRO;
+        printAndNext();
+        if(!printAndNext(Category::CteStr)) return ERRO;
 
-        res = argumentos();
-        if(res == ERRO) return res;
+        if(argumentos() == ERRO) return ERRO;
 
-        if(cmpCateg(Category::PtVg)){
-            printToken();
-            nextToken();
-            return OK;
-        }else return ERRO;
-    }else return ERRO;
-
-    return res;
+        if(printAndNext(Category::PtVg)) return OK;
+        else return ERRO;
+    }
+    return ERRO;
 }
 int Parser::fIf(){
-    int res = ERRO;
-
     if(cmpCateg(Category::If)){
         printRule("If    = 'if' '(' ExprBool ')' Bloco ElseIf Else");
-        printToken();
-        nextToken();
-        if(cmpCateg(Category::AbPar)){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = exprBool();
-        if(res == ERRO) return res;
-
-        if(cmpCateg(Category::FePar)){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = bloco();
-        if(res == ERRO) return res;
-        res = fElseIf();
-        if(res == ERRO) return res;
+        printAndNext();
+        if(!printAndNext(Category::AbPar)) return ERRO;
+        if(exprBool() == ERRO) return ERRO;
+        if(!printAndNext(Category::FePar)) return ERRO;
+        if(bloco() == ERRO) return ERRO;
+        if(fElseIf() == ERRO) return ERRO;
         return fElse();
     }
-
-    return res;
+    return ERRO;
 }
 int Parser::fElseIf(){
-    int res = OK;
-
     if(cmpCateg(Category::ElseIf)){
         printRule("ElseIf = 'else if' '(' ExprBool ')' Bloco ElseIf");
-        printToken();
-        nextToken();
-        if(tk.categ == Category::AbPar){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = exprBool();
-        if(res == ERRO) return res;
-
-        if(tk.categ == Category::FePar){
-            printToken();
-            nextToken();
-        } else return ERRO;
-
-        res = bloco();
-        if(res == ERRO) return res;
+        printAndNext();
+        if(!printAndNext(Category::AbPar)) return ERRO;
+        if(exprBool() == ERRO) return ERRO;
+        if(!printAndNext(Category::FePar)) return ERRO;
+        if(bloco() == ERRO) return ERRO;
         return fElseIf();
     }
-
     printRule("ElseIf = EPSILON");
-    return res;
+    return OK;
 }
 int Parser::fElse(){
-    int res = OK;
-
     if(cmpCateg(Category::Else)){
         printRule("Else = 'else' Bloco");
-        printToken();
-        nextToken();
-
+        printAndNext();
         return bloco();
     }
-
     printRule("Else = EPSILON");
-    return res;
+    return OK;
 }
 int Parser::fWhile(){
-    int res = ERRO;
-
     if(cmpCateg(Category::While)){
         printRule("While = 'while' '(' ExprBool ')' Bloco");
-
-        printToken();
-        nextToken();
-        if(tk.categ == Category::AbPar){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = exprBool();
-        if(res == ERRO) return res;
-
-        if(tk.categ == Category::FePar){
-            printToken();
-            nextToken();
-        }else return ERRO;
+        printAndNext();
+        if(!printAndNext(Category::AbPar)) return ERRO;
+        if(exprBool() == ERRO) return ERRO;
+        if(!printAndNext(Category::FePar)) return ERRO;
         return bloco();
     }
 
-    return res;
+    return ERRO;
 }
 int Parser::fFor(){
 
@@ -520,35 +449,24 @@ int Parser::fFor(){
     return ERRO;
 }
 int Parser::desvio(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Break)){
         printRule("Desvio = 'break' ';'");
-        printToken();
-        nextToken();
-        if(!printAndNext(Category::PtVg)){
-            return ERRO;
-        }
+        printAndNext();
+        if(!printAndNext(Category::PtVg)) return ERRO;
+        else return OK;
     }
-
-    return res;
+    return ERRO;
 }
 int Parser::fReturn(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Return)){
         printRule("Return = 'return' ExprBool ';'");
-        printToken();
-        nextToken();
-        res = exprBool();
-        if(res == ERRO) return res;
+        printAndNext();
+        if(exprBool() == ERRO) return ERRO;
 
-        if(printAndNext(Category::PtVg))
-            return OK;
-        return ERRO;
+        if(printAndNext(Category::PtVg)) return OK;
+        else return ERRO;
     }
-
-    return res;
+    return ERRO;
 }
 int Parser::atribuicao(){
     printRule("Atribuição = OpAtribuição ExprBool");
@@ -558,8 +476,6 @@ int Parser::atribuicao(){
     return exprBool();
 }
 int Parser::parametros(){
-    int res = OK;
-
     if(
             cmpCateg(Category::Integer) ||
             cmpCateg(Category::Float) ||
@@ -572,18 +488,13 @@ int Parser::parametros(){
     }
 
     printRule("Parâmetros = EPSILON");
-    return res;
+    return OK;
 }
 int Parser::listaParam(){
-    int res = OK;
-
     printRule("ListaParam  = Tipo Id ListaParamR");
 
-    res = tipo();
-    if(res == ERRO) return res;
-
-    res = id();
-    if(res == ERRO) return res;
+    if(tipo() == ERRO) return ERRO;
+    if(id() == ERRO) return ERRO;
 
     return listaParamR();
 }
@@ -641,8 +552,6 @@ int Parser::listaArgsR(){
     return OK;
 }
 int Parser::tipo(){
-    int res = ERRO;
-
     if(cmpCateg(Category::Integer)){
         printRule("Tipo = 'int'");
         printAndNext();
@@ -673,9 +582,7 @@ int Parser::exprBool(){
 int Parser::exprBoolR(){
     if(cmpCateg(Category::OpAnd) || cmpCateg(Category::OpOr)){
         printRule("ExprBoolR = OpLogic TermoBool ExprBoolR");
-        printToken();
-        nextToken();
-
+        printAndNext();
         if(termoBool() == ERRO) return ERRO;
         return exprBoolR();
     }
