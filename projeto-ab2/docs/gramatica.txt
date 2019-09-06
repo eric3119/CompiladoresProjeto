@@ -2,21 +2,16 @@
 Início = ListaFunc Início
   | ListaProc Início
           | ListaVar Início
-  | ListaFunc
-  | ListaProc
-          | ListaVar
+  | ε
 
 
-ListaFunc         = Função ListaFunc
-                | Função
+ListaFunc         = Função ListaFunc | ε
 
 
-ListaProc         = Proc ListaProc
-                | Proc
+ListaProc         = Proc ListaProc | ε
 
 
-ListaVar        = Variável ListaVar
-                | Variável
+ListaVar        = Variável ListaVar | ε
 
 
 Função
@@ -25,8 +20,8 @@ Função = ‘func’ Tipo ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
 
 
 Procedimento
-Proc = ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
-  | ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ ‘;’
+Proc        = ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ Bloco
+| ‘proc’ ‘id’ ‘(‘ Parâmetros ‘)’ ‘;’
 
 
 Variável
@@ -53,20 +48,18 @@ Id = ‘id’ | ‘id’ Array
 Array = ‘[‘ ‘]’ | ‘[‘ ExprBool ‘]’
 
 
-
-
 Bloco
 Bloco        = ‘{‘ ListaSentenças ‘}’
 
 
+
+
 Sentenças
-ListaSentenças = Sentença ListaSentenças
-                    | Sentença
-    | ε
+ListaSentenças = Sentença ListaSentenças | ε
 
 
-Sentença         = If | While | For | Desvio | Return | Entrada | Saída 
-           | Id ‘;’ | ListaVar
+Sentença         = If | While | For | Desvio | Return 
+| Entrada | Saída | Id ‘;’ | ListaVar
 
 
 Entrada = ‘input’ Argumentos ‘;’
@@ -107,8 +100,6 @@ Argumentos
 Argumentos        = ListaArgs | ε
 ListaArgs         = ListaArgs ‘,’ ExprBool
 | ExprBool
-
-
 
 
 Tipos
@@ -153,26 +144,10 @@ ListaArray  = ListaArray ‘,’ ExprBool
 
 
 Operadores
-OpUnario        = OpMenos | OpNot
-OpRelac        = OpMaior | OpMenor | OpMaiorEq | OpMenorEq | OpEq | OpDifer
-OpLogic        = OpAnd | OpOr
-OpAdit        = OpMais | OpMenos
-OpMult        = OpAster | OpDiv | OpMod
-
-
-OpEq                 = ‘==’
-OpMaior         = ‘>’
-OpMenor         = ‘<’
-OpMaiorEq         = ‘>=’
-OpMenorEq         = ‘<=’
-OpDifer         = ‘!=’
-OpAnd                = ‘and’
-OpOr                = ‘or’
-OpNot                = ‘!’
-OpMais         = ‘+’
-OpMenos         = ‘-’
-OpAster         = ‘*’
-OpDiv         = ‘/’
-OpMod         = ‘%’
+OpUnario        = ‘-’ | ‘!’
+OpRelac        = ‘>’ | ‘<’ | ‘>=’ | ‘<=’ | ‘==’ | ‘!=’
+OpLogic        = ‘and’ | ‘or’
+OpAdit        = ‘+’ | ‘-’
+OpMult        = ‘*’ | ‘/’ | ‘%’
 OpAtr         = ‘=’ 
 OpConcat        = ‘++’
