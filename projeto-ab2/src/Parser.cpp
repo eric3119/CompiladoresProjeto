@@ -35,7 +35,9 @@ int Parser::inicio(){
     }else if(cmpCateg(Category::Eof)){
         printRule("Início = EPSILON");
         return OK;
-    } else return ERRO;
+    }
+    printErr("Declarações: 'func' ou 'proc', ou EOF");
+    return ERRO;
 }
 int Parser::listaFunc(){
     if(cmpCateg(Category::Func)){
@@ -43,7 +45,6 @@ int Parser::listaFunc(){
         if(funcao() == ERRO) return ERRO;
         return listaFunc();
     }
-
     printRule("ListaFunc = EPSILON");
     return OK;
 }
@@ -54,7 +55,6 @@ int Parser::listaProc(){
         if(proc() == ERRO) return ERRO;
         return listaProc();
     }
-
     printRule("ListaProc = EPSILON");
     return OK;
 }
@@ -72,7 +72,6 @@ int Parser::listaVar(){
         if(variavel() == ERRO) return ERRO;
         return listaVar();
     }
-
     printRule("ListaVar = EPSILON");
     return OK;
 }
@@ -91,7 +90,9 @@ int Parser::funcao(){
         if(!printAndNext(Category::FePar)) return ERRO;
 
         return funcaoF();
-    } else return ERRO;
+    } 
+    printErr("'func'");
+    return ERRO;
 }
 int Parser::funcaoF(){
     if(cmpCateg(Category::AbChav)){
@@ -101,7 +102,9 @@ int Parser::funcaoF(){
         printRule("FunçãoF = ';'");
         printAndNext();
         return OK;
-    }else return ERRO;
+    }
+    printErr("'{' ou ';'");
+    return ERRO;
 }
 int Parser::proc(){
 
@@ -116,7 +119,9 @@ int Parser::proc(){
         if(!printAndNext(Category::FePar)) return ERRO;
 
         return procF();
-    } else return ERRO;
+    }
+    printErr("'proc'");
+    return ERRO;
 }
 int Parser::procF(){
     if(cmpCateg(Category::AbChav)){
@@ -126,7 +131,9 @@ int Parser::procF(){
         printRule("ProcF = ';'");
         printAndNext();
         return OK;
-    }else return ERRO;
+    }
+    printErr("'{' ou ';'");
+    return ERRO;
 }
 int Parser::variavel(){
     if(cmpCateg(Category::Const)){
@@ -150,10 +157,11 @@ int Parser::variavel(){
 
         if (tipo() == ERRO) return ERRO;
         if (listaId() == ERRO) return ERRO;
-        if (!printAndNext(Category::PtVg)) return ERRO;
-
-        return OK;
-    }else return ERRO;
+        if (printAndNext(Category::PtVg)) return OK;
+        else return ERRO;
+    }
+    printErr("Tipo ou 'const'");
+    return ERRO;
 }
 int Parser::listaAtr(){
     if(cmpCateg(Category::Id)){
@@ -161,7 +169,9 @@ int Parser::listaAtr(){
         printAndNext();
         if (listaAtrF() == ERRO) return ERRO;
         return listaAtrR();
-    }else return ERRO;
+    }
+    printErr("Identificador");
+    return ERRO;
 }
 int Parser::listaAtrR(){
     if(cmpCateg(Category::Vg)){
@@ -172,6 +182,7 @@ int Parser::listaAtrR(){
         if(listaAtrF() == ERRO) return ERRO;
         return listaAtrR();
     }
+    printErr("','");
     printRule("ListaAtrR = EPSILON");
     return OK;
 }
@@ -184,7 +195,7 @@ int Parser::listaAtrF(){
         if (array() == ERRO) return ERRO;
         return atribuicao();
     }
-
+    printErr("'=' ou '['");
     return ERRO;
 }
 int Parser::listaId(){
@@ -193,6 +204,7 @@ int Parser::listaId(){
         if(id() == ERRO) return ERRO;
         return listaIdR();
     }
+    printErr("Identificador");
     return ERRO;
 }
 int Parser::listaIdR(){
@@ -202,7 +214,6 @@ int Parser::listaIdR(){
         if (id() == ERRO) return ERRO;
         return listaIdR();
     }
-
     printRule("ListaIdR = EPSILON");
     return OK;
 }
@@ -213,7 +224,7 @@ int Parser::id(){
 
         return idF();
     }
-
+    printErr("Identificador");
     return ERRO;
 }
 int Parser::idF(){
@@ -234,7 +245,6 @@ int Parser::idF(){
 
         return idFF();
     }
-
     printRule("IdF = EPSILON");
     return OK;
 }
@@ -244,7 +254,6 @@ int Parser::idFF(){
         printRule("IdFF = Atribuição");
         return atribuicao();
     }
-
     printRule("IdFF = EPSILON");
     return OK;
 }
@@ -255,7 +264,7 @@ int Parser::array(){
 
         return arrayF();
     }
-
+    printErr("'['");
     return ERRO;
 }
 int Parser::arrayF(){
@@ -279,7 +288,6 @@ int Parser::arrayF(){
         if(printAndNext(Category::FeCol)) return OK;
         else return ERRO;
     }
-
     printErr("']' ou Expressão");
     return ERRO;
 }
@@ -292,6 +300,7 @@ int Parser::bloco(){
         if(printAndNext(Category::FeChav)) return OK;
         else return ERRO;
     }
+    printErr("'{'");
     return ERRO;
 }
 int Parser::listaSentencas(){
@@ -315,7 +324,6 @@ int Parser::listaSentencas(){
         if(sentenca() == ERRO) return ERRO;
         return listaSentencas();
     }
-
     printRule("ListaSentenças = EPSILON");
     return OK;
 }
@@ -356,18 +364,20 @@ int Parser::sentenca(){
         printRule("Sentença = ListaVar");
         return listaVar();
     }
+    printErr("Sentença: 'if' ou 'while' ou 'for' ou 'break' ou 'return' ou 'input', \nIdentificador ou Tipo");
     return ERRO;
 }
 int Parser::entrada(){
-    printRule("Entrada = 'input' Argumentos ';'");
 
     if(cmpCateg(Category::Input)){
+        printRule("Entrada = 'input' Argumentos ';'");
         printAndNext();
         if(argumentos() == ERRO) return ERRO;
 
         if(printAndNext(Category::PtVg)) return OK;
         else return ERRO;
     }
+    printErr("'input'");
     return ERRO;
 }
 int Parser::saida(){
@@ -381,11 +391,12 @@ int Parser::saida(){
         if(printAndNext(Category::PtVg)) return OK;
         else return ERRO;
     }
+    printErr("'print'");
     return ERRO;
 }
 int Parser::fIf(){
     if(cmpCateg(Category::If)){
-        printRule("If    = 'if' '(' ExprBool ')' Bloco ElseIf Else");
+        printRule("If = 'if' '(' ExprBool ')' Bloco ElseIf Else");
         printAndNext();
         if(!printAndNext(Category::AbPar)) return ERRO;
         if(exprBool() == ERRO) return ERRO;
@@ -394,6 +405,7 @@ int Parser::fIf(){
         if(fElseIf() == ERRO) return ERRO;
         return fElse();
     }
+    printErr("'if'");
     return ERRO;
 }
 int Parser::fElseIf(){
@@ -427,7 +439,7 @@ int Parser::fWhile(){
         if(!printAndNext(Category::FePar)) return ERRO;
         return bloco();
     }
-
+    printErr("'while'");
     return ERRO;
 }
 int Parser::fFor(){
@@ -447,7 +459,7 @@ int Parser::fFor(){
         if(exprBool() == ERRO) return ERRO;
         return bloco();
     }
-
+    printErr("'for'");
     return ERRO;
 }
 int Parser::desvio(){
@@ -457,6 +469,7 @@ int Parser::desvio(){
         if(!printAndNext(Category::PtVg)) return ERRO;
         else return OK;
     }
+    printErr("'break'");
     return ERRO;
 }
 int Parser::fReturn(){
@@ -468,6 +481,7 @@ int Parser::fReturn(){
         if(printAndNext(Category::PtVg)) return OK;
         else return ERRO;
     }
+    printErr("'return'");
     return ERRO;
 }
 int Parser::atribuicao(){
@@ -488,7 +502,6 @@ int Parser::parametros(){
         printRule("Parâmetros = ListaParam");
         return listaParam();
     }
-
     printRule("Parâmetros = EPSILON");
     return OK;
 }
@@ -508,7 +521,6 @@ int Parser::listaParamR(){
         if (id() == ERRO) return ERRO;
         return listaParamR();
     }
-
     printRule("ListaParamR = EPSILON");
     return OK;
 }
@@ -549,7 +561,6 @@ int Parser::listaArgsR(){
 
         return listaArgsR();
     }
-
     printRule("ListaArgsR = EPSILON");
     return OK;
 }
@@ -574,7 +585,9 @@ int Parser::tipo(){
         printRule("Tipo = 'string'");
         printAndNext();
         return OK;
-    }else return ERRO;
+    }
+    printErr("Tipo");
+    return ERRO;
 }
 int Parser::exprBool(){
     printRule("ExprBool = TermoBool ExprBoolR");
@@ -612,8 +625,9 @@ int Parser::termoBool(){
 
         if(exprConcat() == ERRO) return ERRO;
         return termoBoolF();
-    } else return ERRO;
-
+    }
+    printErr("'!' ou Expressão");
+    return ERRO;
 }
 int Parser::termoBoolF() {
     if(
@@ -644,7 +658,6 @@ int Parser::exprConcatR(){
 
         return exprConcatR();
     }
-
     printRule("ExprConcatR = EPSILON");
     return OK;
 }
@@ -662,7 +675,6 @@ int Parser::exprAritmR(){
 
         return exprAritmR();
     }
-
     printRule("ExprAritmR = EPSILON");
     return OK;
 }
@@ -678,7 +690,9 @@ int Parser::termoAritm(){
         printRule("TermoAritm = FatorAritm TermoAritmR");
         if(fatorAritm() == ERRO) return ERRO;
         return termoAritmR();
-    }else return ERRO;
+    }
+    printErr("Expressão");
+    return ERRO;
 }
 int Parser::termoAritmR(){
     if( cmpCateg(Category::OpMod)||
@@ -690,7 +704,6 @@ int Parser::termoAritmR(){
         if(fatorAritm() == ERRO) return ERRO;
         return termoAritmR();
     }
-
     printRule("TermoAritmR = EPSILON");
     return OK;
 }
@@ -728,7 +741,9 @@ int Parser::fatorAritm(){
         if(listaArray() ==ERRO) return ERRO;
         if(!printAndNext(Category::FeCol)) return ERRO;
         return OK;
-    }else return ERRO;
+    }
+    printErr("Expressão");
+    return ERRO;
 }
 int Parser::fatorAritmF(){
     if(cmpCateg(Category::Integer) ||
@@ -775,7 +790,6 @@ int Parser::listaArrayR(){
 
         return listaArrayR();
     }
-
     printRule("ListaArrayR = EPSILON");
     return OK;
 }

@@ -46,7 +46,7 @@
           ListaVar = EPSILON
           ListaSentenças = Sentença ListaSentenças
           Sentença = If
-          If    = 'if' '(' ExprBool ')' Bloco ElseIf Else
+          If = 'if' '(' ExprBool ')' Bloco ElseIf Else
           [0004, 0004] (0025,                   If) {if}
           [0004, 0006] (0009,                AbPar) {(}
           ExprBool = TermoBool ExprBoolR
