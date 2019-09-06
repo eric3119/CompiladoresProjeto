@@ -279,6 +279,8 @@ int Parser::arrayF(){
         if(printAndNext(Category::FeCol)) return OK;
         else return ERRO;
     }
+
+    printErr("']' ou Expressão");
     return ERRO;
 }
 int Parser::bloco(){
@@ -753,7 +755,9 @@ int Parser::fatorAritmF(){
 
         if(printAndNext(Category::FePar)) return OK;
         else return ERRO;
-    }else return ERRO;
+    }
+    printErr("Tipo ou Expressão");
+    return ERRO;
 }
 int Parser::listaArray(){
     printRule("ListaArray = ExprBool ListaArrayR");
@@ -790,13 +794,13 @@ bool Parser::printAndNext(Category c){
         nextToken();
         return true;
     }
-    printErr(c);
+    printErr(categ_name(c));
     return false;
 }
 
-void Parser::printErr(Category c){
+void Parser::printErr(const string &s){
     cout << "\tErro: '" << tk.lex << "' na posição (" << tk.line << ", " << tk.col << ")" << endl
-         << "\tEsperado '" << categ_lex(c) << "'\n";
+         << "\tEsperado " << s << "\n";
 }
 
 bool Parser::cmpCateg(Category c){

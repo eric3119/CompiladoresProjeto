@@ -24,7 +24,7 @@ private:
     void printAndNext();
     void printRule(const std::string &r);
     bool cmpCateg(Category c);
-    void printErr(Category c);
+    void printErr(const std::string &s);
 
     int inicio();
     int listaFunc();
