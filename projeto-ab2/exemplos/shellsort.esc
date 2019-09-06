@@ -29,14 +29,14 @@ func int init(){
 
     int vet[tam];
 
-    for(i = 0; i < tam; 1){
+    for i in (0, tam) step 1 {
         input vet[i];
         print "%d " vet[i];
     }
 
     shellSort(vet, tam);
 
-    for(i = 0; i < tam; 1){
+    for i in (0, tam) step 1{
         print "%d " vet[i];
     }
 }
