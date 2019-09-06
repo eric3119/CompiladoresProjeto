@@ -294,12 +294,10 @@ int Parser::array(){
     return res;
 }
 int Parser::arrayF(){
-    int res = ERRO;
-
     if(cmpCateg(Category ::FeCol)){
         printRule("ArrayF = ']'");
-        printToken();
-        nextToken();
+        printAndNext();
+        return OK;
     }else if(
             cmpCateg(Category ::OpNot) ||
             cmpCateg(Category ::OpMenos) ||
@@ -311,17 +309,12 @@ int Parser::arrayF(){
             cmpCateg(Category ::AbCol)
             ){
         printRule("ArrayF = ExprBool ']'");
-        res = exprBool();
-        if(res == ERRO) return res;
+        if(exprBool() == ERRO) return ERRO;
 
-        if(cmpCateg(Category::FeCol)){
-            printToken();
-            nextToken();
-            return OK;
-        }else return ERRO;
+        if(printAndNext(Category::FeCol)) return OK;
+        else return ERRO;
     }
-
-    return res;
+    return ERRO;
 }
 int Parser::bloco(){
     int res = ERRO;
@@ -552,54 +545,24 @@ int Parser::fWhile(){
     return res;
 }
 int Parser::fFor(){
-    int res = ERRO;
 
     if(cmpCateg(Category::For)){
-        printRule("For ='for' Id 'in' '(' ExprBool ',' ExprBool ')' 'step' ExprBool Bloco");
-        printToken();
-        nextToken();
+        printRule("For = 'for' Id 'in' '(' ExprBool ',' ExprBool ')' 'step' ExprBool Bloco");
+        printAndNext();
 
-        res = id();
-        if(res == ERRO) return res;
-
-        if(tk.categ == Category::In){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        if(tk.categ == Category::AbPar){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = exprBool();
-        if(res == ERRO) return res;
-
-        if(tk.categ == Category::Vg){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = exprBool();
-        if(res == ERRO) return res;
-
-        if(tk.categ == Category::FePar){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        if(tk.categ == Category::Step){
-            printToken();
-            nextToken();
-        }else return ERRO;
-
-        res = exprBool();
-        if(res == ERRO) return res;
-
+        if(id() == ERRO) return ERRO;
+        if(!printAndNext(Category::In)) return ERRO;
+        if(!printAndNext(Category::AbPar)) return ERRO;
+        if(exprBool() == ERRO) return ERRO;
+        if(!printAndNext(Category::Vg)) return ERRO;
+        if(exprBool() == ERRO) return ERRO;
+        if(!printAndNext(Category::FePar)) return ERRO;
+        if(!printAndNext(Category::Step)) return ERRO;
+        if(exprBool() == ERRO) return ERRO;
         return bloco();
     }
 
-    return res;
+    return ERRO;
 }
 int Parser::desvio(){
     int res = ERRO;
